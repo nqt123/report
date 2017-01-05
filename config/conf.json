@@ -1,0 +1,36 @@
+{
+  "app": {
+    "_id": "5791ce9ba3c6a71823618fa2",
+    "ip": "localhost",
+    "port": 3020,
+    "name": "crm 1"
+  },
+  "database": {
+    "name": "crm-1",
+    "ip": "localhost",
+    "port": 27017,
+    "user": "",
+    "pwd": ""
+  },
+  "database-core": {
+    "ip": "localhost",
+    "port": 27017,
+    "name": "hoasao-core",
+    "user": "",
+    "pwd": "",
+    "mechanism": "",
+    "digestPassword": false
+  },
+  "core-app": {
+    "ip": "127.0.0.1",
+    "port": 3002
+  },
+  "services": {},
+  "activemq": {
+    "ip": "localhost",
+    "port": "61613",
+    "user": "admin",
+    "pwd": "admin",
+    "queueName": "crm1"
+  }
+}
