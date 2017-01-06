@@ -1,12 +1,12 @@
 {
   "app": {
-    "_id": "5791ce9ba3c6a71823618fa2",
+    "_id": "5813503cce3943153949725b",
     "ip": "localhost",
-    "port": 3020,
-    "name": "crm 1"
+    "port": 5020,
+    "name": "akira"
   },
   "database": {
-    "name": "crm-1",
+    "name": "akira",
     "ip": "localhost",
     "port": 27017,
     "user": "",
@@ -15,7 +15,7 @@
   "database-core": {
     "ip": "localhost",
     "port": 27017,
-    "name": "hoasao-core",
+    "name": "akira-core",
     "user": "",
     "pwd": "",
     "mechanism": "",
@@ -23,14 +23,23 @@
   },
   "core-app": {
     "ip": "127.0.0.1",
-    "port": 3002
+    "port": 5002,
+    "public-ip": "127.0.0.1",
+    "public-port": 5002
   },
-  "services": {},
+  "services": {
+    "voice": 5010,
+    "chat": 5011,
+    "email": 5012
+  },
   "activemq": {
     "ip": "localhost",
-    "port": "61613",
+    "port": "61813",
     "user": "admin",
     "pwd": "admin",
-    "queueName": "crm1"
+    "queueName": "akira"
+  },
+  "recordPath":{
+    "path":"http://172.16.1.242:9001/"
   }
 }
