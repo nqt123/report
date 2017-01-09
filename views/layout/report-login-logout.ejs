@@ -153,7 +153,7 @@
 				var rows = JSON.parse('<%- JSON.stringify(rows) %>');
 				$("#timelines").height(_.uniq(rows, function(r) {
 						return r.name;
-					}).length * 55);
+					}).length * 50 + 50);
 				var container = document.getElementById('timelines');
 				var chart = new google.visualization.Timeline(container);
 				var chartRows = [];
@@ -169,6 +169,6 @@
 				chart.draw(dataTable, options);
 			}
         </script>
-        <div id="timelines"></div>
+        <div id="timelines" style="max-width: 98%; overflow-x: hidden; overflow-y: hidden"></div>
     </div>
 </div>
