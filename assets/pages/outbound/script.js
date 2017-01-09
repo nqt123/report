@@ -36,6 +36,14 @@ var DFT = function ($) {
                 }
             }
         });
+
+        client.on('getOrderStatus', function(data) {
+			if (data && data.status) {
+				$('#canGetOrder').bootstrapToggle('on');
+            } else {
+				$('#canGetOrder').bootstrapToggle('off');
+            }
+		});
     };
 
     // Hiển thị tên cột theo file config
@@ -519,6 +527,8 @@ var DFT = function ($) {
                 multidateSeparator: ' - ',
                 format: 'dd/mm/yyyy'
             });
+
+			_socket.emit('getOrderStatus', {agentId: user});
         },
         uncut: function () {
             // Disable sự kiện khi đóng trang

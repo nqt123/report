@@ -99,7 +99,21 @@ exports.assignByInterval = function () {
  * @param status
  */
 exports.changeStatus = function(agentId, status) {
+    var logObj = {
+        old: agentStatus
+    };
     agentStatus[agentId] = status;
+    logObj.new = agentStatus;
+	log.debug('Agent changes status get order', logObj);
+};
+
+/**
+ * Lấy trạng thái lấy đơn hàng theo
+ * @param agentId
+ * @returns {*}
+ */
+exports.getStatus = function(agentId) {
+    return isAgentEnable(agentId);
 };
 
 /**
@@ -218,7 +232,7 @@ function checkAgentOnlineInGroup(callback) {
         var onlineAgents = [];
         var agents = _.pluck(result, '_id');
         _.each(agents, function (agentId) {
-            if (_socketUsers[agentId]) onlineAgents.push(agentId);
+            if (_socketUsers[agentId] && isAgentEnable(agentId)) onlineAgents.push(agentId);
         });
         if (!onlineAgents.length) {
             callback();
@@ -239,9 +253,6 @@ function processOrderOfAgentOnline(onlineAgents, callback) {
     _async.parallel({
         checkOnlineAgentTickets: function (callback) {
             _async.each(onlineAgents, function (agentId, callback) {
-                if (!isAgentEnable(agentId)) {
-                    return callback();
-                }
                 _Tickets.count({
                     idCampain: defaultCampaign,
                     idAgent: agentId,

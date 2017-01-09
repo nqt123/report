@@ -294,6 +294,13 @@ module.exports = function init(socket) {
 		orderMonitor.changeStatus(bundle.agentId, bundle.status);
 	});
 
+    // Sự kiện lấy trạng thái lấy đơn hàng, trả lại đúng cho agent gọi
+    socket.on('getOrderStatus', function(bundle) {
+        socket.emit('getOrderStatus', {
+            status: orderMonitor.getStatus(bundle.agentId)
+        });
+	});
+
     // Sự kiện thay đổi cài đặt order monitor
     socket.on("settingOrderMonitor", function(bundle) {
         orderMonitor.settingOrderMonitor(bundle.remain, bundle.delay);
