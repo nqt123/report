@@ -312,7 +312,19 @@
       "TXT_CALLLOGS_DURATION": "Duration",
       "TXT_CALLLOGS_CALLER": "Caller",
       "TXT_CALLLOGS_CALLED": "Called",
-      "TXT_COMPANY": "Công ty"
+      "TXT_COMPANY": "Công ty",
+      "TXT_ORDER_TITLE": "Thông tin đơn hàng",
+      "TXT_ORDER_FIELD_phone": "Số điện thoại",
+      "TXT_ORDER_FIELD_email": "Email",
+      "TXT_ORDER_FIELD_name": "Họ tên",
+      "TXT_ORDER_FIELD_card": "Thẻ",
+      "TXT_ORDER_FIELD_address": "Địa chỉ nhận thẻ",
+      "TXT_ORDER_FIELD_url": "Trang web",
+      "TXT_ORDER_FIELD_deviceInfo": "Thông tin thiết bị",
+      "TXT_ORDER_FIELD_ip": "Địa chỉ IP",
+      "TXT_ORDER_FIELD_createDate": "Thời gian tạo",
+      "TXT_ORDER_FIELD_deliveryType": "Loại chuyển phát",
+      "TXT_ORDER_FIELD_cardType": "Khóa học"
     },
     "MAIL_SETTING": {
       "LIST_NAME_COL_LABEL": "Tên",
@@ -374,7 +386,7 @@
       "REPORT_TOTAL_CUSTOMER": "Tổng số KH trong chiến dịch"
     },
     "REPORT_OUTBOUND_TICKETS": {
-      "TXT_CAMPAIGN_NAME": "Chủ đề chiến dịch",
+      "TXT_CAMPAIGN_NAME": "Chiến dịch",
       "TXT_PHONE_NUMBER": "Số điện thoại",
       "TXT_CUSTOMER_SOURCE": "Nguồn khách hàng",
       "TXT_STATUS": "Trạng thái",
@@ -386,7 +398,49 @@
       "TXT_UPDATED": "Cập nhật ngày",
       "TXT_UPDATED_BY": "Điện thoại viên",
       "TXT_TOTAL": "Tổng",
-      "TXT_ACTION": "Tác vụ"
+      "TXT_ACTION": "Tác vụ",
+      "TXT_CUSTOMER_NAME": "Tên khách hàng",
+      "TXT_CUSTOMER_EMAIL": "Email",
+      "TXT_ORDER_CARD": "Thẻ",
+      "TXT_ORDER_ADDRESS": "Địa chỉ nhận thẻ",
+      "TXT_ORDER_DEVICE_INFO": "Thiết bị",
+      "TXT_ORDER_URL": "Trang web",
+      "TXT_ORDER_CARD_TYPE": "Loại thẻ",
+      "TXT_ORDER_CREATED": "Thời gian tạo thẻ",
+      "TXT_ORDER_IP": "IP"
+    },
+    "REPORT_ORDERS": {
+      "TXT_CAMPAIGN_NAME": "Chiến dịch",
+      "TXT_PHONE_NUMBER": "Số điện thoại",
+      "TXT_CUSTOMER_SOURCE": "Nguồn khách hàng",
+      "TXT_STATUS": "Trạng thái",
+      "TXT_TICKET_REASON_CATEGORY": "Nhóm tình trạng",
+      "TXT_TICKET_REASON": "Tình trạng",
+      "TXT_TICKET_SUBREASON": "Lý do",
+      "TXT_CALLS": "Lần gọi",
+      "TXT_NOTE": "Ghi chú",
+      "TXT_UPDATED": "Cập nhật ngày",
+      "TXT_UPDATED_BY": "Điện thoại viên",
+      "TXT_TOTAL": "Tổng",
+      "TXT_ACTION": "Tác vụ",
+      "TXT_CUSTOMER_NAME": "Tên khách hàng",
+      "TXT_CUSTOMER_EMAIL": "Email",
+      "TXT_ORDER_CARD": "Thẻ",
+      "TXT_ORDER_CARD_TYPE": "Loại thẻ",
+      "TXT_ORDER_RAW_STATUS": "Trạng thái Form",
+      "TXT_ORDER_ADDRESS": "Địa chỉ nhận thẻ",
+      "TXT_ORDER_DEVICE_INFO": "Thiết bị",
+      "TXT_ORDER_URL": "Trang web",
+      "TXT_ORDER_CREATED": "Thời gian tạo thẻ",
+      "TXT_ORDER_DELIVERY_TYPE": "Loại chuyển phát",
+      "TXT_ORDER_PART": "Bộ phận",
+      "TXT_ORDER_IP": "IP",
+      "TXT_ORDER_IS_UP_SALE": "Chuyển loại",
+      "TXT_ORDER_ORIGIN_CARD": "Thẻ cũ",
+      "TXT_TIME": "Thời gian",
+      "TXT_ENGLISH": "Thẻ Tiếng Anh",
+      "TXT_JAPAN": "Thẻ Tiếng Nhật",
+      "TXT_OTHER": "Thẻ Khác"
     },
     "REPORT_INBOUND_TICKETS": {
       "TXT_COMPANY": "Công ty",
@@ -400,6 +454,7 @@
       "TXT_DEADLINE": "Ngày hẹn xử lý",
       "TXT_UPDATED": "Ngày cập nhật",
       "TXT_UPDATED_BY": "Người cập nhật",
+      "TXT_CALL_LENGTH": "Số lần gọi ra",
       "TXT_TOTAL": "Tổng",
       "TXT_ACTION": "Tác vụ"
     },
@@ -474,6 +529,25 @@
       "TXT_PROCESSED_TICKET": "Số phiếu đã xử lí",
       "TXT_AVG_PRODUCTIVITY": "Hiệu suất",
       "TXT_STATUS_TIME": "Thời gian làm việc"
+    },
+    "REPORT_SALES_PRODUCTIVITY": {
+      "TXT_CAMPAIGN_NAME": "Chủ đề chiến dịch",
+      "TXT_PHONE_NUMBER": "Số điện thoại",
+      "TXT_CUSTOMER_SOURCE": "Nguồn khách hàng",
+      "TXT_STATUS": "Trạng thái",
+      "TXT_TICKET_REASON_CATEGORY": "Nhóm tình trạng",
+      "TXT_TICKET_REASON": "Tình trạng",
+      "TXT_TICKET_SUBREASON": "Lý do",
+      "TXT_UPDATED": "Cập nhật ngày",
+      "TXT_ORDER_CREATEDATE": "Ngày tạo đơn hàng",
+      "TXT_UPDATED_BY": "Điện thoại viên",
+      "TXT_AGENT": "Điện thoại viên",
+      "TXT_TOTAL_NEW_TICKET": "Tổng số phiếu mới",
+      "TXT_NEW_CONVERSION_RATE": "Chuyển đổi mới",
+      "TXT_NEW_CONVERSION_RATE_AVG": "Tỷ lệ chuyển đổi mới",
+      "TXT_TOTAL_OLD_TICKET": "Tổng số phiếu cũ",
+      "TXT_OLD_CONVERSION_RATE": "Số chuyển đổi cũ",
+      "TXT_OLD_CONVERSION_RATE_AVG": "Tỷ lệ chuyển đổi cũ"
     },
     "REPORT_OUTBOUND_BY_TIME": {
       "TXT_MONTH": "Tháng",
@@ -563,17 +637,11 @@
       "TXT_TYPE_5": "Tất cả ĐTV đều bận",
       "TXT_TYPE_OTHER": "Lý do khác",
       "TXT_WAIT_DURATION": "Thời gian chờ",
-      "TXT_WAIT_AVG": "Thời gian chờ trung bình"
-    },
-    "REPORT_INOUT_GENERAL": {
-      "TXT_OUTBOUND": "Outbound",
-      "TXT_INBOUND": "Inbound",
-      "TXT_TOTAL_OUTBOUND": "Tổng gọi ra",
-      "TXT_CONNECTED": "SL cuộc gọi kết nối",
-      "TXT_TOTAL_TICKET": "Tổng số phiếu",
-      "TXT_TOTAL_INBOUND": "Tổng gọi vào",
-      "TXT_SERVED_CALL": "SL cuộc gọi được phục vụ",
-      "TXT_MISSED": "SL cuộc gọi nhỡ"
+      "TXT_WAIT_AVG": "Thời gian chờ trung bình",
+      "TXT_PHONE_NUMBER": "Số điện thoại",
+      "TXT_START_TIME": "Thời gian bắt đầu",
+      "TXT_END_TIME": "Thời gian kết thúc",
+      "TXT_REASON": "Lý do nhỡ"
     },
     "REPORT_INOUT_GENERAL": {
       "TXT_OUTBOUND": "Outbound",
@@ -724,6 +792,8 @@
       "assign_updated": "Ngày cập nhật",
       "assign_createBy": "Tạo bởi",
       "assign_action": "Tác vụ",
+      "assign_agent": "Điện thoại viên",
+      "assign_deadline": "Ngày hẹn xử lý",
       "CONFIRM_ASSIGN_TITLE": "Bạn có chắc chắn muốn ủy quyền xử lý cho các agent đã được đánh dấu?",
       "CONFIRM_ASSIGN_TEXT": "Một số ticket có thể bị thay đổi người được ủy quyền"
     }
