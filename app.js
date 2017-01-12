@@ -52,9 +52,26 @@ var logger = log4js.getLogger("CRM");
 logger.setLevel(logLevel);
 global.log = logger;
 
-mongodb.MongoClient.connect(_dbPath, function(err, db){
-    if (err) return process.exit(1);
-    global['mongoClient'] = db;
+/**
+ * Keep uid and pwd of database in envoirerment variable
+ */
+if (process.env.DATABASE_UID && process.env.DATABASE_PWD) {
+	_config.database.user = process.env.DATABASE_UID;
+	_config.database.pwd = process.env.DATABASE_PWD;
+}
+mongodb.MongoClient.connect(_dbPath, function (err, db) {
+	if (err) return process.exit(1);
+	if (process.env.DATABASE_UID && process.env.DATABASE_PWD) {
+		db.authenticate(_config.database.user, _config.database.pwd, function(err) {
+			if (err) {
+				console.log(err);
+				return process.exit(1);
+			}
+			global['mongoClient'] = db;
+		});
+	} else {
+		global['mongoClient'] = db;
+	}
 });
 
 
