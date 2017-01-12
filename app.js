@@ -58,20 +58,11 @@ global.log = logger;
 if (process.env.DATABASE_UID && process.env.DATABASE_PWD) {
 	_config.database.user = process.env.DATABASE_UID;
 	_config.database.pwd = process.env.DATABASE_PWD;
+	global._dbPath = 'mongodb://' + _config.database.user + ':' + _config.database.pwd + '@' + _config.database.ip + ':' + _config.database.port + '/' + _config.database.name;
 }
 mongodb.MongoClient.connect(_dbPath, function (err, db) {
 	if (err) return process.exit(1);
-	if (process.env.DATABASE_UID && process.env.DATABASE_PWD) {
-		db.authenticate(_config.database.user, _config.database.pwd, function(err) {
-			if (err) {
-				console.log(err);
-				return process.exit(1);
-			}
-			global['mongoClient'] = db;
-		});
-	} else {
-		global['mongoClient'] = db;
-	}
+	global['mongoClient'] = db;
 });
 
 
