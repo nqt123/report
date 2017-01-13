@@ -136,7 +136,7 @@ function updateUser(object, callback) {
     mongodb.MongoClient.connect(_dbPath, function (err, db) {
         if (err) return err;
         var cursor = db.collection('users').find().toArray(function (err, users) {
-            if (err) return log.err(err);
+            if (err) return log.error(err);
             var currentIds = _.map(_.pluck(users, '_id'), function (item) {
                 return item.toString();
             });
