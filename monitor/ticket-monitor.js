@@ -33,7 +33,7 @@ function init() {
                 function(next){
                     // Lấy dữ liệu những ticket đã gửi Notify
                     _Notification.find({agentId: {$in: usersId}, status: 0}, function(err, result){
-                        log.debug(35, 'Số lượng Notify: ', result.length);
+                        log.debug(35, 'Số lượng Notify: ', result ? result.length : err);
                         _.each(result, function(noti){
                             var ticketId = noti.url.indexOf('ticket-edit?ticketID=') == 0 ? noti.url.split('ticket-edit?ticketID=')[1] : null;
                             if(ticketId) noNotifyId.push(ticketId);

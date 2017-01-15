@@ -90,7 +90,7 @@ module.exports = function routers(app) {
         });
 
         _Users.findOne({ $and: [{ $or: [{ name: _body.name }, { email: _body.name }] }, { password: _body.password }] }, function (error, user) {
-            if (_.isNull(user)) return req.xhr ? res.status(200).send({ code: 404, message: 'Sai tên đăng nhập hoặc mật khẩu' }) : res.redirect('/');//mrC
+            if (_.isNull(user) || _.isUndefined(user)) return req.xhr ? res.status(200).send({ code: 404, message: 'Sai tên đăng nhập hoặc mật khẩu' }) : res.redirect('/');//mrC
             if (_.isEqual(user.status, 0)) return res.status(200).send({ code: 406, message: 'Tài khoản đã bị khoá' });
             acdPublish.sendLoginRequest(user, _body.deviceId, function (message) {
                 if (message && message.resultCode == 0) {
