@@ -27,3 +27,4 @@ temp/
 !/assets/uploads/attachments/.keepme
 !/assets/uploads/.keepme
 !/assets/uploads/avatar/.keepme
+!/logs/.keepme

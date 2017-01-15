@@ -95,6 +95,9 @@ var getAgentInfo = function(user, cb){
                 agentStatusDefault: agentStatus.statusCode,
                 skills: _skills
             });
+        } else {
+            log.error(err);
+            log.error('Agent status not found!');
         }
     });
 }
