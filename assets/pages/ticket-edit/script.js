@@ -251,6 +251,11 @@ var DFT = function($) {
 								confirmButtonColor: "#DD6B55",
 								confirmButtonText: "Xác nhận",
 								closeOnConfirm: true
+							}, function() {
+								$(".clickToCall").each(function() {
+									var value = $(this).prev('input').val();
+									$(this).attr('data-phone-number', value);
+								})
 							});
 						} else {
 							swal({
