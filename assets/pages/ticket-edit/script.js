@@ -287,6 +287,28 @@ var DFT = function($) {
 						closeOnConfirm: true
 					});
 				}
+
+				// ALbert: 'Ngày hẹn xử lý' >= 'Current date' nếu trạng thái là 'Đang xử lý'
+				if (($('#status').val() == 1) && ($('#deadline').val().length != 0)) {
+					var currentDate = new Date();
+					var deadline = $('#deadline').val();
+
+					var dateParts = deadline.split(' ')[1].split("/");
+					var dateObject = new Date(dateParts[2], dateParts[1] - 1, dateParts[0]); // month is 0-based
+
+					if ((currentDate.getTime() > new Date(dateObject.toString()).getTime()+60*60*1000*23)) {
+						return swal({
+							title: 'Đã có lỗi xảy ra',
+							text: 'Ngày hẹn xử lý không được nhỏ hơn ngày hiện tại',
+							type: "error",
+							confirmButtonColor: "#DD6B55",
+							confirmButtonText: "Quay lại!",
+							closeOnConfirm: true
+						});
+					}
+
+				}
+
 				if (status) {
 					_AjaxData('/ticket-edit/editTicket-' + $('#save-new-ticket').attr('data-id'), 'PUT', $(form).getData(), function(resp) {
 
