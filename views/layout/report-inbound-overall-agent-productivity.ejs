@@ -81,22 +81,39 @@
                id="exceldata">
             <thead>
             <tr>
-                <th class="bgm-orange c-white text-center"><span class="TXT_AGENT"></span></th>
-                <th class="bgm-orange c-white text-center"><span class="TXT_TOTAL_CALL"></span></th>
-                <th class="bgm-orange c-white text-center"><span class="TXT_TOTAL_SERVED"></span></th>
-                <th class="bgm-orange c-white text-center"><span class="TXT_TOTAL_MISSED"></span></th>
-                <th class="bgm-orange c-white text-center"><span class="TXT_CALL_DURATION"></span></th>
-                <th class="bgm-orange c-white text-center"><span class="TXT_AVG_CALL_DURATION"></span></th>
-                <th class="bgm-orange c-white text-center"><span class="TXT_STATUS_TIME"></span></th>
-                <th class="bgm-orange c-white text-center"><span class="TXT_AVG_PRODUCTIVITY"></span></th>
-                <th class="bgm-orange c-white text-center"><span class="TXT_TOTAL_TICKET"></span></th>
-                <th class="bgm-orange c-white text-center"><span class="TXT_PROCESSED_TICKET"></span></th>
+                <th class="bgm-orange c-white text-center" rowspan="2"><span class="TXT_AGENT"></span></th>
+                <th class="bgm-orange c-white text-center" rowspan="2"><span class="TXT_TOTAL_CALL"></span></th>
+                <th class="bgm-orange c-white text-center" rowspan="2"><span class="TXT_TOTAL_SERVED"></span></th>
+                <th class="bgm-orange c-white text-center" rowspan="2"><span class="TXT_TOTAL_MISSED"></span></th>
+                <th class="bgm-orange c-white text-center" colspan="2"><span class="TXT_CALL_DURATION"></span></th>
+                <th class="bgm-orange c-white text-center" colspan="2"><span class="TXT_AVG_CALL_DURATION"></span></th>
+                <th class="bgm-orange c-white text-center" rowspan="2"><span class="TXT_TOTAL_TICKET"></span></th>
+                <th class="bgm-orange c-white text-center" rowspan="2"><span class="TXT_PROCESSED_TICKET"></span></th>
             </tr>
+            <tr>
+                <td class="bgm-orange c-white text-center" style="overflow: visible !important;">hh:mm:ss</td>
+                <td class="bgm-orange c-white text-center" style="overflow: visible !important;">ss</td>
+                <td class="bgm-orange c-white text-center" style="overflow: visible !important;">hh:mm:ss</td>
+                <td class="bgm-orange c-white text-center" style="overflow: visible !important;">ss</td>
+            </tr>
+            <!--<tr>-->
+            <!--<th class="bgm-orange c-white text-center" rowspan="2"><span class="TXT_TOTAL_TICKET"></span></th>
+            <th class="bgm-orange c-white text-center" rowspan="2"><span class="TXT_PROCESSED_TICKET"></span></th>-->
+            <!--</tr>-->
             </thead>
             <tbody>
             <%
             function pad(num) {
                 return ("0"+num).slice(-2);
+            }
+            function sumValueViaProperties(arr, pro, toLocalString) {
+                var sum = arr.reduce(function(s, i) {
+                    return s + (i[pro] || 0);
+                }, 0);
+                if (toLocalString) {
+                    return sum.toLocaleString('vn');
+                }
+                return sum;
             }
             function hms(secs) {
                 if(isNaN(secs)) return "0:00:00";
@@ -114,19 +131,51 @@
             <% } %>
             <%for(var i = 0; i<result.length;i++){%>
             <tr>
-                <td><%- result[i].agent ? result[i].agent : "Missing"%></td>
+                <td><%- result[i]._id ? result[i]._id : "Missing"%></td>
                 <td><%- result[i].totalCall%></td>
                 <td><%- result[i].connected%></td>
                 <td><%- result[i].missed%></td>
                 <td><%- hms(result[i].callDuration/1000)%></td>
+                <td><%- Math.floor(result[i].callDuration / 1000)%></td>
                 <td><%- hms(result[i].avgCallDuration/1000)%></td>
-                <td><%- hms(result[i].statusDuration/1000)%></td>
-                <td><%- result[i].statusDuration > 0 ? parseInt((result[i].callDuration/result[i].statusDuration)*100) + '%' : '0%'%></td>
+                <td><%- Math.floor(result[i].avgCallDuration / 1000)%></td>
                 <td><%- result[i].total%></td>
                 <td><%- result[i].done%></td>
             </tr>
             <%}%>
             </tbody>
+            <tfoot style="font-weight: bold; font-size: 13px;">
+            <tr>
+                <td><b>Tổng</b></td>
+                <td>
+                    <%- sumValueViaProperties(result, 'totalCall', true)%>
+                </td>
+                <td>
+                    <%- sumValueViaProperties(result, 'connected', true)%>
+                </td>
+                <td>
+                    <%- sumValueViaProperties(result, 'missed', true)%>
+                </td>
+                <td>
+                    <%- hms(sumValueViaProperties(result, 'callDuration') / 1000)%>
+                </td>
+                <td>
+                    <%- Math.floor(sumValueViaProperties(result, 'callDuration') / 1000).toLocaleString('vn')%>
+                </td>
+                <td>
+                    <%- hms((sumValueViaProperties(result, 'callDuration') / 1000) / (sumValueViaProperties(result, 'connected')))%>
+                </td>
+                <td>
+                    <%- Math.floor((sumValueViaProperties(result, 'callDuration') /1000) / (sumValueViaProperties(result, 'connected'))).toLocaleString('vn')%>
+                </td>
+                <td>
+                    <%- sumValueViaProperties(result, 'total', true)%>
+                </td>
+                <td>
+                    <%- sumValueViaProperties(result, 'done', true)%>
+                </td>
+            </tr>
+            </tfoot>
         </table>
     </div>
 </div>
