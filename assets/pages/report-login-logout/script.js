@@ -1,4 +1,6 @@
-
+/**
+ * Created by hoangdv on 8/24/16.
+ */
 var DFT = function ($) {
 	var queryFilter = function () {
 		var _data = $('#form').serializeJSON();
