@@ -1,5 +1,5 @@
 /**
- * Created by baygiomoidc on 8/24/16.
+ * Created by hoangdv on 8/24/16.
  */
 
 exports.index = {
