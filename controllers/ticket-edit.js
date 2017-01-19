@@ -42,7 +42,7 @@ exports.index = function(req, res) {
 		},
 		order: function(cb) {
 			//Albert: fix the issue causes the server died if the client sends the request with wrong ticketId
-			getOrderByTicketId(req.query.ticketId, function(err,result) {
+			getOrderByTicketId(req.query.ticketID, function(err,result) {
 				if(err){
 					// return res.render('404', {title: '404 | Page not found'});
 					return call(err,null);
