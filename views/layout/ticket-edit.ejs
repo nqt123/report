@@ -10,7 +10,7 @@
 	var statisfy = JSON.parse('<%- JSON.stringify(statisfy) %>');
 	var tickets = JSON.parse('<%- JSON.stringify(tickets) %>');
 	var callLogs = JSON.parse('<%- JSON.stringify(callLogs) %>');
-	var orderCards = JSON.parse('<%- JSON.stringify(orderCards) %>');
+	var orderCards = JSON.parse('<%- JSON.stringify(typeof orderCards === "undefined"? [] : orderCards) %>');
 </script>
 
 <div class="card" id="ticket-edit">
