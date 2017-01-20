@@ -123,7 +123,7 @@ var DFT = function ($) {
                 $('aside#sidebar .sidebar-inner .panel-group').html(html);
                 // hoangdv keep back to old url
                 var hash = window.location.hash;
-                if (hash.length === 0) {
+				if (hash.length === 0 || hash.indexOf('auth') > -1) {
                     hash = 'articles-list';
                 }
                 window.location.hash = '';
