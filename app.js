@@ -11,7 +11,17 @@ global._ = require('underscore');
 global._rootPath = path.dirname(require.main.filename);
 global._libsPath = path.normalize(path.join(__dirname, 'libs'));
 global._commonPath = path.normalize(path.join(__dirname, 'common'));
-global._config = require(path.normalize(path.join(__dirname, 'config', 'conf.json')));
+switch (process.env.NODE_ENV) {
+    case 'development':
+		global._config = require(path.normalize(path.join(__dirname, 'config', 'conf.dev.json')));
+		break;
+    case 'production':
+		global._config = require(path.normalize(path.join(__dirname, 'config', 'conf.json')));
+		break;
+    default:
+		global._config = require(path.normalize(path.join(__dirname, 'config', 'conf.json')));
+		break;
+}
 global._dbPath = 'mongodb://' + _config.database.ip + ':' + _config.database.port + '/' + _config.database.name;
 
 global._moment = require('moment');
@@ -85,7 +95,17 @@ app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.use(require(path.join(_rootPath, 'libs', 'auth')).auth);
 
 require(path.join(_rootPath, 'libs', 'cleanup.js')).Cleanup();
-require(path.join(_rootPath, 'libs', 'router.js'))(app);
+switch (process.env.NODE_ENV) {
+	case 'development':
+		require(path.join(_rootPath, 'libs', 'router_noacd.js'))(app);
+		break;
+	case 'production':
+		require(path.join(_rootPath, 'libs', 'router.js'))(app);
+		break;
+	default:
+		require(path.join(_rootPath, 'libs', 'router.js'))(app);
+		break;
+}
 
 app.use(function (req, res, next) {
     res.render('404', {title: '404 | Page not found'});
