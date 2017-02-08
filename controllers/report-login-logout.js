@@ -38,8 +38,14 @@ exports.index = {
 							timeline: function(done) {
 								getTimelines(userIds, statusArr, req, done);
 							},
+							timelineGroupByDay: function(done) {
+								getTimelineGroupByDay(userIds, statusArr, req, done)
+							},
 							overall: function(done) {
 								getOverallReport(userIds, statusArr, req, done);
+							},
+							overallGroupByDay: function(done) {
+								getOverallReportGroupByDay(userIds, statusArr, req, done)
 							}
 						}, next);
 					}
@@ -48,11 +54,13 @@ exports.index = {
 		}, function(err, result){
 			return _.render(req, res, 'report-login-logout', _.extend({
 				datas: _.has(result.data, 'overall') ? result.data.overall.data : [],
+				datasGroupByDay: _.has(result.data, 'overallGroupByDay') ? result.data.overallGroupByDay.data : [],
 				agents: result.agents,
 				status: statusArr,
 				paging: _.has(result.data, 'overall') ? result.data.overall.paging : {},
 				msToTime: msToTime,
 				timeline: _.has(result.data, 'timeline') ? result.data.timeline: [],
+				timelineByDay: _.has(result.data, 'timelineGroupByDay') ? result.data.timelineGroupByDay: [],
 				title: 'Báo cáo Login - Logout',
 				plugins: ['moment', ['bootstrap-select'],'export-excel', 'google-chart']
 			}, {}), true, err);
@@ -201,7 +209,8 @@ function getOverallReport(userIds, statusArr, req, callback) {
 }
 
 /**
- *
+ * Lấy thông tin vẽ biểu đồ timeline
+ * You are not expected to understand this :)
  * @param userIds
  * @param statusArr
  * @param req
@@ -296,6 +305,323 @@ function getTimelines(userIds, statusArr, req, callback) {
 			});
 		});
 		callback(err, result);
+	});
+}
+
+/**
+ *
+ * @param userIds
+ * @param statusArr
+ * @param req
+ * @param callback
+ */
+function getTimelineGroupByDay(userIds, statusArr, req, callback) {
+	var obj = {};
+	var aggs = [];
+	aggs.push({$match: {agentId: {$in: userIds}}});
+	if (_.has(req.query, 'startTime')) {
+		var fieldName = 'startTime';
+		var _d1 = _moment(req.query[fieldName].split(' - ')[0], 'DD/MM/YYYY');
+		var _d2 = req.query[fieldName].split(' - ')[1] ? _moment(req.query[fieldName].split(' - ')[1], 'DD/MM/YYYY') : _moment(_d1).endOf('day');
+
+		var startDay = (_d1._d < _d2._d) ? _d1 : _d2;
+		var endDay = (_d1._d < _d2._d) ? _d2 : _d1;
+		startDay = startDay.startOf('day');
+		endDay = endDay.endOf('day');
+
+		obj['startTime'] = {$gte: startDay._d, $lt: endDay._d};
+	}
+
+	if (_.has(req.query, 'agentId') && req.query.agentId.length > 0) {
+		obj['agentId'] = {$in: _.arrayObjectId(req.query.agentId)};
+	}
+	obj['endTime'] = {$ne: null};
+
+	aggs.push({$match: obj});
+	aggs.push({
+		$sort: {
+			startTime: 1
+		}
+	});
+	aggs.push({ $project: {
+		_id: 1,
+		startTime: 1,
+		endTime: 1,
+		agentId: 1,
+		status: 1,
+	}});
+
+	aggs.push({ $group: {
+		_id: {
+			agentId: "$agentId",
+			day: {$dayOfMonth: {$add: ["$startTime", 7 * 60 * 60 * 1000]}},
+			month: {$month: {$add: ["$startTime", 7 * 60 * 60 * 1000]}},
+			year: {$year: {$add: ["$startTime", 7 * 60 * 60 * 1000]}},
+		},
+		status: {
+			$push: {
+				status: "$status",
+				startTime: {$add: ["$startTime", 0]},
+				endTime: {$add: ["$startTime", 0]},
+			}
+		}
+	}});
+	aggs.push({
+		$lookup: {
+			from: 'users',
+			localField: '_id.agentId',
+			foreignField: '_id',
+			as: 'user'
+		}
+	});
+	aggs.push({ $unwind: { path: '$user', preserveNullAndEmptyArrays: true } });
+	aggs.push({$project: {
+		time: "$_id",
+		agent: {
+			_id: "$user._id",
+			name: {$concat: ['$user.displayName', ' (', '$user.name', ')']}
+		},
+		status: 1
+	}});
+
+	// Gruop by day
+	aggs.push({
+		$group: {
+			_id: {
+				day: "$time.day",
+				month: "$time.month",
+				year: "$time.year"
+			},
+			timelines: {
+				$push: {
+					time: "$time",
+					agent: "$agent",
+					status: "$status"
+				}
+			}
+		}
+	});
+	aggs.push({
+		$sort: {
+			"_id.year": 1,
+			"_id.month": 1,
+			"_id.day": 1,
+		}
+	});
+
+	_AgentStatusLog.aggregate(aggs, function(err, result) {
+		if (err) return callback(err);
+		_.each(result, function(ele) {
+			_.each(ele.timelines, function(el){
+				_.each(el.status, function(stt) {
+					if (stt.status == 4) {
+						return stt.status = 'Not Answering';
+					}
+					var status = _.find(statusArr, function(s) {
+						return s.statusCode == stt.status;
+					});
+					if (status) {
+						stt.status = status.name;
+					} else {
+						stt.status = 'Missing';
+					}
+				});
+			});
+		});
+
+		callback(err, result);
+	});
+}
+
+/**
+ *
+ * @param userIds
+ * @param statusArr
+ * @param req
+ * @param callback
+ */
+function getOverallReportGroupByDay(userIds, statusArr, req, callback) {
+	var page = _.has(req.query, 'page') ? parseInt(req.query.page) : 1;
+	var rows = _.has(req.query, 'rows') ? parseInt(req.query.rows) : 10;
+
+	var sort = _.cleanSort(req.query,'');
+	var obj = {};
+	var aggs = [];
+	aggs.push({$match: {agentId: {$in: userIds}}});
+	if (_.has(req.query, 'startTime')) {
+		var fieldName = 'startTime';
+		var _d1 = _moment(req.query[fieldName].split(' - ')[0], 'DD/MM/YYYY');
+		var _d2 = req.query[fieldName].split(' - ')[1] ? _moment(req.query[fieldName].split(' - ')[1], 'DD/MM/YYYY') : _moment(_d1).endOf('day');
+
+		var startDay = (_d1._d < _d2._d) ? _d1 : _d2;
+		var endDay = (_d1._d < _d2._d) ? _d2 : _d1;
+		startDay = startDay.startOf('day');
+		endDay = endDay.endOf('day');
+
+		obj['startTime'] = {$gte: startDay._d, $lt: endDay._d};
+	}
+
+	if (_.has(req.query, 'agentId') && req.query.agentId.length > 0) {
+		obj['agentId'] = {$in: _.arrayObjectId(req.query.agentId)};
+	}
+	obj['endTime'] = {$ne: null};
+
+	aggs.push({$match: obj});
+	var localStartTime = {$add: ["$startTime", 7 * 60 * 60 * 1000]};
+	var localEndTime = {$add: ["$endTime", 7 * 60 * 60 * 1000]};
+
+	aggs.push({ $project: {
+		_id: 1,
+		startTime: 1,
+		endTime: 1,
+		agentId: 1,
+		status: 1,
+		duration: {$subtract: ["$endTime", "$startTime"]},
+		day: {$dayOfMonth: localStartTime},
+		month: {$month: localStartTime},
+		year: {$year: localStartTime},
+	}});
+
+	aggs.push({ $group: {
+		_id: {
+			agentId: "$agentId",
+			day: "$day",
+			month: "$month",
+			year: "$year"
+		},
+		duration: {$sum: "$duration"},
+		startTime: {$min: "$startTime"},
+		endTime: {$max: "$endTime"},
+		status: {
+			$push: {
+				status: "$status",
+				startTime: "$startTime",
+				endTime: "$endTime",
+				duration: "$duration"
+			}
+		}
+	}});
+
+	/*aggs.push({ $group: {
+		_id: "$_id.agentId",
+		totalDuration: {$sum:  "$duration"},
+		avgDuration: {$avg: "$duration"},
+		startTime: {$min: "$startTime"},
+		endTime: {$max: "$endTime"},
+		status: {$push: "$status"}
+	}});*/
+	aggs.push({ $group: {
+		_id: {
+			agentId: "$_id.agentId",
+			day: "$_id.day",
+			month: "$_id.month",
+			year: "$_id.year"
+		},
+		totalDuration: {$sum:  "$duration"},
+		avgDuration: {$avg: "$duration"},
+		startTime: {$min: "$startTime"},
+		endTime: {$max: "$endTime"},
+		status: {$push: "$status"}
+	}});
+
+	aggs.push({$lookup: {from: 'users', localField: '_id.agentId', foreignField: '_id', as: 'user'}});
+	aggs.push({ $unwind: { path: '$user', preserveNullAndEmptyArrays: true } });
+	// Group by date
+	aggs.push({
+		$group: {
+			_id: {
+				day: {$dayOfMonth: localStartTime},
+				month: {$month: localStartTime},
+				year: {$year: localStartTime},
+			},
+			reports: {
+				$push: {
+					name: {$concat: ['$user.displayName', ' (', '$user.name', ')']},
+					agentId: '$user._id',
+					startTime: {$dateToString: { format: "%H:%M %d/%m/%Y", date: localStartTime}},
+					endTime: {$dateToString: { format: "%H:%M %d/%m/%Y", date: localEndTime}},
+					status: '$status',
+					avgDuration: '$avgDuration',
+					totalDuration: '$totalDuration'
+				}
+			}
+		}
+	});
+	aggs.push({
+		$sort: {
+			"_id.year": 1,
+			"_id.month": 1,
+			"_id.day": 1,
+		}
+	});
+
+	_AgentStatusLog.aggregatePaginate(_AgentStatusLog.aggregate(aggs), {page: page, limit: rows}, function(err, result, pageCount, count){
+		if (err) {
+			return callback(err, {data: [], paging: {}});
+		}
+		var codeArr = _.pluck(statusArr, 'statusCode');
+		codeArr.push(4);
+		_.each(result, function(data) {
+			_.each(data.reports, function(el){
+				var status = {};
+				el.status = _.sortBy(_.flatten(el.status), 'startTime');
+				el.changeTime = 0;
+				el.totalDuration = 0;
+
+				// hoangdv calculat status duration
+				var sttLen = el.status.length;
+				if (sttLen == 1) {
+					status[el.status[0].status] = el.status[0].duration;
+				}
+				for (var i = 0; i < sttLen - 1; i++) {
+					var stt = {
+						status: el.status[i].status,
+						start: el.status[i].startTime.getTime(),
+						end: el.status[i].endTime.getTime()
+					};
+					for (var j = i + 1; j <= sttLen - 1; j++) {
+						var isSameDay = _moment(el.status[i].startTime).format('DD/MM/YYYY') == _moment(el.status[j].startTime).format('DD/MM/YYYY');
+						// Không cùng ngày
+						if (!isSameDay) {
+							break;
+						}
+						stt.end = el.status[j].startTime.getTime();
+						if (el.status[i].status == el.status[j].status) {
+							stt.end = el.status[j].endTime.getTime();
+							i = j;
+						} else {
+							el.changeTime++;
+							break;
+						}
+					}
+					if (!_.has(status, stt.status)) {
+						status[stt.status] = stt.end - stt.start;
+					} else {
+						status[stt.status] += stt.end - stt.start;
+					}
+					el.totalDuration += stt.end - stt.start;
+				}
+				var days = _moment(el.endTime, 'HH:mm DD/MM/YYYY').diff(_moment(el.startTime, 'HH:mm DD/MM/YYYY'), 'days') + 1;
+				el.avgDuration = Math.floor(el.totalDuration / days);
+				status['Missing'] = 0;
+				_.each(_.keys(status), function(key){
+					if(!_.isEqual(key, 'Missing') && codeArr.indexOf(Number(key)) < 0){
+						status['Missing'] += status[key];
+					}
+				});
+				// end hoangdv
+				el.status = status;
+			});
+		});
+
+		var paginator = new pagination.SearchPaginator({
+			prelink: '/report-login-logout',
+			current: page,
+			rowsPerPage: rows,
+			totalResult: count
+		});
+
+		callback(err, {data: result, paging: paginator.getPaginationData()});
 	});
 }
 
