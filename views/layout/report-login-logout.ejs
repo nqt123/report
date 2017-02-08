@@ -1,4 +1,8 @@
 <%- breadcrumb %>
+<script type="text/javascript">
+	var timeline = JSON.parse('<%- JSON.stringify(timeline) %>');
+	var timelineByDay = JSON.parse('<%- JSON.stringify(timelineByDay) %>');
+</script>
 <div class="card">
     <div class="portlet-title">
         <div class="lv-header-alt clearfix">
@@ -32,7 +36,7 @@
                         <label for="companies"
                                class="control-label f-13"><span>Điện thoại viên</span></label>
                         <select id="agentId" name="agentId[]" class="selectpicker" title="Chọn điện thoại viên"
-                                multiple>
+                                multiple data-actions-box="true">
                             <% for(var i = 0;i < agents.length;i++){ %>
                             <option value=<%- agents[i]._id %>><%- agents[i].displayName + ' (' + agents[i].name + ')' %></option>
                             <% } %>
@@ -41,17 +45,22 @@
 
                 </div>
                 <div class="row m-0">
-                    <div class="col-md-4"></div>
+                    <div class="col-md-3"></div>
                     <div class="col-md-6 m-b-20">
-                        <div class="btn-group btn-group btn-group-justified">
+                        <div class="btn-group btn-group btn-group-justified" style="table-layout: auto !important;">
+                            <div class="col-md-4"></div>
                             <a id="filter-btn" type="button" class="btn bgm-blue uppercase c-white"
                                style="width:auto"><i
                                         class="fa fa-search m-r-10"></i><strong>Tìm
                                     kiếm</strong></a>
 
-                            <div class="col-md-2"></div>
+                            <div class="col-md-1"></div>
                             <a id="exportexcel" class="btn bgm-blue default c-white" style="width:auto"><i
                                         class="fa fa-file-excel-o m-r-10"></i>Xuất Excel</a>
+
+                            <div class="col-md-4"></div>
+                            <a id="exportexcelgroupbyday" class="btn bgm-blue default c-white" style="width:auto"><i
+                                        class="fa fa-file-excel-o m-r-10"></i>Xuất Excel theo ngày</a>
                         </div>
                     </div>
                     <div class="col-md-3"></div>
@@ -98,77 +107,92 @@
         <% include ../paging.ejs %>
         <% } %>
     </div>
-    <div class="card-body table-responsive">
-        <div class="lv-header-alt clearfix">
-            <h2 class="lvh-label hidden-xs">Chi tiết thời gian</h2>
-        </div>
-        <script type="text/javascript">
-			try {
-				google.charts.load("current", {packages: ["timeline"]});
-			} catch (e) {
-				console.log(e);
-			}
-			google.charts.setOnLoadCallback(drawChart);
-			function drawChart() {
-				var dataTable = new google.visualization.DataTable();
-				dataTable.addColumn({type: 'string', id: 'Date'});
-				dataTable.addColumn({type: 'string', id: 'Status'});
-				dataTable.addColumn({type: 'date', id: 'Start'});
-				dataTable.addColumn({type: 'date', id: 'End'});
+
+    <!-- Group by day-->
+    <hr/>
+    <div id="detail-by-day">
+        <div class="card-body table-responsive" id="timeline-05-12-2016">
+            <table class="table table-hover table-condensed table-bordered table-fix" style="table-layout: fixed;"
+                   id="exceldatagroupbyday">
+                <thead>
+                <tr>
+                    <th class="bgm-orange c-white text-center" style="color: #ff000d"><span class="TXT_NAME"></span></th>
+                    <th class="bgm-orange c-white text-center"><span class="TXT_FIRST_LOGIN_TIME"></span></th>
+                    <th class="bgm-orange c-white text-center"><span class="TXT_LAST_LOGOUT_TIME"></span></th>
+                    <th class="bgm-orange c-white text-center"><span class="TXT_TOTAL_ONLINE_DUR"></span></th>
+                    <% status.forEach(function(el, i) { %>
+                    <th class="bgm-orange c-white text-center"><span><%- el.name %></span></th>
+                    <% }); %>
+                    <th class="bgm-orange c-white text-center"><span>Not Answering</span></th>
+                    <th class="bgm-orange c-white text-center"><span>Missing</span></th>
+                    <th class="bgm-orange c-white text-center"><span class="TXT_CHANGE_STATUS_TIME"></span></th>
+                    <th class="bgm-orange c-white text-center"><span class="TXT_AVG_ONLINE_DUR"></span></th>
+                </tr>
+                </thead>
+                <tbody>
                 <%
-                var rows = [];
-                timeline.map(function(time) {
-                    time.status = _.sortBy(time.status, function(stt) {
-                        return stt.startTime.getTime();
-                    });
-                    var sttLen = time.status.length;
-                    if (sttLen == 1) {
-                        return rows.push({
-                            name: time.agent.name.toString(),
-                            status: time.status[0].status.toString(),
-                            start: time.status[0].startTime.getTime(),
-                            end: time.status[0].endTime.getTime()
-                        });
-                    }
-                    for (var i = 0; i < sttLen - 1; i++) {
-                        var stt = {
-                            name: time.agent.name.toString(),
-                            status: time.status[i].status.toString(),
-                            start: time.status[i].startTime.getTime(),
-                            end: time.status[i].endTime.getTime()
-                        };
-                        for (var j = i + 1; j <= sttLen - 1; j++) {
-                            stt.end = time.status[j].startTime.getTime();
-                            if (time.status[i].status == time.status[j].status) {
-                                stt.end = time.status[j].endTime.getTime();
-                                i = j;
-                            } else {
-                                break;
-                            }
-                        }
-                        rows.push(stt);
-                    }
-                });
+                function pad(number) {
+                    return ('0' + number).slice(-2);
+                }
+                function getStringDate(_id) {
+                    return pad(_id.day) + '/' + pad(_id.month) + '/' + pad(_id.year);
+                }
+                function genContainerChartId(_id) {
+                    return 'chart-' + _id.day + '-' + _id.month + '-' + _id.year;
+                }
+                datasGroupByDay.forEach(function(data) {
                 %>
-				var rows = JSON.parse('<%- JSON.stringify(rows) %>');
-				$("#timelines").height(_.uniq(rows, function(r) {
-						return r.name;
-					}).length * 50 + 50);
-				var container = document.getElementById('timelines');
-				var chart = new google.visualization.Timeline(container);
-				var chartRows = [];
-				rows.map(function(r) {
-					var start = moment(r.start)._d;
-					var end = moment(r.end)._d;
-					chartRows.push([r.name, r.status, start, end]);
-				});
-				dataTable.addRows(chartRows);
-				var options = {
-					colors: ['#4285F4', '#DB4437', '#F4B400', '#88DD88']
-				};
-				chart.draw(dataTable, options);
-			}
-        </script>
-        <div id="timelines" style="max-width: 98%; overflow-x: hidden; overflow-y: hidden"></div>
+                <tr>
+                    <td colspan="<%- 8 + status.length %>"
+                        class="bgm-orange c-white text-center"><%- getStringDate(data._id) %></td>
+                </tr>
+                <% data.reports.forEach(function(el) { %>
+                <tr>
+                    <td><%- el.name %></td>
+                    <td class="text-center"><%- el.startTime %></td>
+                    <td class="text-center"><%- el.endTime %></td>
+                    <td class="text-center"><%- msToTime(el.totalDuration) %></td>
+                    <% status.forEach(function(el2) { %>
+                    <td class="text-center"><%- el.status[el2.statusCode] ? msToTime(el.status[el2.statusCode]) : '' %></td>
+                    <% }); %>
+                    <td class="text-center"><%- el.status['4'] ? msToTime(el.status['4']) : '' %></td>
+                    <td class="text-center"><%- el.status['Missing'] ? msToTime(el.status['Missing']) : '' %></td>
+                    <td class="text-center"><%- el.changeTime %></td>
+                    <td class="text-center"><%- msToTime(el.avgDuration) %></td>
+                </tr>
+                <%
+                });
+                }); // end datasGroupByDay.forEach
+                %>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Google chart-->
+        <!-- Over view-->
+        <div class="card-body table-responsive">
+            <div class="lv-header-alt clearfix">
+                <h2 class="lvh-label hidden-xs">Chi tiết thời gian tổng quát</h2>
+            </div>
+            <div id="timelines" class="chart-container"
+                 style="max-width: 98%; overflow-x: hidden; overflow-y: hidden"></div>
+        </div>
+
+        <!-- Group by day-->
+        <%
+        datasGroupByDay.forEach(function(data) { %>
+        <div class="card-body table-responsive">
+            <div class="lv-header-alt clearfix">
+                <h2 class="lvh-label hidden-xs">Chi tiết thời gian: <%- getStringDate(data._id) %></h2>
+            </div>
+            <div class="chart-container"
+                 colspan="<%- 8 + status.length %>"
+                 id="<%- genContainerChartId(data._id) %>"
+                 style="max-width: 98%; overflow-x: hidden; overflow-y: hidden"></div>
+        </div>
+        <%
+        });
+        %>
     </div>
+
 </div>
