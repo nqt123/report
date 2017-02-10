@@ -6,6 +6,49 @@ var manager = require(path.join(_rootPath, 'monitor', 'manager.js'));
 var syncAcd = require(path.join(_rootPath, 'monitor', 'sync-acd.js'));
 var acdPublish = require(path.join(_rootPath, 'queue', 'publish', 'acd-publish.js'));
 
+/**
+ * By hoangdv on 10/02/2017.
+ * Keep all callIds in once hour(ttl). Keep only once popup for once incomming call.
+ * @type {{add, check, setTimeToLive}}
+ */
+var hashListCallId = (function() {
+	var hash = [];
+	var	ttl = 60 * 60 * 1000;
+	var interLive = setInterval(function() {
+        hash = [];
+	}, ttl);
+	var checkCallIdInList = function(callId) {
+		// true: Đã tồn tại
+		// false: Chưa tồn tại
+		return hash.indexOf(callId) >= 0;
+	};
+    return {
+		/**
+         * Thêm một callId vào mảng.
+         * Nếu thêm thành công(true) -> Mọi thứ ok
+         * Nếu thêm không thành công(false) -> Đây là bản tin popup thứ 2 cho cuộc gọi này reject
+		 * @param callId
+		 * @returns {boolean}
+		 */
+		add: function(callId) {
+			if (checkCallIdInList(callId)) return false; // Đã tồn tại --> error
+			hash.push(callId);
+			return true;
+		},
+		check: checkCallIdInList,
+        setTimeToLive: function(newTtl) {
+            ttl = newTtl;
+            if (interLive) {
+                clearInterval(interLive);
+				interLive = setInterval(function() {
+					hash = [];
+				}, ttl);
+            }
+		}
+	};
+})();
+
+
 module.exports = function (client, sessionId) {
     var ternalPrefix = _config.activemq.queueName;
     console.log(11, sessionId, ternalPrefix);
@@ -24,6 +67,9 @@ module.exports = function (client, sessionId) {
             var agentId = result.agentID.toString();
             var serviceName = result.queueName;
             var callID = result.callID;
+            if (!hashListCallId.add(callID)) {
+                return log.error('DUPLICATE POPUP', {callID});
+            }
             var agentSockets = _socketUsers[agentId];
             var callType = result.callType;
             var callStatusType = result.callStatusType;
