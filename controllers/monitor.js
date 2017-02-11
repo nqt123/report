@@ -69,7 +69,7 @@ exports.index = {
                                 });
                                 agent.statusToView = curStatus ? curStatus.name : 'UNKNOW';
                                 agent.callStatusToView = getCallStatus(agent.callStatus);
-                                agent.callTimeToView = agent.callTime ? _moment(agent.callTime).format('hh:mm:ss a') : '';
+                                agent.callTimeToView = agent.callTime;
                                 data[agent._id.toString()] = agent;
                             }
                         });
