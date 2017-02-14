@@ -264,7 +264,7 @@ function getTimelines(userIds, statusArr, req, callback) {
 			$push: {
 				status: "$status",
 				startTime: {$add: ["$startTime", 0]},
-				endTime: {$add: ["$startTime", 0]},
+				endTime: {$add: ["$endTime", 0]},
 			}
 		}
 	}});
@@ -362,7 +362,7 @@ function getTimelineGroupByDay(userIds, statusArr, req, callback) {
 			$push: {
 				status: "$status",
 				startTime: {$add: ["$startTime", 0]},
-				endTime: {$add: ["$startTime", 0]},
+				endTime: {$add: ["$endTime", 0]},
 			}
 		}
 	}});

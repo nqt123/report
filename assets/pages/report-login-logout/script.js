@@ -104,15 +104,17 @@ var DFT = function ($) {
 					end: time.status[0].endTime.getTime()
 				});
 			}
-			for (var i = 0; i < sttLen - 1; i++) {
+			for (var i = 0; i < sttLen; i++) {
 				var stt = {
 					name: time.agent.name.toString(),
 					status: time.status[i].status.toString(),
 					start: time.status[i].startTime.getTime(),
 					end: time.status[i].endTime.getTime()
 				};
-				for (var j = i + 1; j <= sttLen - 1; j++) {
+				// Tìm cho tới khi đổi trạng thái
+				for (var j = i + 1; j < sttLen; j++) {
 					stt.end = time.status[j].startTime.getTime();
+					// Cùng trạng thái
 					if (time.status[i].status == time.status[j].status) {
 						stt.end = time.status[j].endTime.getTime();
 						i = j;
