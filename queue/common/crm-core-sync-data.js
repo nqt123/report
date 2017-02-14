@@ -176,19 +176,25 @@ function cleanUserObject(uObject, actions) {
     var agm = [];
 
     _.each(uObject.companyLeaders, function (item) {
-        if (_.isEqual(item.ternal.toString(), _config.app._id)) {
+        if (!item.ternal) {
+            log.error('USER CORE DOCUMENT - companyLeaders', uObject);
+        } else if (_.isEqual(item.ternal.toString(), _config.app._id)) {
             cl = item.leaders;
         }
     });
 
     _.each(uObject.agentGroupLeaders, function (item) {
-        if (_.isEqual(item.ternal.toString(), _config.app._id)) {
+		if (!item.ternal) {
+			log.error('USER CORE DOCUMENT - agentGroupLeaders', uObject);
+		} else if (_.isEqual(item.ternal.toString(), _config.app._id)) {
             agl = item.leaders;
         }
     });
 
     _.each(uObject.agentGroupMembers, function (item) {
-        if (_.isEqual(item.ternal.toString(), _config.app._id)) {
+		if (!item.ternal) {
+			log.error('USER CORE DOCUMENT - agentGroupMembers', uObject);
+		} else if (_.isEqual(item.ternal.toString(), _config.app._id)) {
             agm = item.members;
         }
     });
