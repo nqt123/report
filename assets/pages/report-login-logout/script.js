@@ -73,10 +73,34 @@ var DFT = function ($) {
 	 */
 	function drawTimelineChar(timeline, idSelector) {
 		var dataTable = new google.visualization.DataTable();
-		dataTable.addColumn({type: 'string', id: 'Date'});
-		dataTable.addColumn({type: 'string', id: 'Status'});
-		dataTable.addColumn({type: 'date', id: 'Start'});
-		dataTable.addColumn({type: 'date', id: 'End'});
+		dataTable.addColumn({
+			type: 'string',
+			id: 'Name'
+		});
+		dataTable.addColumn({
+			type: 'string',
+			id: 'Status'
+		});
+		dataTable.addColumn({
+			type: 'string',
+			id: 'Tooltip',
+			role: 'tooltip',
+			'p': {
+				'html': true
+			}
+		});
+		dataTable.addColumn({
+			type: 'string',
+			role: 'style'
+		});
+		dataTable.addColumn({
+			type: 'date',
+			id: 'Start'
+		});
+		dataTable.addColumn({
+			type: 'date',
+			id: 'End'
+		});
 		var rows = [];
 
 		// Hacked to String Object to get Date from ISO String
@@ -92,27 +116,50 @@ var DFT = function ($) {
 		}
 
 		timeline.map(function(time) {
+			function getStyleTooltip(stt) {
+				var color = 'color: #000000';
+				switch (stt.status) {
+					case 'Sẵn sàng phục vụ':
+						color = 'color: #42B72A';
+						break;
+					case 'Không sẵn sàng':
+						color = 'color: #DB4437';
+						break;
+					case 'Nghỉ trưa':
+						color = 'color: #F4B400';
+						break;
+					case 'Missing':
+						color = 'color: #4F5148';
+						break;
+					default:
+						color = 'color: #000000';
+				}
+				var tooltip = '<div style="padding: 5px; min-width: 200px !important;">' +
+					'<h4>' + stt.status.toString() + '</h4>' +
+					'<hr />' +
+					'<b>Thời gian: </b>' + moment(stt.start).format('HH:mm:ss') + ' - ' + moment(stt.end).format('HH:mm:ss') + '<br />' +
+					'<b>Thời lượng: </b>' + moment.utc(moment(stt.end).diff(moment(stt.start))).format("HH:mm:ss");
+					'</div>';
+				return {
+					color,
+					tooltip
+				};
+			}
 			time.status = _.sortBy(time.status, function(stt) {
 				return stt.startTime.getTime();
 			});
 			var sttLen = time.status.length;
-			if (sttLen == 1) {
-				return rows.push({
-					name: time.agent.name.toString(),
-					status: time.status[0].status.toString(),
-					start: time.status[0].startTime.getTime(),
-					end: time.status[0].endTime.getTime()
-				});
-			}
-			for (var i = 0; i < sttLen - 1; i++) {
+			for (var i = 0; i < sttLen; i++) {
 				var stt = {
 					name: time.agent.name.toString(),
 					status: time.status[i].status.toString(),
 					start: time.status[i].startTime.getTime(),
 					end: time.status[i].endTime.getTime()
 				};
-				for (var j = i + 1; j <= sttLen - 1; j++) {
+				// Tìm cho tới khi đổi trạng thái
+				for (var j = i + 1; j < sttLen; j++) {
 					stt.end = time.status[j].startTime.getTime();
+					// Cùng trạng thái
 					if (time.status[i].status == time.status[j].status) {
 						stt.end = time.status[j].endTime.getTime();
 						i = j;
@@ -120,6 +167,9 @@ var DFT = function ($) {
 						break;
 					}
 				}
+				var tmp = getStyleTooltip(stt);
+				stt.color = tmp.color;
+				stt.tooltip = tmp.tooltip;
 				rows.push(stt);
 			}
 		});
@@ -132,11 +182,15 @@ var DFT = function ($) {
 		rows.map(function(r) {
 			var start = moment(r.start)._d;
 			var end = moment(r.end)._d;
-			chartRows.push([r.name, r.status, start, end]);
+			chartRows.push([r.name, r.status, r.tooltip, r.color, start, end]);
 		});
+		console.log(chartRows);
 		dataTable.addRows(chartRows);
 		var options = {
-			colors: ['#4285F4', '#DB4437', '#F4B400', '#88DD88']
+			avoidOverlappingGridLines: false,
+			tooltip: {
+				isHtml: true
+			}
 		};
 		return chart.draw(dataTable, options);
 	}
