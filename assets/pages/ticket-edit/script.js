@@ -68,11 +68,16 @@ var DFT = function($) {
 
 			_Ajax(queryLink, 'GET', {}, function(resp) {
 				if (resp.code == 200) {
-					var ticketBody = zoka.showTicketListBody(resp.message.data, parent.hasClass('view-detail'));
-					var ticketPage = zoka.createPaging(resp.message.paging);
-
-					parent.find('#ticket-history-list').html(ticketBody);
-					parent.find('.paging-list').html(ticketPage);
+					if (queryLink.indexOf('getCallLogs') >= 0) {
+						var callLogsId = '#edit-ticket-callLogs ';
+						$(callLogsId + '.ticket-call-logs').html(zoka.showCallLogs(resp.message.data));
+						$(callLogsId + '.paging-list').html(zoka.createPaging(resp.message.paging));
+					} else {
+						var ticketBody = zoka.showTicketListBody(resp.message.data, parent.hasClass('view-detail'));
+						var ticketPage = zoka.createPaging(resp.message.paging);
+						parent.find('#ticket-history-list').html(ticketBody);
+						parent.find('.paging-list').html(ticketPage);
+					}
 				} else {
 					swal({
 						title: 'Đã có lỗi xảy ra',
