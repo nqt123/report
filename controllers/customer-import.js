@@ -1,5 +1,18 @@
+/**
+ * Dear maintainer,
+ * Once you are done trying to 'optimize' this routine,
+ * and have realized what a terrible mistake that was,
+ * please increment the following counter as a warning
+ * to the next guy:
+ * total_hours_wasted_here = 16
+ */
 var fs = require('fs');
-
+/**
+ * Đặt thời gian time out lớn (20 phút), trường hợp đọc file quá lớn (56k dòng) gặp lỗi duplicate của express.
+ * @type {number}
+ */
+var requestTimeout = 20 * 60 * 1000;
+var maxExcelRecord = 65000;
 exports.index = {
     json: function (req, res) {
 
@@ -24,9 +37,15 @@ exports.new = function (req, res) {
         _.render(req, res, 'customer-import', _.extend({title: 'Tạo mới khách hàng', plugins: [['bootstrap-select']]}, result), true, error);
     });
 };
-
-// POST
+/**
+ * Thực hiện chức năng này với file excel lớn, có khả năng gây lỗi "Out of memory", cần thiết đặt nodeV8
+ * You can increase the default limits by passing --max-old-space-size=<value> which is in MB.
+ * node --max-old-space-size=4096 app.js
+ * @param req
+ * @param res
+ */
 exports.create = function (req, res) {
+	req.connection.setTimeout(requestTimeout);
     var cfields = {};
     var checkTime = Date.now();
 
@@ -59,7 +78,19 @@ exports.create = function (req, res) {
                             var _headers = _convertModal(worksheet.getRow(1).values, _template);
                             var _headerFields = _.keys(_headers);
                             var _required = _getRequired(worksheet.getRow(1).values, _template);
-                            var _keys = _.keys(_template);
+                            //var _keys = _.keys(_template);
+
+                            // 22.Feb.2017 hoangdv
+                            // Lấy danh sách các trường cần import của một
+                            // customer. Trong trường hợp file excel mẫu chỉ dành cho một dự án.
+                            // Xem ở route '/customer-excel' libs/router_noacd.js || libs/router.js
+                            var _keys = (function() {
+                                var keysHeader = _.keys(_headers);
+                                if (keysHeader.length > 0 && keysHeader.length - 1 < _.keys(_template).length) {
+                                    return keysHeader[0] == '0' ? keysHeader.slice(1) : keysHeader;
+                                }
+                                return _.keys(_template);
+							})();
                             var count = 1;
 
                             var _inNumbers = [];
@@ -303,24 +334,35 @@ exports.create = function (req, res) {
 
                                                 var _bulks = [];
                                                 _bulks.push(_customerBulk);
-                                                _bulks.push(_sourcesBulk);
                                                 _bulks.push(_indexBulk);
                                                 _.each(_.keys(_CCKBulks), function(key){
                                                     _bulks.push(_CCKBulks[key]);
                                                 });
 
-                                                _async.each(_bulks, function(batch, callback) {
-                                                    if(batch.s.currentBatch)
+												/**
+                                                 * 22.Feb.2017 hoangdv I develop & test this feature on
+                                                 * mongodb@2.1.4, mongodb-core@1.2.32, bson@0.4.21 !important
+                                                 * in your case if this block you can get Error "TypeError: Argument must be a string" please check version of modules
+												 */
+												_async.each(_bulks, function(batch, callback) {
+													if(batch.s.currentBatch)
                                                         batch.execute(callback);
                                                     else
                                                         callback();
                                                 }, function(err){
                                                     _CCKFields['field_so_dien_thoai'].processNumbers = _.difference(_CCKFields['field_so_dien_thoai'].processNumbers, _addedNumber);
-                                                    next2(err);
+                                                    if (err) {
+                                                        return next2(err);
+                                                    } else {
+														// 22.Feb.2017 hoangdv  if all is ok we will update amount to customersources table
+                                                        _sourcesBulk.execute(function(err, result) {
+                                                            next2(err);
+														});
+                                                    }
                                                 });
                                             });
                                         },
-                                        function(next2){
+                                        function(next2) {
                                             // Xử lý import với khách hàng chỉ có email, flow xử lý như xử lý số điện thoại ở trên
                                             mongoClient.collection('customerindex').find({field_e_mail: {$in: _.pluck(_emailObjs, 'field_e_mail')}}).toArray(function (err, result) {
                                                 var _duplicatedEmails = _.pluck(result, 'field_e_mail');
@@ -460,7 +502,6 @@ exports.create = function (req, res) {
 
                                                 var _bulks = [];
                                                 _bulks.push(_customerBulk);
-                                                _bulks.push(_sourcesBulk);
                                                 _bulks.push(_indexBulk);
                                                 _.each(_.keys(_CCKBulks), function(key){
                                                     _bulks.push(_CCKBulks[key]);
@@ -472,7 +513,13 @@ exports.create = function (req, res) {
                                                     else
                                                         callback();
                                                 }, function(err){
-                                                    next2(err);
+                                                    if (err) {
+                                                        return next2(err);
+                                                    }
+													// 22.Feb.2017 hoangdv  if all is ok we will update amount to customersources table
+													_sourcesBulk.execute(function(err, result) {
+														next2(err);
+													});
                                                 });
                                             });
                                         }
@@ -487,14 +534,32 @@ exports.create = function (req, res) {
                 });
         }
     ], function (error, result, header) {
+        if (error) {
+            return res.json({
+                code: 500,
+                msg: error.toString()
+            });
+        }
         var fileName = 'backup-' + 'customer-schema-' + Date.now() + '.xls';
         _async.waterfall([
             function(cb){
-                //Tao file backup excel
-                header.push('field_error');
-                createExcel(fileName, result, header);
-                var url = '/assets/export/' + fileName;
-                cb(null, url);
+				var url = '/assets/export/' + fileName;
+                if (result.length > maxExcelRecord) {
+                    // backup origin file, no mark error
+                    fs.readFile(req.files[0].path, function(err, data) {
+                        if (!err) {
+							fs.writeFile(path.join(_rootPath, 'assets', 'export', fileName), data, function() {
+							    // "do" do nothing.
+							});
+                        }
+					});
+                } else {
+					//Tao file backup excel, đánh dấu lỗi
+					header.push('field_error');
+					createExcel(fileName, result, header);
+                }
+                // don't care
+				cb(null, url);
             }
         ], function(err, resp){
             //Luu vao modal
@@ -507,11 +572,28 @@ exports.create = function (req, res) {
             });
         });
         fs.unlink(req.files[0].path, function (er, status) {
-            console.log(480, Date.now() - checkTime);
-            res.json(result);
+            var timeProcess = Date.now() - checkTime;
+            console.log(480, timeProcess);
+            res.json({
+                code: 200,
+                total: result.length,
+                header,
+                processTime: millisToMinutesAndSeconds(timeProcess)
+            });
         });
     });
 };
+
+/**
+ * millisecond -> mm:ss
+ * @param millis
+ * @returns {string}
+ */
+function millisToMinutesAndSeconds(millis) {
+	var minutes = Math.floor(millis / 60000);
+	var seconds = ((millis % 60000) / 1000).toFixed(0);
+	return minutes + ":" + (seconds < 10 ? '0' : '') + seconds;
+}
 
 exports.update = function (req, res) {
     var _body = _.chain(req.body).cleanRequest().toLower().value();
@@ -669,7 +751,7 @@ var createExcel = function(fileName, arrayObj, header){
         dateFormat: 'DD/MM/YYYY HH:mm:ss'
     };
     var workbook = new _Excel.stream.xlsx.WorkbookWriter(options);
-    var sheet = workbook.addWorksheet("My Sheet");
+    workbook.addWorksheet("My Sheet");
     var worksheet = workbook.getWorksheet("My Sheet");
     var _cl = [];
     var _obj = arrayObj[0];

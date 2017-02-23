@@ -28,7 +28,20 @@ var DFT = function ($) {
             onValidationComplete: function (form, status) {
                 if (status) {
                     _AjaxData('/customer-import', 'POST', form.getData(), function (resp) {
-                        window.location.hash = 'customer-import-history';
+                        if (resp && resp.code == 200) {
+							swal({
+									title: "Import dữ liệu từ file excel",
+									text: "Import thành công! Số bản ghi trong file excel: " + resp.total + ". Thời gian(mm:ss): " + resp.processTime,
+									type: "success",
+									confirmButtonText: "Ok",
+									closeOnConfirm: true
+								},
+								function() {
+									window.location.hash = 'customer-import-history';
+								});
+                        } else {
+							swal("Import dữ liệu từ file excel", resp.msg, "error");
+                        }
                     });
                 }
             }
