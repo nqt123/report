@@ -912,13 +912,22 @@
             var lastObj = sortObj[sortObj.length - 1];
             var bool = 0;
             if(lastObj.idNextQuestion){
-                _.each(survey, function(el,i){
+				// fuck javascript, if you use each el may be 'undefined'
+				for (var i = 0; i < survey.length; i++) {
+					var el = survey[i];
+					if(_.isEqual(el._id.toString(), lastObj.idNextQuestion.toString())){
+						bool = 1;
+						sortObj.push(el);
+						survey.splice(i, 1);
+					}
+				}
+                /*_.each(survey, function(el,i){
                     if(_.isEqual(el._id.toString(), lastObj.idNextQuestion.toString())){
                         bool = 1;
                         sortObj.push(el);
                         survey.splice(i, 1);
                     }
-                });
+                });*/
             };
             if(!bool){
                 sortObj.push(survey[0]);
