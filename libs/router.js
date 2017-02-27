@@ -102,7 +102,7 @@ module.exports = function routers(app) {
                     _socketUsers[user._id].monitor.setDeviceID(_body.deviceId);
                     _socketUsers[user._id].sessionID = req.sessionID;
                     var agentStatus = message.transID.split('|')[3];
-                    if (agentStatus) _socketUsers[user._id].monitor.setStatus(Number(agentStatus));
+                    if (agentStatus) _socketUsers[user._id].monitor.setStatus(Number(agentStatus), 'login');
 
                     req.session['logged'] = true;
                     req.session['user'] = _.omit(user.toObject(), 'password', 'created');
