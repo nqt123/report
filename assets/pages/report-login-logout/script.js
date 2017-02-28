@@ -150,21 +150,25 @@ var DFT = function ($) {
 			});
 			var sttLen = time.status.length;
 			for (var i = 0; i < sttLen; i++) {
+				var statusI = time.status[i];
 				var stt = {
 					name: time.agent.name.toString(),
-					status: time.status[i].status.toString(),
-					start: time.status[i].startTime.getTime(),
-					end: time.status[i].endTime.getTime()
+					status: statusI.status.toString(),
+					start: statusI.startTime.getTime(),
+					end: statusI.endTime.getTime()
 				};
-				// Tìm cho tới khi đổi trạng thái
-				for (var j = i + 1; j < sttLen; j++) {
-					stt.end = time.status[j].startTime.getTime();
-					// Cùng trạng thái
-					if (time.status[i].status == time.status[j].status) {
-						stt.end = time.status[j].endTime.getTime();
-						i = j;
-					} else {
-						break;
+				if (statusI.endReason !== 'logout') { // Trạng thái cuối của chuỗi liên tục
+					// Tìm cho tới khi đổi trạng thái
+					for (var j = i + 1; j < sttLen; j++) {
+						var statusJ = time.status[j];
+						stt.end = statusJ.startTime.getTime();
+						// Cùng trạng thái
+						if (statusI.status == statusJ.status) {
+							stt.end = statusJ.endTime.getTime();
+							i = j;
+						} else {
+							break;
+						}
 					}
 				}
 				var tmp = getStyleTooltip(stt);
@@ -184,7 +188,6 @@ var DFT = function ($) {
 			var end = moment(r.end)._d;
 			chartRows.push([r.name, r.status, r.tooltip, r.color, start, end]);
 		});
-		console.log(chartRows);
 		dataTable.addRows(chartRows);
 		var options = {
 			avoidOverlappingGridLines: false,

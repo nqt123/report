@@ -5,7 +5,7 @@ var DFT = function ($) {
         d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
         var expires = "expires=" + d.toUTCString();
         document.cookie = cname + "=" + cvalue + "; " + expires;
-    }
+    };
 
     var getCookie = function (cname) {
         var name = cname + "=";
@@ -16,18 +16,28 @@ var DFT = function ($) {
             if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
         }
         return "";
-    }
+    };
 
     var bindClick = function () {
 
     };
 
+	/**
+     * 27.Feb.2017 hoangdv
+     * locker remove duplicate request login
+	 * @type {boolean}
+	 */
+	var isLoging = false;
+
     var bindSubmit = function () {
         $('#frm-login').validationEngine('attach', {
-            validateNonVisibleFields: true, autoPositionUpdate: true,
+            validateNonVisibleFields: false,
+            autoPositionUpdate: true,
             onValidationComplete: function (form, status) {
-                if (status) {
-                    _AjaxObject('/login', 'POST', form.getData(), function (resp) {
+                if (status && !isLoging) {
+					isLoging = true;
+					_AjaxObject('/login', 'POST', form.getData(), function (resp) {
+						isLoging = false;
                         if (_.isEqual(resp.code, 200)) {
                             // if ($('#frm-login input[type="checkbox"]').is(':checked')) {
                                 //setCookie('username', $('#frm-login #name').val(), 7);
@@ -54,6 +64,7 @@ var DFT = function ($) {
                                     ]
                                 }
                             ]));
+							$('.alert').hide().fadeIn(500);
                         }
                     });
                 }
@@ -90,6 +101,9 @@ var DFT = function ($) {
 
             bindClick();
             bindSubmit();
-        }
+        },
+        uncut: function() {
+			//$('#frm-login').validationEngine('detach');
+		}
     };
 }(jQuery);

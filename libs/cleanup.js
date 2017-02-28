@@ -7,7 +7,18 @@ exports.Cleanup = function Cleanup(callback) {
     process.on('cleanup', callback);
 
     process.on('exit', function () {
-        process.emit('cleanup');
+		/**
+         * 28.Feb.2017 hoangdv
+         * kick all agent online to mark logout in agentstatuslog table
+		 */
+		if (_socketUsers) {
+            Object.keys(_socketUsers).map(function(key) {
+				if (_socketUsers[key].monitor) {
+					_socketUsers[key].monitor.destroy();
+                }
+			});
+        }
+		process.emit('cleanup');
     });
 
     process.on('SIGINT', function () {
