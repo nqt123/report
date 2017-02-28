@@ -100,8 +100,10 @@ module.exports = function routers(app) {
                     _socketUsers[user._id].monitor.setData(user);
                     _socketUsers[user._id].monitor.setDeviceID(_body.deviceId);
                     _socketUsers[user._id].sessionID = req.sessionID;
+                    // 25.Feb.2017 hoangdv fake default agent status
                     //var agentStatus = message.transID.split('|')[3];
-                    //if(agentStatus) _socketUsers[user._id].monitor.setStatus(Number(agentStatus));
+					var agentStatus = 23; // unavailable
+                    if(agentStatus) _socketUsers[user._id].monitor.setStatus(Number(agentStatus), 'login');
 
                     req.session['logged'] = true;
                     req.session['user'] = _.omit(user.toObject(), 'password', 'created');
