@@ -78,7 +78,16 @@ function init() {
             if(serviceMonitor) serviceMonitor.removeCall(data._id.toString());
         }
 
-        _AgentStatusLog.update({agentId: data._id ,startTime: timeStatus}, {$set: {endTime: Date.now()}}, function(err, result){
+        _AgentStatusLog.update({
+            agentId: data._id,
+            startTime: timeStatus
+        },
+            {
+                $set: {
+                    endTime: Date.now(),
+					endReason: 'logout'
+                }
+            }, function(err, result){
 
         });
     };
@@ -136,18 +145,29 @@ function init() {
         return callStatus;
     };
 
-    /**
-     * cập nhật trạng thái làm việc của agent
-     * @param newSts
-     */
-    self.setStatus = function(newSts) {
+	/**
+     * 27.Feb.2017 hoangdv
+	 * Cập nhật trạng thái làm việc của agent
+	 * @param newSts
+	 * @param reason loại thay đổi trạng thái login | logout | change_status
+	 */
+    self.setStatus = function(newSts, reason) {
         var timeNow = Date.now();
         _async.parallel([
             function(next){
-                _AgentStatusLog.update({agentId: data._id , endTime: null}, {$set: {endTime: Date.now()}}, next);
+                _AgentStatusLog.update({
+                    agentId: data._id,
+                    endTime: null,
+					endReason: reason || 'change_status'
+                }, {$set: {endTime: Date.now()}}, next);
             },
             function(next){
-                _AgentStatusLog.create({agentId: data._id, startTime: timeNow, status: newSts}, next);
+                _AgentStatusLog.create({
+                    agentId: data._id,
+                    startTime: timeNow,
+                    status: newSts,
+					startReason: reason || 'change_status'
+                }, next);
             }
         ], function(err, result){
             if(_socketUsers[data._id.toString()]){
