@@ -1,4 +1,6 @@
-
+/**
+ * 03.Mar.2017 hoangdv updated
+ */
 exports.index = {
     json: function (req, res) {
 
@@ -37,7 +39,7 @@ exports.index = {
             }
         });
     }
-}
+};
 
 exports.edit = function (req, res) {
     _SurveyQuestion.findById(req.params.surveyquestion)
@@ -96,7 +98,21 @@ exports.create = function (req, res) {
                 }
             }
             if(question.isStart == 1){
-                _SurveyQuestion.update({_id: {$ne: sq._id}},{$set:{isStart:0}}, {multi:true}, function(err){
+                _SurveyQuestion.update({
+                    _id: {
+                        $ne: sq._id,
+                        // 03 Mar 2017 hoangdv only clear isStart of questions in this survey
+						idSurvey: req.query.idSurvey
+                    }
+                },
+                    {
+                        $set: {
+                            isStart:0
+                        }
+                    },
+                    {
+                        multi:true
+                    }, function(err) {
 
                 });
             }
@@ -147,7 +163,7 @@ exports.update = function (req, res) {
                             deleteAnswers.push(answerId);
                         }
                     }
-                };
+                }
 
                 _async.waterfall([
                     function (next) {
@@ -162,7 +178,19 @@ exports.update = function (req, res) {
             }
 
             if(question.isStart == 1){
-                _SurveyQuestion.update({_id: {$ne: sq._id}},{$set:{isStart:0}}, {multi:true}, function(err){
+                _SurveyQuestion.update({
+                        _id: {$ne: sq._id},
+						// 03 Mar 2017 hoangdv only clear isStart of questions in this survey
+						idSurvey: req.query.idSurvey
+                },
+                    {
+                        $set:{
+                            isStart: 0
+                        }
+                    },
+                    {
+                        multi: true
+                    }, function(err){
 
                 });
             }
@@ -248,12 +276,12 @@ exports.search = {
         var addSearch = function(fieldName){
             if(req.query[fieldName]) _query[fieldName] = req.query[fieldName];
             searchData[fieldName] = req.query[fieldName];
-        }
+        };
 
         var addSearchText = function(fieldName){
             if(req.query[fieldName]) _query[fieldName] = {$regex: new RegExp(_.stringRegex(req.query[fieldName]), 'i')};
             searchData[fieldName] = req.query[fieldName];
-        }
+        };
 
         addSearchText('content');
 
@@ -293,4 +321,4 @@ exports.search = {
 
 
     }
-}
+};
