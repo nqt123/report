@@ -108,6 +108,7 @@ exports.index = {
 									_id: {agent:"$agentId", callId:"$callId"},
 									//totalCall: {$sum: 1},
 									totalDuration: {$sum: {$cond: [{$ne: [{$max:"$answerTime"}, null]}, {$subtract: ['$endTime', '$ringTime']}, 0]}},
+									time:{$max: {$cond: [{$ne: [{$max:"$answerTime"}, null]}, {$subtract: ['$endTime', '$ringTime']}, 0]}},
 									//connected: {$sum: {$cond: [{$ne: [{$max:"$answerTime"}, null]}, 1, 0]}},
 									//missed: {$sum: {$cond: [{$ne: [{$max:"$answerTime"}, null]}, 0, 1]}},
 									//callDuration: {$sum: {$cond: [{$ne: [{$max:"$answerTime"}, null]}, "$callDuration", 0]}},
@@ -121,6 +122,8 @@ exports.index = {
 								totalCall:{$sum:1},
 								totalDuration:{$sum:"$totalDuration"},
 								connected: {$sum: {$cond: [{$ne: ["$status", null]}, 1, 0]}},
+								maxLength: {$max:"$callDuration"},
+								minLength: {$min:"$callDuration"},
 								missed: {$sum: {$cond: [{$ne: ["$status", null]}, 0, 1]}},
 								callDuration: {$sum: {$cond: [{$ne: ["$status", null]}, "$callDuration", 0]}},
 								avgCallDuration: {$avg: {$cond: [{$ne: ["$status", null]}, "$callDuration", null]}},
@@ -139,6 +142,8 @@ exports.index = {
 								totalCall:1,
 								callDuration:1,
 								connected: 1,
+								maxLength:1,
+								minLength:1,
 								missed: 1,
 								avgCallDuration: 1}});
 							_CdrTransInfo.aggregate(aggregate, function (err, r) {
