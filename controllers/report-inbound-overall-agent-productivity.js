@@ -91,6 +91,7 @@ exports.index = {
 							transQuery.transType = 1;
 							transQuery.serviceType = 3;
 							transQuery.serviceId = {$in:a};
+							// transQuery.callDuration = {$exist:true};
 							var ticketQuery = {idService:{$in:a},status:{$ne:-1}};
 							if (_.has(query, 'startTime')) {
 								transQuery.startTime = query.startTime;
@@ -103,20 +104,16 @@ exports.index = {
 								ticketQuery.idAgent = {$in: _.arrayObjectId(req.query.agentId)};
 							}
 							aggregate.push({$match: transQuery});
+							aggregate.push({$match:{callDuration: { $exists: true }}});
 							aggregate.push({
 								$group: {
 									_id: {agent:"$agentId", callId:"$callId"},
-									//totalCall: {$sum: 1},
 									totalDuration: {$sum: {$cond: [{$ne: [{$max:"$answerTime"}, null]}, {$subtract: ['$endTime', '$ringTime']}, 0]}},
-									time:{$max: {$cond: [{$ne: [{$max:"$answerTime"}, null]}, {$subtract: ['$endTime', '$ringTime']}, 0]}},
-									//connected: {$sum: {$cond: [{$ne: [{$max:"$answerTime"}, null]}, 1, 0]}},
-									//missed: {$sum: {$cond: [{$ne: [{$max:"$answerTime"}, null]}, 0, 1]}},
-									//callDuration: {$sum: {$cond: [{$ne: [{$max:"$answerTime"}, null]}, "$callDuration", 0]}},
-									//avgCallDuration: {$avg: {$cond: [{$ne: [{$max:"$answerTime"}, null]}, "$callDuration", null]}},
 									callDuration:{$sum:"$callDuration"},
 									status:{$max:"$answerTime"}
 								}
 							});
+							// 3/3/2017: Albert: Fix max, min of callDuration & add more cond callDuration: { $exists: true }}
 							aggregate.push({$group:{
 								_id:"$_id.agent",
 								totalCall:{$sum:1},
