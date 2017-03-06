@@ -77,14 +77,18 @@
     <script>
     </script>
     <div class="card-body table-responsive" style=" min-height:200px">
-        <table class="table table-hover table-condensed table-bordered table-fix" style="table-layout: fixed;"
+        <table class="table table-hover table-condensed table-bordered table-fix table-striped" style="table-layout: fixed;"
                id="exceldata">
             <thead>
             <tr>
                 <th class="bgm-orange c-white text-center" rowspan="2"><span class="TXT_AGENT"></span></th>
                 <th class="bgm-orange c-white text-center" rowspan="2"><span class="TXT_TOTAL_CALL"></span></th>
                 <th class="bgm-orange c-white text-center" rowspan="2"><span class="TXT_TOTAL_SERVED"></span></th>
+                <th class="bgm-orange c-white text-center" rowspan="2"><span class="TXT_MAX_LENGTH_CALL"></span></th>
+                <th class="bgm-orange c-white text-center" rowspan="2"><span class="TXT_MIN_LENGTH_CALL"></span></th>
                 <th class="bgm-orange c-white text-center" rowspan="2"><span class="TXT_TOTAL_MISSED"></span></th>
+                <th class="bgm-orange c-white text-center" rowspan="2"><span class="TXT_CALL_PRODUCTIVITY"></span></th>
+                <th class="bgm-orange c-white text-center" rowspan="2"><span class="TXT_CALL_TIME_PRODUCTIVITY"></span></th>
                 <th class="bgm-orange c-white text-center" colspan="2"><span class="TXT_CALL_DURATION"></span></th>
                 <th class="bgm-orange c-white text-center" colspan="2"><span class="TXT_AVG_CALL_DURATION"></span></th>
                 <th class="bgm-orange c-white text-center" rowspan="2"><span class="TXT_TOTAL_TICKET"></span></th>
@@ -129,12 +133,22 @@
             <% } else{ %>
             <script> var isAlertSearch = false;</script>
             <% } %>
+            <% var sum =0%>>
+            <%for(var i = 0; i<result.length;i++){%>
+               <% var sum = sum+ result[i].callDuration%>
+            <%}%>
             <%for(var i = 0; i<result.length;i++){%>
             <tr>
                 <td><%- result[i]._id ? result[i]._id : "Missing"%></td>
                 <td><%- result[i].totalCall%></td>
                 <td><%- result[i].connected%></td>
+                <!---->
+                <td><%- hms(result[i].maxLength / 1000)%></td>
+                <td><%- hms(result[i].minLength / 1000)%></td>
+                <!---->
                 <td><%- result[i].missed%></td>
+                <td><%- ((result[i].connected/result[i].totalCall)*100) %>%</td>
+                <td><%- parseFloat(((result[i].callDuration)/sum)*100).toFixed(2)%>%</td>
                 <td><%- hms(result[i].callDuration/1000)%></td>
                 <td><%- Math.floor(result[i].callDuration / 1000)%></td>
                 <td><%- hms(result[i].avgCallDuration/1000)%></td>
@@ -154,7 +168,19 @@
                     <%- sumValueViaProperties(result, 'connected', true)%>
                 </td>
                 <td>
+                    <% 0%>
+                </td>
+                <td>
+                    <% 0%>
+                </td>
+                <td>
                     <%- sumValueViaProperties(result, 'missed', true)%>
+                </td>
+                <td>
+                    <% 0%>
+                </td>
+                <td>
+                    <% 100%>100%
                 </td>
                 <td>
                     <%- hms(sumValueViaProperties(result, 'callDuration') / 1000)%>
