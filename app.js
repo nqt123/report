@@ -151,10 +151,21 @@ _ActiveMQ.connect(function (sessionId) {
     });
 });
 
-var server = app.listen(app.get('port'), function () {
-    log.info('Server is running !');
-    console.log(("Server is running at " + app.get('port')).magenta);
-});
+var handleOnServerStart = function() {
+	log.info('Server is running !');
+	console.log(("Server is running at " + app.get('port')).magenta);
+};
+if (_config.https || process.env.HTTPS) {
+	var https = require('https');
+	var fs = require('fs');
+	var server = https.createServer({
+		key: fs.readFileSync(_config.https.key || './certificate/server.key'),
+		cert: fs.readFileSync(_config.https.cert || './certificate/server.crt'),
+		passphrase: _config.https ? _config.https.passphrase : ''
+	}, app).listen(app.get('port'), handleOnServerStart);
+} else {
+	var server = app.listen(app.get('port'), handleOnServerStart);
+}
 
 global.sio = require('socket.io').listen(server, {log: false});
 

@@ -43,3 +43,7 @@ temp/
 !/assets/uploads/avatar/default.jpg
 
 !/logs/.keepme
+
+/certificate/*
+!/certificate/
+!/certificate/.keepme
