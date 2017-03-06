@@ -528,7 +528,11 @@
       "TXT_TOTAL_TICKET": "Tổng số phiếu",
       "TXT_PROCESSED_TICKET": "Số phiếu đã xử lí",
       "TXT_AVG_PRODUCTIVITY": "Hiệu suất",
-      "TXT_STATUS_TIME": "Thời gian làm việc"
+      "TXT_STATUS_TIME": "Thời gian làm việc",
+      "TXT_MAX_LENGTH_CALL":"Cuộc gọi dài nhất",
+      "TXT_MIN_LENGTH_CALL":"Cuộc gọi ngắn nhất",
+      "TXT_CALL_PRODUCTIVITY":"Năng suất gọi",
+      "TXT_CALL_TIME_PRODUCTIVITY":"Năng suất thời gian"
     },
     "REPORT_SALES_PRODUCTIVITY": {
       "TXT_CAMPAIGN_NAME": "Chủ đề chiến dịch",
