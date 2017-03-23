@@ -14,7 +14,7 @@ exports.auth = function (req, res, next) {
         || (_.isEqual(req.path.split('/')[1], 'ticket'))
         || (_.isEqual(req.path.indexOf('/customer-info'), 0))
 //        || (req.path.indexOf('/kpi-marking') >= 0)
-        || (req.path.indexOf('/customer') >= 0 && req.path.indexOf('/customer-detail') === -1)
+        || (req.path.indexOf('/customer') >= 0 && req.path.indexOf('/customer-detail') === -1 && req.path.indexOf('/customer-import-by-phone') === -1)
         || (_.isEqual(req.path, '/login'))
         || (_.isEqual(req.path, '/logout'))
         || (_.has(req.session, 'logged')
