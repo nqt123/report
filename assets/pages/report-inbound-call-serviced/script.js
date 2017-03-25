@@ -230,7 +230,6 @@ var DFT = function ($) {
         $('.page-loader').show();
         $.get(url, function (resp) {
             $('.page-loader').hide();
-
             if (resp.code == 500) {
                 swal({
                     title: 'Đã có lỗi xảy ra',
@@ -238,10 +237,10 @@ var DFT = function ($) {
                     type: "error"
                 });
             } else {
-                window.open(window.location.origin + resp.message);
+                downloadFromUrl(window.location.origin + resp.message);
             }
         });
-    };
+    }
 
     // Truy vấn dữ liệu ticket
     function requestTickets(formId, dateTime, url, ignoreSearch) {

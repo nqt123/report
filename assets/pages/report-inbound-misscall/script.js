@@ -68,7 +68,7 @@ var DFT = function ($) {
 		_Ajax(url, 'GET', {}, function (resp) {
 			if (resp.code == 200) {
 				if (typeof(resp.message) == 'string') {
-					return window.open(window.location.origin + resp.message);
+					return downloadFromUrl(window.location.origin + resp.message);
 				}
 				initTableDetail(resp.message);
 				reversePagingData('frm-report-misscall-detail');
