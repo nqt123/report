@@ -141,18 +141,67 @@ var DFT = function($) {
 					if (!_curCallLabel.attr("data-name")) {
 						_curCallLabel.attr("data-name", _curCallLabel.html());
 					}
-					;
 				}
-				;
-				_socket.emit('MakeCallReq', {
-					_id: user,
-					sid: _socket.socket.sessionid,
-					number: callNumber,
-					ticket: currentTicket
-				});
+				// 21.Mar.2017 hoangdv Thực hiện gọi ra trên ticket gọi vào, hỏi có tạo ticket hay không?
+				if (currentTicket && currentTicket.idService && !currentTicket.idCampain) {
+					// là ticket gọi vào - confirm tạo ticket
+					swal({
+						title: "Thông báo",
+						text: "Bạn đang gọi ra trên ticket gọi vào!",
+						type: "warning",
+						showCancelButton: true,
+						confirmButtonColor: "#DD6B55",
+						confirmButtonText: "Tạo ticket gọi ra!",
+						cancelButtonText: "Thực hiện gọi ra!",
+						closeOnConfirm: true,
+						closeOnCancel: true
+					}, function(isConfirm) {
+						if (isConfirm) {
+							createTicketByPhone(callNumber);
+						} else {
+							_socket.emit('MakeCallReq', {
+								_id: user,
+								sid: _socket.socket.sessionid,
+								number: callNumber,
+								ticket: currentTicket
+							});
+						}
+					});
+				} else {
+					_socket.emit('MakeCallReq', {
+						_id: user,
+						sid: _socket.socket.sessionid,
+						number: callNumber,
+						ticket: currentTicket
+					});
+				}
 			}
-			;
 		});
+
+		/**
+		 * Sự kiện click yêu cầu tạo ticket theo số điện thoại ở ô input
+		 */
+		$(document).on('click', '.clickToCreateTicket', function() {
+			var phoneNumber = $(this).attr('data-phone-number') ? $(this).attr('data-phone-number') : $(this).prev('input').val();
+			if (!phoneNumber) {
+				phoneNumber = $(this).prev('input').val();
+			}
+			createTicketByPhone(phoneNumber);
+		});
+
+		/**
+		 * 22.Mar.2017 hoangdv Mở cửa newtab thực hiện tạo ticket dựa trên số điện thoại
+		 * Nếu không có số điện thoại -> mở tab mới với thông tin số điện thoại trống
+		 * @param phoneNumber Số điện thoại
+		 */
+		function createTicketByPhone(phoneNumber) {
+			var url = '/#ticket-import-by-phone';
+			if (phoneNumber) {
+				url += '?phone=' + phoneNumber;
+			}
+			var win = window.open(url, '_blank');
+			win.focus();
+		}
 
 		$(document).on('change', '.ticketReasonCategory', function() {
 			setTicketReason($(this).val(), $(this).closest('form').attr('id'));

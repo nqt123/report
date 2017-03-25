@@ -1208,7 +1208,36 @@ module.exports = {
                 _attr = {
                     class: 'input-group fg-line'
                 };
-                _childs.push(
+                // 19.Mar.2017 hoangdv click to creat new ticket
+                var clickToCreateTicket = {
+                    tag: 'span'
+                };
+                if (el.modalName !== 'field_so_dien_thoai') {
+                    clickToCreateTicket = {
+						tag: 'span',
+						attr: {
+							class: 'input-group-btn clickToCreateTicket',
+							'data-phone-number': _val
+						},
+						childs: [
+							{
+								tag: 'button',
+								attr: {
+									class: 'btn btn-default reveal',
+									type: 'button',
+									style: 'max-height: 31px;'
+								},
+								childs: [{
+									tag: 'i',
+									attr: {
+										class: 'zmdi zmdi-open-in-new green f-17'
+									}
+								}]
+							}
+						]
+					}
+                }
+				_childs.push(
                     {
                         tag: 'input',
                         attr: {
@@ -1219,6 +1248,7 @@ module.exports = {
                             name: el.modalName + ':string'
                         }
                     },
+                    clickToCreateTicket,
                     {
                         tag: 'span',
                         attr: {
