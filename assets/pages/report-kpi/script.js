@@ -146,7 +146,7 @@ var DFT = function ($) {
                     type: "error"
                 });
             } else {
-                window.open(window.location.origin + resp.message);
+				downloadFromUrl(window.location.origin + resp.message);
             }
         });
     };
