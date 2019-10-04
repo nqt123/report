@@ -1,0 +1,179 @@
+<div style="display: flex;">
+  <div class="card" style="width: 50%;">
+    <div class="card-body card-padding">
+      <div id="warning-message" class="text-center m-b-10 text-success" style="font-size : 2rem; font-weight : bold;">
+        YÊU CẦU TỪ KHÁCH HÀNG
+      </div>
+      <form class="form-horizontal" id="form-create-report">
+        <div class="form-group">
+          <label for="name" class="col-sm-3 control-label">Tên Dự án </label>
+          <div class="col-sm-6">
+            <div class="fg-line">
+              <input type="text" value="<%=report.name%>" disabled class="form-control input-sm" id="name" name="name">
+              <input type="hidden" value="" id="updateId">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="position" class="col-sm-3 control-label">Vị trí dự án</span></label>
+          <div class="col-sm-6">
+            <div class="fg-line">
+              <input type="text" value="<%=report.position%>" disabled class="form-control input-sm" id="position"
+                name="position">
+              <input type="hidden" value="" id="updateId">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="CRM" class="col-sm-3 control-label">CRM đang sử dụng</span></label>
+          <div class="col-sm-6">
+            <div class="fg-line">
+              <input type="text" value="<%=report.CRM%>" disabled class="form-control input-sm" id="CRM" name="CRM">
+              <input type="hidden" value="" id="updateId">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="type" class="col-sm-3 control-label">Loại sự cố</span></label>
+          <div class="col-sm-6">
+            <input class="fg-line form-control" id="type" disabled value="<%=report.type%>" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="title" class="col-sm-3 control-label">Tiêu đề sự cố </span></label>
+          <div class="col-sm-6">
+            <div class="fg-line">
+              <input type="text" value="<%=report.title%>" disabled class="form-control input-sm" id="title"
+                name="title">
+              <input type="hidden" value="" id="updateId">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="description" class="col-sm-3 control-label">Nội dung sự cố</label>
+          <div class="col-sm-6">
+            <div class="fg-line">
+              <input type="text" value="<%=report.description%>" disabled class="form-control input-sm" id="description"
+                name="description">
+              <input type="hidden" value="" id="updateId">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="agentNumberInShift" class="col-sm-3 control-label">Số lượng nhân sự trong ca</label>
+          <div class="col-sm-6">
+            <div class="fg-line">
+              <input type="text" value="<%=report.agentNumberInShift%>" disabled class="form-control input-sm"
+                id="agentNumberInShift" name="agentNumberInShift">
+              <input type="hidden" value="" id="updateId">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="agentNumberInfluence" class="col-sm-3 control-label">Số lượng nhân sự ảnh hưởng</label>
+          <div class="col-sm-6">
+            <div class="fg-line">
+              <input type="text" value="<%=report.agentNumberInfluence%>" disabled class="form-control input-sm"
+                id="agentNumberInfluence" name="agentNumberInfluence">
+              <input type="hidden" value="" id="updateId">
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="card" style="width: 50%">
+    <div class="card-body card-padding">
+      <div id="warning-message" class="text-center m-b-10 text-success" style="font-size : 2rem; font-weight : bold;">
+        PHẢN HỒI TỪ KỸ THUẬT
+      </div>
+      <form class="form-horizontal" id="form-create-report">
+        <div class="form-group">
+          <label for="name" class="col-sm-3 control-label">Tên Dự án </label>
+          <div class="col-sm-6">
+            <div class="fg-line">
+              <input type="text" value="" class="form-control input-sm" id="name" name="name">
+              <input type="hidden" value="" id="updateId">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="position" class="col-sm-3 control-label">Vị trí dự án</span></label>
+          <div class="col-sm-6">
+            <div class="fg-line">
+              <input type="text" value="" class="form-control input-sm" id="position" name="position">
+              <input type="hidden" value="" id="updateId">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="CRM" class="col-sm-3 control-label">CRM đang sử dụng</span></label>
+          <div class="col-sm-6">
+            <div class="fg-line">
+              <input type="text" value="" class="form-control input-sm" id="CRM" name="CRM">
+              <input type="hidden" value="" id="updateId">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="type" class="col-sm-3 control-label">Loại sự cố</span></label>
+          <div class="col-sm-6">
+            <select class="fg-line form-control" id="type">
+              <option value="Phần cứng">Phần cứng</option>
+              <option value="Phần mềm">Phần mềm</option>
+              <option value="Khác">Khác</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="title" class="col-sm-3 control-label">Tiêu đề sự cố </span></label>
+          <div class="col-sm-6">
+            <div class="fg-line">
+              <input type="text" value="" class="form-control input-sm" id="title" name="title">
+              <input type="hidden" value="" id="updateId">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="description" class="col-sm-3 control-label">Nội dung sự cố</label>
+          <div class="col-sm-6">
+            <div class="fg-line">
+              <input type="text" value="" class="form-control input-sm" id="description" name="description">
+              <input type="hidden" value="" id="updateId">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="agentNumberInShift" class="col-sm-3 control-label">Số lượng nhân sự trong ca</label>
+          <div class="col-sm-6">
+            <div class="fg-line">
+              <input type="text" value="" class="form-control input-sm" id="agentNumberInShift"
+                name="agentNumberInShift">
+              <input type="hidden" value="" id="updateId">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="agentNumberInfluence" class="col-sm-3 control-label">Số lượng nhân sự ảnh hưởng</label>
+          <div class="col-sm-6">
+            <div class="fg-line">
+              <input type="text" value="" class="form-control input-sm" id="agentNumberInfluence"
+                name="agentNumberInfluence">
+              <input type="hidden" value="" id="updateId">
+            </div>
+          </div>
+        </div>
+        <div class="form-group m-b-0">
+      </form>
+    </div>
+  </div>
+</div>
+<div style="clear:both;"></div>
+<div>
+  <div class="form-group">
+    <a type="button" class="btn btn-default btn-icon-text waves-effect" href="/#reports"><i
+        class="zmdi zmdi-arrow-left"></i>Quay lại</a>
+    <button type="submit" class="btn btn-primary btn-icon-text waves-effect" id="submitBtn"><i
+        class="zmdi zmdi-plus-circle-o"></i>Xác nhận</button>
+  </div>
+</div>

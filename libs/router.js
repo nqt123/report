@@ -183,116 +183,115 @@ module.exports = function routers(app) {
         });
     });
 
-	app.get('/customer-excel', function(req, res) {
-		var fileName = 'customer-schema-all-' + _moment().format('DD-MM-YYYY') + '.xls';
-		if (req.session.auth && req.session.auth.company && req.session.auth.company.name) {
-			fileName = 'customer-schema-' + req.session.auth.company.name + '-' + _moment().format('DD-MM-YYYY') + '.xls';
-		}
-		var options = {
-			filename: path.join(_rootPath, 'assets', 'export', fileName),
-			useStyles: true, // Default
-			useSharedStrings: true,
-			dateFormat: 'DD/MM/YYYY HH:mm:ss'
-		};
+    app.get('/customer-excel', function (req, res) {
+        var fileName = 'customer-schema-all-' + _moment().format('DD-MM-YYYY') + '.xls';
+        if (req.session.auth && req.session.auth.company && req.session.auth.company.name) {
+            fileName = 'customer-schema-' + req.session.auth.company.name + '-' + _moment().format('DD-MM-YYYY') + '.xls';
+        }
+        var options = {
+            filename: path.join(_rootPath, 'assets', 'export', fileName),
+            useStyles: true, // Default
+            useSharedStrings: true,
+            dateFormat: 'DD/MM/YYYY HH:mm:ss'
+        };
 
-		var workbook = new _Excel.stream.xlsx.WorkbookWriter(options);
-		workbook.addWorksheet("My Sheet");
-		var worksheet = workbook.getWorksheet("My Sheet");
-		var _cl = [];
+        var workbook = new _Excel.stream.xlsx.WorkbookWriter(options);
+        workbook.addWorksheet("My Sheet");
+        var worksheet = workbook.getWorksheet("My Sheet");
+        var _cl = [];
 
-		_async.waterfall([
-			function(next) {
-				var cond = {};
-				if (req.session.auth && req.session.auth.company && req.session.auth.company._id) {
-					cond = {
-						'_id': req.session.auth.company._id
-					}
-				}
-				_Company.distinct('companyProfile', cond, next);
-			},
-			function(ids, next) {
-				_CompanyProfile.find({
-					_id: {
-						$in: ids
-					}
-				}, function(err, profiles) {
-					var fieldsId = [];
-					_.each(profiles, function(el) {
-						fieldsId = _.union(fieldsId, el.fieldId);
-					});
-					next(err, fieldsId);
-				});
-			},
-			function(ids, next) {
-				_CustomerFields.find({
-					_id: {
-						$in: ids
-					},
-					status: 1
-				}).sort({
-					weight: 1,
-					displayName: 1
-				}).exec(next);
-			}
-		], function(error, fields) {
-			if (error) return res.status(500).send('Error');
-			_async.eachSeries(fields, function(feld, cb) {
-				var _style = {
-					alignment: {
-						vertical: "middle",
-						horizontal: "center"
-					},
-					font: {
-						size: 14,
-						bold: true
-					},
-					border: {
-						top: {
-							style: "thin",
-							color: {
-								argb: "000000"
-							}
-						},
-						left: {
-							style: "thin",
-							color: {
-								argb: "000000"
-							}
-						},
-						bottom: {
-							style: "thin",
-							color: {
-								argb: "000000"
-							}
-						},
-						right: {
-							style: "thin",
-							color: {
-								argb: "000000"
-							}
-						}
-					}
-				};
-				if (feld.isRequired) _style.font['color'] = {
-					argb: "FF0000"
-				};
-				_cl.push({
-					header: feld.displayName.toUpperCase(),
-					style: _style,
-					key: feld.modalName,
-					width: feld.displayName.length * 2
-				});
-				cb();
-			}, function() {
-				worksheet.columns = _cl;
-				worksheet.commit();
-				workbook.commit().then(function() {
-					res.download(options.filename);
-				});
-			});
-		});
-	});
-
+        _async.waterfall([
+            function (next) {
+                var cond = {};
+                if (req.session.auth && req.session.auth.company && req.session.auth.company._id) {
+                    cond = {
+                        '_id': req.session.auth.company._id
+                    }
+                }
+                _Company.distinct('companyProfile', cond, next);
+            },
+            function (ids, next) {
+                _CompanyProfile.find({
+                    _id: {
+                        $in: ids
+                    }
+                }, function (err, profiles) {
+                    var fieldsId = [];
+                    _.each(profiles, function (el) {
+                        fieldsId = _.union(fieldsId, el.fieldId);
+                    });
+                    next(err, fieldsId);
+                });
+            },
+            function (ids, next) {
+                _CustomerFields.find({
+                    _id: {
+                        $in: ids
+                    },
+                    status: 1
+                }).sort({
+                    weight: 1,
+                    displayName: 1
+                }).exec(next);
+            }
+        ], function (error, fields) {
+            if (error) return res.status(500).send('Error');
+            _async.eachSeries(fields, function (feld, cb) {
+                var _style = {
+                    alignment: {
+                        vertical: "middle",
+                        horizontal: "center"
+                    },
+                    font: {
+                        size: 14,
+                        bold: true
+                    },
+                    border: {
+                        top: {
+                            style: "thin",
+                            color: {
+                                argb: "000000"
+                            }
+                        },
+                        left: {
+                            style: "thin",
+                            color: {
+                                argb: "000000"
+                            }
+                        },
+                        bottom: {
+                            style: "thin",
+                            color: {
+                                argb: "000000"
+                            }
+                        },
+                        right: {
+                            style: "thin",
+                            color: {
+                                argb: "000000"
+                            }
+                        }
+                    }
+                };
+                if (feld.isRequired) _style.font['color'] = {
+                    argb: "FF0000"
+                };
+                _cl.push({
+                    header: feld.displayName.toUpperCase(),
+                    style: _style,
+                    key: feld.modalName,
+                    width: feld.displayName.length * 2
+                });
+                cb();
+            }, function () {
+                worksheet.columns = _cl;
+                worksheet.commit();
+                workbook.commit().then(function () {
+                    res.download(options.filename);
+                });
+            });
+        });
+    });
     _Router.findById(String(new mongodb.ObjectID('-dft-hoasao-')), function (error, r) {
         if (!_.isNull(r)) {
             _rootMenu = r;

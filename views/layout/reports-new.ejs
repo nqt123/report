@@ -1,0 +1,99 @@
+<%-breadcrumb%>
+<script>
+
+</script>
+<div class="card">
+  <div class="card-header">
+    <h2 class="m-b-5"><%- title %></h2>
+    <small class="text-muted"><i>Những trường có dấu <span class="c-red">*</span> là bắt buộc nhập. </i></small>
+  </div>
+  <div class="card-body card-padding">
+    <div id="warning-message" class="text-center m-b-10 text-danger">
+      
+    </div>
+    <form class="form-horizontal" id="form-create-report">
+      <div class="form-group">
+        <label for="name" class="col-sm-3 control-label">Tên Dự án <span class="required">*</span></label>
+        <div class="col-sm-6">
+          <div class="fg-line">
+            <input type="text" value="" class="form-control input-sm" id="name" name="name">
+            <input type="hidden" value="" id="updateId">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="position" class="col-sm-3 control-label">Vị trí dự án</span></label>
+        <div class="col-sm-6">
+          <div class="fg-line">
+            <input type="text" value="" class="form-control input-sm" id="position" name="position">
+            <input type="hidden" value="" id="updateId">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="CRM" class="col-sm-3 control-label">CRM đang sử dụng</span></label>
+        <div class="col-sm-6">
+          <div class="fg-line">
+            <input type="text" value="" class="form-control input-sm" id="CRM" name="CRM">
+            <input type="hidden" value="" id="updateId">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="type" class="col-sm-3 control-label">Loại sự cố</span></label>
+        <div class="col-sm-6">
+          <select class="fg-line form-control" id="type">
+            <option value="Phần cứng">Phần cứng</option>
+            <option value="Phần mềm">Phần mềm</option>
+            <option value="Khác">Khác</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="title" class="col-sm-3 control-label">Tiêu đề sự cố <span class="required">*</span></span></label>
+        <div class="col-sm-6">
+          <div class="fg-line">
+            <input type="text" value="" class="form-control input-sm" id="title" name="title">
+            <input type="hidden" value="" id="updateId">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="description" class="col-sm-3 control-label">Nội dung sự cố<span class="required">*</span></label>
+        <div class="col-sm-6">
+          <div class="fg-line">
+            <input type="text" value="" class="form-control input-sm" id="description" name="description">
+            <input type="hidden" value="" id="updateId">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="agentNumberInShift" class="col-sm-3 control-label">Số lượng nhân sự trong ca<span class="required">*</span></label>
+        <div class="col-sm-6">
+          <div class="fg-line">
+            <input type="text" value="" class="form-control input-sm" id="agentNumberInShift" name="agentNumberInShift">
+            <input type="hidden" value="" id="updateId">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="agentNumberInfluence" class="col-sm-3 control-label">Số lượng nhân sự ảnh hưởng<span class="required">*</span></label>
+        <div class="col-sm-6">
+          <div class="fg-line">
+            <input type="text" value="" class="form-control input-sm" id="agentNumberInfluence"
+              name="agentNumberInfluence">
+            <input type="hidden" value="" id="updateId">
+          </div>
+        </div>
+      </div>
+      <div class="form-group m-b-0">
+        <div class="col-sm-offset-3 col-sm-10">
+          <a type="button" class="btn btn-default btn-icon-text m-t-10 m-r-10 waves-effect" href="/#reports"><i
+              class="m-r-5 zmdi zmdi-arrow-left"></i>Quay lại</a>
+          <button type="submit" class="btn btn-primary btn-icon-text m-t-10 waves-effect" id="submitBtn"><i
+              class="m-r-5 zmdi zmdi-plus-circle-o"></i>Xác nhận</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

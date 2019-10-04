@@ -3,10 +3,10 @@
     "_id": "57ec72813531cffe519aee33",
     "ip": "localhost",
     "port": 2020,
-    "name": "crm"
+    "name": "7home"
   },
   "database": {
-    "name": "crm",
+    "name": "7home",
     "ip": "localhost",
     "port": 27017,
     "user": "",

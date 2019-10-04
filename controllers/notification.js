@@ -7,7 +7,7 @@ exports.index = {
             .find({agentId: new mongodb.ObjectId(req.session.user._id)})
             .sort({ created: -1 })
             .paginate(page, rows, function (error, result, pageCount) { 
-                res.json({ code: error ? 500 : 200, result: result });
+                res.json({ code: error ? 500 : 200, result: result, message: 'Get routes go here' });
         });
     }
 }
@@ -18,7 +18,7 @@ exports.create = function (req, res) {
     if (_.has(body, 'agentId')) body['agentId'] = _.convertObjectId(body.agentId);
 
     _Notification.create(body, function (error, noti) {
-        res.json({ code: error ? 500 : 200, notification: noti });
+        res.json({ code: error ? 500 : 200, notification: noti, message: 'POST routes go here' });
     });
 
 };
