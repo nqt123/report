@@ -45,6 +45,7 @@ $form.addEventListener('submit', (e) => {
       agentNumberInfluence,
       percentOfInfluence
     }
+    console.log(report)
     fetch('/reports',
       {
         method: "POST",

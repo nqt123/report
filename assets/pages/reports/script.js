@@ -14,6 +14,6 @@ for (let i = 0; i < itemList.length; i++) {
   itemList[i].querySelector('#detail').addEventListener('click', function (e) {
     const id = itemList[i].querySelector('td#id').textContent.trim()
     location.hash = 'reports' + '/' + id
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    window.scrollTo({ top: 25, behavior: 'smooth' })
   })
 }

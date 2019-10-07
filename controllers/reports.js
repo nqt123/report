@@ -1,6 +1,6 @@
 const Report = require('../modals/report')
 const nodeMailer = require('nodemailer')
-
+const Company = require('../modals/company')
 exports.index = {
   json: function (req, res) {
     Report.find({}, function (err, reports) {
@@ -15,7 +15,7 @@ exports.index = {
     var agg = Report.aggregate();
 
     if (!req.query.sort) {
-      agg._pipeline.push({ $sort: { createdAt: -1 } })
+      agg._pipeline.push({ $sort: { createdAt: -1, status: 1 } })
     }
 
     Report.aggregatePaginate(agg, { page, limit }, function (err, reports, node, count) {
@@ -105,36 +105,50 @@ exports.create = function (req, res) {
 };
 
 exports.new = function (req, res) {
-  _.render(req, res, 'reports-new', {
-    title: 'Thêm mới Yêu cầu',
-  }, true);
+  const company = Company.find({}).then(result =>
+    _.render(req, res, 'reports-new', {
+      title: 'Thêm mới Yêu cầu',
+      result
+    }, true)
+  )
 };
 
 exports.update = function (req, res) {
-  const report = Report.findById(req.params.id)
-  report.status = req.body.updatedStatusValue
-  report.supporter = req.body.supporterId
-  return report.save().then(result => {
-    var transporter = nodeMailer.createTransport({
-      service: 'Gmail',
-      auth: {
-        user: 'hoasaorequester@gmail.com',
-        pass: 'Nqt123abc123'
-      }
-    })
-    var mailOptions = {
-      from: '"Hoa Sao Agent" <noreply@hoasao.vn>',
-      to: 'quythang1997@gmail.com',
-      subject: 'Your Support Request Has Been Accepted',
-      html: `<p>Your Support Request Has Been Accepted</p>`
+  const report = Report.findById(req.params.report).then(report => {
+    console.log(req.body)
+    if (req.body.updateState) {
+      report.state = req.body.updateState
     }
-    // transporter.sendMail(mailOptions, function (err, info) {
-    //   if (err)
-    //     return res.send(err)
-    res.send(result)
-    // })
+    report.save().then(result => {
+      res.send(result)
+    })
   })
 }
+// exports.update = function (req, res) {
+//   const report = Report.findById(req.params.id)
+//   report.status = req.body.updatedStatusValue
+//   report.supporter = req.body.supporterId
+//   return report.save().then(result => {
+//     var transporter = nodeMailer.createTransport({
+//       service: 'Gmail',
+//       auth: {
+//         user: 'hoasaorequester@gmail.com',
+//         pass: 'Nqt123abc123'
+//       }
+//     })
+//     var mailOptions = {
+//       from: '"Hoa Sao Agent" <noreply@hoasao.vn>',
+//       to: 'quythang1997@gmail.com',
+//       subject: 'Your Support Request Has Been Accepted',
+//       html: `<p>Your Support Request Has Been Accepted</p>`
+//     }
+//     // transporter.sendMail(mailOptions, function (err, info) {
+//     //   if (err)
+//     //     return res.send(err)
+//     res.send(result)
+//     // })
+//   })
+// }
 exports.show = function (req, res) {
   const report = Report.findById(req.params.report).then(result =>
     _.render(req, res, 'reports-detail', {

@@ -62,6 +62,9 @@
                       Ngày tạo
                     </th>
                     <th class="bgm-orange c-white text-center">
+                      Tình trạng
+                    </th>
+                    <th class="bgm-orange c-white text-center">
                       Chi tiết
                     </th>
                   </tr>
@@ -122,8 +125,12 @@
                         placeholder=" VD: Nguyen Quy Thang">
                     </td>
                     <td>
-                      <input type="text" class="form-control input-sm searchColumn" name="creator"
-                        placeholder=" N/A" disabled>
+                      <input type="text" class="form-control input-sm searchColumn" name="creator" placeholder=" N/A"
+                        disabled>
+                    </td>
+                    <td>
+                      <input type="text" class="form-control input-sm searchColumn" name="creator" placeholder=" N/A"
+                        disabled>
                     </td>
                     <td>
                       <button type="button" class="btn btn-primary btn-block waves-effect" id="btn-search"
@@ -181,6 +188,11 @@
                     <td>
                       <%=moment(result[i].updatedAt).format("HH:mm - Do MMM YYYY")%>
                     </td>
+                    <td class="text-center">
+                      <%if(result[i].hasOwnProperty('state')){%>
+                      <%=result[i].state == "Done" ? "Hoàn Thành" : "Chưa Hoàn Thành"  %>
+                      <%}%>
+                    </td>
                     <td class="text-center" id="detail" role="button">
                       <i class="zmdi zmdi-eye text-success" style="font-size: 2rem;"></i>
                     </td>
@@ -201,10 +213,10 @@
       </div>
     </div>
     <% if(paging.pageCount > 1){ %>
-                  <% include ../paging.ejs %>
-                  <% } %>
-          </div>
-        </div>
-        <script>
+    <% include ../paging.ejs %>
+    <% } %>
+  </div>
+</div>
+<script>
 
-        </script>
+</script>
