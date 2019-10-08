@@ -37,7 +37,7 @@
                       TT
                     </th>
                     <th data-sort="none" sortName="name" role="button" class="bgm-orange c-white text-center sort">
-                      Tên yêu cầu
+                      Tên Công ty
                     </th>
                     <th data-sort="none" sortName="updatedBy" role="button" class="bgm-orange c-white text-center sort">
                       Người tạo
@@ -47,7 +47,7 @@
                       Loại
                     </th>
                     <th data-sort="none" sortName="status" role="button" class="bgm-orange c-white text-center sort">
-                      Tỉ lệ ảnh hưởng
+                      Tiêu đề
                     </th>
                     <th class="bgm-orange c-white text-center">
                       Trạng thái yêu cầu
@@ -76,8 +76,7 @@
 
                     </td>
                     <td>
-                      <input type="text" class="form-control input-sm searchColumn" name="name"
-                        placeholder="VD: Thay bàn phím">
+                      <input type="text" class="form-control input-sm searchColumn" name="name" placeholder="VD: 7Home">
                     </td>
                     <td>
                       <input type="text" class="form-control input-sm searchColumn" name="creator"
@@ -91,46 +90,38 @@
                       </select>
                     </td>
                     <td>
-                      <select class="tag-select searchColumn" name="status">
-                        <option selected value="">- Chọn -</option>
-                        <option value="1">
-                          Ít hơn 20% </option>
-                        <option value="2">
-                          Ít hơn 40% </option>
-                        <option value="3">
-                          Ít hơn 60% </option>
-                        <option value="4">
-                          Ít hơn 80% </option>
-                        <option value="5">
-                          Ít hơn 100% </option>
-                      </select>
+                      <input type="text" class="form-control input-sm searchColumn" name="title"
+                        placeholder=" VD: Quy Thang">
                     </td>
                     <td>
                       <select class="tag-select searchColumn" name="status">
                         <option selected value="">- Chọn -</option>
                         <option value="1">Đang xử lý</option>
-                        <option value="1">Đã xử lý</option>
-                        <option value="1">Chưa xử lý</option>
+                        <option value="2">Đã xử lý</option>
+                        <option value="0">Chưa xử lý</option>
                       </select>
                     </td>
                     <td>
-                      <select class="tag-select searchColumn" name="status">
+                      <select class="tag-select searchColumn" name="late">
                         <option selected value="">- Chọn -</option>
-                        <option value="1"> Đúng hạn </option>
-                        <option value="2"> Quá hạn </option>
+                        <option value=false> Đúng hạn </option>
+                        <option value=true> Quá hạn </option>
                       </select>
                     </td>
                     <td>
-                      <input type="text" class="form-control input-sm searchColumn" name="creator"
+                      <input type="text" class="form-control input-sm searchColumn" name=""
                         placeholder=" VD: Nguyen Quy Thang">
                     </td>
                     <td>
-                      <input type="text" class="form-control input-sm searchColumn" name="creator" placeholder=" N/A"
+                      <input type="text" class="form-control input-sm searchColumn" name="createdAt" placeholder=" N/A"
                         disabled>
                     </td>
                     <td>
-                      <input type="text" class="form-control input-sm searchColumn" name="creator" placeholder=" N/A"
-                        disabled>
+                      <select class="tag-select searchColumn" name="state" style="font-size: 12px;">
+                        <option selected value="" style="font-size: 12px;">- Chọn -</option>
+                        <option value="Done" style="font-size: 12px;"> Hoàn Thành </option>
+                        <option value="Undone" style="font-size: 12px;"> Chưa Hoàn Thành </option>
+                      </select>
                     </td>
                     <td>
                       <button type="button" class="btn btn-primary btn-block waves-effect" id="btn-search"
@@ -159,7 +150,7 @@
                       <%=result[i].type%>
                     </td>
                     <td class="text-center">
-                      <%=result[i].percentOfInfluence*100%>%
+                      <%=result[i].title%>
                     </td>
                     <td class="text-center">
                       <%switch (result[i].status) {
@@ -186,7 +177,7 @@
                       <%}%>
                     </td>
                     <td>
-                      <%=moment(result[i].updatedAt).format("HH:mm - Do MMM YYYY")%>
+                      <%=moment(result[i].createdAt).format("HH:mm - Do MMM YYYY")%>
                     </td>
                     <td class="text-center">
                       <%if(result[i].hasOwnProperty('state')){%>

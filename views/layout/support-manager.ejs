@@ -1,0 +1,127 @@
+<%- breadcrumb %>
+<script>
+</script>
+<div class="card">
+    <div class="lv-header-alt clearfix m-b-5">
+        <h2 class="lvh-label hidden-xs">Danh sách các yêu cầu</h2>
+        <ul class="lv-actions actions">
+            <li><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" data-original-title="Refresh"><i class="zmdi zmdi-refresh"></i></a></li>
+            <li class="hidden" id="li-hidden">
+                <a role="button" data-toggle="tooltip" data-placement="top" data-original-title="Xóa các mục đánh dấu" id="btn-delSelection">
+                    <i class="zmdi zmdi-delete"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive" style="min-height: 500px">
+            <table class="table table-bordered table-fix" id="table-categorys">
+                <thead>
+                <tr>
+                    <th class="bgm-orange c-white text-center w-30">#</th>
+                    <th class="w-120 bgm-orange c-white text-center">Tên dự án</th>
+                    <th class="w-90 bgm-orange c-white text-center">Loại sự cố</th>
+                    <th class="w-120 bgm-orange c-white text-center">Tiêu đề sự cố</th>
+                    <th class="w-90 bgm-orange c-white text-center">Mức độ lỗi</th>
+                    <th class="w-90 bgm-orange c-white text-center">Mức độ ưu tiên xử lý</th>
+                    <th class="w-90 bgm-orange c-white text-center">Người gửi yêu cầu</th>
+                    <th class="w-90 bgm-orange c-white text-center">Tác vụ</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr id="searchForm" class="filter">
+                    <td class="text-center">
+                    </td>
+                    <td class="text-center"><input class="form-control filter" type="text" placeholder="Tên dự án" id="name" name="name"></td>
+                    <td class="text-center">
+                        <select class="selectpicker" id="type" name="type">
+                            <option value=""><span class=""></span>-------</option>
+                            <option value="Phần cứng"><span class=""></span>Phần cứng</option>
+                            <option value="Phần mềm"><span class=""></span>Phần mềm</option>
+                            <option value="Khác"><span class=""></span>Khác</option>
+                        </select>
+                    </td>
+                    <td></td>
+                    <td class="text-center">
+                    </td>
+                    <td class="text-center">
+                        <select class="selectpicker" id="prior" name="prior">
+                            <option value="">
+                                -------
+                            </option>
+                            <option value="1">
+                                Mức 1
+                            </option>
+                            <option value="2">
+                                Mức 2
+                            </option>
+                            <option value="3">
+                                Mức 3
+                            </option>
+                            <option value="4">
+                                Mức 4
+                            </option>
+                            <option value="5">
+                                Khẩn cấp
+                            </option>
+                        </select>
+                    </td>
+                    <td></td>
+                    <td><button class="btn btn-primary btn-block waves-effect" id="btn-search" name="btn-search"><i class="zmdi zmdi-filter-list m-r-5"></i> Lọc</button></td>
+                </tr>
+                <script> var isZeroList = false; </script>
+                <% if (report.length == 0){ %>
+                <script> isZeroList   = true; </script>
+                <%}else{ %>
+                    <% report.forEach(function(el, i) { %>
+                    <tr>
+                        <td class="select-cell text-center"><%- i+1 %></td>
+                        <td>
+                            <a href="/#support-manager/<%- el._id %>"><%- el.name %></a>
+                        </td>
+                        <input type="hidden" value="<%- el._id %>" name="id">
+                        <td class="text-center text-capitalize"><%- el.type %></td>
+                        <td class="text-center"><%- el.title %></td>
+                        <td class="text-center"><%- el.percentOfInfluence * 100 %>%</td>
+                        <td class="text-center">
+                            <%if(el.prior == 1){%>
+                                Mức 1
+                            <%}else if(el.prior == 2){%>
+                                Mức 2
+                            <%}else if(el.prior == 3){%>
+                                Mức 3
+                            <%}else if(el.prior == 4){%>
+                                Mức 4
+                            <%}else{%>
+                                Khẩn cấp
+                            <%}%>
+                        </td>
+                        <td class="text-center"><%- el.createdBy %></td>
+                        <td class="text-center" >
+                            <% if(el.status == 2){ %>
+                                <a role="button" class="btn-remove btn-flat-bg" data-toggle="tooltip" data-placement="top" data-original-title="Xoá" data-id="<%- el._id %>"><i class="zmdi zmdi-close red f-23 "></i></a>
+                                <div class="btn btn-precessed  btn-block ">Đã xử lý</div>                                
+                            <% }else{%>
+                                <a class="btn btn-primary btn-block waves-effect btn-received" data-id="<%- el._id %>" data-status="<%- el.status %>" data-name="<%- el.name %>" data-toggle="tooltip" data-placement="top"  name="btn-received">
+                                    <%if(el.status == 0){%>
+                                        Nhận
+                                    <% }else if(el.status ==1){%>
+                                        Đã nhận
+                                    <%} %>
+                                </a>
+                            <%}%>
+                            
+                            <a class="btn btn-primary btn-block waves-effect btn-response" href="/#support-manager/new?_id=<%- el._id %>" data-id="<%- el._id %>" data-status="<%- el.status %>" data-name="<%- el.name %>" data-toggle="tooltip" data-placement="top" name="btn-response"> Phản hồi</a>
+                            <!-- <a class="p-t-3 btn-flat-bg edit-category" href="/#support/<%- el._id %>/edit" data-id="<%- el._id %>" data-status="<%- el.status %>" data-name="<%- el.name %>" data-toggle="tooltip" data-placement="top" data-original-title="Sửa"><i class="zmdi zmdi-edit green f-17"></i></a> -->
+                            <!-- <a role="button" class="btn-remove btn-flat-bg" data-toggle="tooltip" data-placement="top" data-original-title="Xoá" data-id="<%- el._id %>"><i class="zmdi zmdi-close red f-23 "></i></a> -->
+                        </td>
+                    </tr>
+                    <% }); %>
+                <%}%>
+                </tbody>
+            </table>
+        </div>
+
+        <% include ../paging.ejs %>
+    </div>
+</div>

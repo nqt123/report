@@ -1,0 +1,64 @@
+<%- breadcrumb %>
+<div class="card">
+    <div class="card-header">
+        <h2 class="m-b-5"><%- title %></h2>
+        <small class="text-muted"><i>Những trường có dấu <span class="c-red">*</span> là bắt buộc nhập.</i></small>
+    </div>
+    <div class="card-body card-padding">
+        <form role="form" class="form-horizontal" id="spt-response" >
+            <div class="form-group">
+                <label for="name" class="col-sm-3 control-label">Dạng sự cố</label>
+                <div class="col-sm-6">
+                    <select class="selectpicker" id="typeOfIncident" name="typeOfIncident">
+                        <option value="Phần cứng"><span class=""></span>Phần cứng</option>
+                        <option value="Phần mềm"><span class=""></span>Phần mềm</option>
+                        <option value="Khác"><span class=""></span>Khác</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="name" class="col-sm-3 control-label">Chi tiết nguyên nhân<span class="required">*</span></label>
+                <div class="col-sm-6">
+                    <div class="fg-line">
+                        <input type="text" maxlength="60" class="form-control validate[required]" id="detailCause" name="detailCause">
+                        <input type="hidden" id="x-name" value="">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="name" class="col-sm-3 control-label">Nội dung xử lý<span class="required">*</span></label>
+                <div class="col-sm-6">
+                    <div class="fg-line">
+                        <input type="text" maxlength="60" class="form-control validate[required]" id="contentHandle" name="contentHandle">
+                        <input type="hidden" id="x-name" value="">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="name" class="col-sm-3 control-label">Giải pháp đề xuất<span class="required">*</span></label>
+                <div class="col-sm-6">
+                    <div class="fg-line">
+                        <input type="text" maxlength="60" class="form-control validate[required]" id="offerSolution" name="offerSolution">
+                        <input type="hidden" id="x-name" value="">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                    <label for="name" class="col-sm-3 control-label">Tình trạng sau xử lý</label>
+                    <div class="col-sm-6">
+                        <select class="selectpicker" id="statusAfterHandle" name="statusAfterHandle">
+                            <option value="Xử lý thành công"><span class=""></span>Xử lý thành công</option>
+                            <option value="Xử lý không thành công"><span class=""></span>Xử lý không thành công</option>
+                        </select>
+                    </div>
+            </div>
+            <input type="hidden" value="<%- user._id%>" name="reportId">
+            <div class="form-group m-b-0">
+                <div class="col-sm-offset-3 col-sm-10">
+                    <a class="btn btn-default btn-icon-text m-t-10 m-r-10 waves-effect waves-effect" id="btn-back" name="btn-back" href="/#support-manager"><i class="m-r-5 zmdi zmdi-arrow-left"></i>Quay lại</a>
+                    <button type="submit" class="btn btn-primary btn-icon-text m-t-10 waves-effect"><i class="m-r-5 zmdi zmdi-check"></i>Xác nhận</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,6 +1,7 @@
 const Report = require('../modals/report')
 const nodeMailer = require('nodemailer')
 const Company = require('../modals/company')
+const SupportManager = require('../modals/support-manager')
 exports.index = {
   json: function (req, res) {
     Report.find({}, function (err, reports) {
@@ -15,7 +16,7 @@ exports.index = {
     var agg = Report.aggregate();
 
     if (!req.query.sort) {
-      agg._pipeline.push({ $sort: { createdAt: -1, status: 1 } })
+      agg._pipeline.push({ $sort: { createdAt: -1} })
     }
 
     Report.aggregatePaginate(agg, { page, limit }, function (err, reports, node, count) {
@@ -96,11 +97,11 @@ exports.create = function (req, res) {
              </table>
       `
     }
-    // transporter.sendMail(mailOptions, function (err, info) {
-    //   if (err)
-    //     return res.send(err)
+    transporter.sendMail(mailOptions, function (err, info) {
+      if (err)
+        return res.send(err)
     res.send(result)
-    // })
+    })
   })
 };
 
@@ -150,6 +151,7 @@ exports.update = function (req, res) {
 //   })
 // }
 exports.show = function (req, res) {
+
   const report = Report.findById(req.params.report).then(result =>
     _.render(req, res, 'reports-detail', {
       title: "",
