@@ -2,6 +2,7 @@ const Report = require('../modals/report')
 const nodeMailer = require('nodemailer')
 const Company = require('../modals/company')
 const SupportManager = require('../modals/support-manager')
+const mongoose = require('mongoose')
 exports.index = {
   json: function (req, res) {
     Report.find({}, function (err, reports) {
@@ -16,7 +17,7 @@ exports.index = {
     var agg = Report.aggregate();
 
     if (!req.query.sort) {
-      agg._pipeline.push({ $sort: { createdAt: -1} })
+      agg._pipeline.push({ $sort: { createdAt: -1 } })
     }
 
     Report.aggregatePaginate(agg, { page, limit }, function (err, reports, node, count) {
@@ -100,7 +101,7 @@ exports.create = function (req, res) {
     transporter.sendMail(mailOptions, function (err, info) {
       if (err)
         return res.send(err)
-    res.send(result)
+      res.send(result)
     })
   })
 };
@@ -151,11 +152,39 @@ exports.update = function (req, res) {
 //   })
 // }
 exports.show = function (req, res) {
-
-  const report = Report.findById(req.params.report).then(result =>
+  const match = {}
+  console.log(req.params.report)
+  SupportManager.aggregate([
+    {
+      $lookup:
+      {
+        from: "reports",
+        localField: "reportId",
+        foreignField: "_id",
+        as: "report"
+      }
+    },
+    {
+      $unwind: "$report"
+    },
+    {
+      $match: { "report._id": mongoose.Types.ObjectId(req.params.report) }
+    }
+  ], function (err, result) {
+    if (!result[0]) {
+      return Report.findById(req.params.report).then(result => {
+        _.render(req, res, 'reports-detail', {
+          title: "",
+          report: result,
+          result: {}
+        }, true)
+      })
+    }
     _.render(req, res, 'reports-detail', {
       title: "",
-      report: result
+      report: result[0].report,
+      result: result[0]
     }, true)
-  )
+  })
+
 }

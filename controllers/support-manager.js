@@ -66,7 +66,12 @@ exports.destroy = function (req, res) {
     })
 }
 exports.create = function (req, res) {
+    console.log(req.body)
     _SupportManager.create(req.body, function (error, result) {
+        if(error){
+            console.log(error)
+        }
+        console.log(result)
         let stt = {
             status: 2
         }
@@ -96,7 +101,6 @@ exports.create = function (req, res) {
 };
 
 exports.update = function (req, res) {
-
     const report = _Report.findById(req.params.supportmanager).then(report => {
         report.supporter.name = req.session.user.displayName
         report.supporter.id = req.session.user._id
