@@ -6,7 +6,9 @@ var SupportManagerSchema = new mongoose.Schema({
   offerSolution: { type: String, default: "" },
   typeOfIncident: { type: String, default: "" },
   statusAfterHandle: { type: String, default: "" },
-  reportId: { type: mongoose.Schema.Types.ObjectId}
+  reportId: { type: mongoose.Schema.Types.ObjectId }
 }, { id: false, versionKey: 'v' });
 
+SupportManagerSchema.plugin(require('mongoose-aggregate-paginate'))
+SupportManagerSchema.set('toJSON', { getters: true });
 module.exports = mongoose.model('SupportManager', SupportManagerSchema);

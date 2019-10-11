@@ -101,8 +101,8 @@ exports.create = function (req, res) {
     transporter.sendMail(mailOptions, function (err, info) {
       if (err)
         return res.send(err)
-      res.send(result)
     })
+    res.send(result)
   })
 };
 
@@ -120,8 +120,36 @@ exports.update = function (req, res) {
     console.log(req.body)
     if (req.body.updateState) {
       report.state = req.body.updateState
+      if (req.body.updateState == "Undone") {
+        report.status = 0
+      }
     }
     report.save().then(result => {
+      var transporter = nodeMailer.createTransport({
+        service: 'Gmail',
+        auth: {
+          user: 'hoasaorequester@gmail.com',
+          pass: 'Nqt123abc123'
+        }
+      })
+      var mailOptions = {
+        from: '"Hoa Sao Agent" <noreply@hoasao.vn>',
+        to: 'quythang1997@gmail.com',
+        subject: '',
+        html: ``
+      }
+      if (result.state == "Done") {
+        mailOptions.html = `<h2 style="color : green">Khiếu nại giải quyết vấn đề của khách hàng đã được xác nhận hoàn thành</h2>`
+        mailOptions.subject = 'Report Issue Has Been Confirmed'
+      }
+      if (result.state == "Undone") {
+        mailOptions.html = `<h2 style="color : red">Khách hàng báo cáo lại rằng chưa giải quyết xong vấn đề</h2>`
+        mailOptions.subject = 'Report Issue HASNT Been Confirmed Open Mail to See Detail'
+      }
+      transporter.sendMail(mailOptions, function (err, info) {
+        if (err)
+          return res.send(err)
+      })
       res.send(result)
     })
   })

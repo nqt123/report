@@ -30,7 +30,7 @@
         <div class="tab-content">
           <div role="tabpanel" style="height: 100%" class="tab-pane animated active" id="tab-not-process-ticket">
             <form role="form" id="frm-report-inbound-ticket">
-              <table class="table table-bordered table-fix" id="tbl-ticket" style="overflow:auto">
+              <table class="table table-bordered table-fix table-hover" id="tbl-ticket" style="overflow:auto">
                 <thead>
                   <tr>
                     <th data-sort="none" role="button" class="bgm-orange c-white text-center sort" style="width: 5%;">
@@ -71,8 +71,7 @@
                 </thead>
                 <tbody>
 
-                  <tr class="filter" id="search-input">
-                    <td class="text-center">
+                  <tr class="filter" id="search-input" <td class="text-center">
 
                     </td>
                     <td>
@@ -117,6 +116,10 @@
                         disabled>
                     </td>
                     <td>
+                      <input type="text" class="form-control input-sm searchColumn" name="createdAt" placeholder=" N/A"
+                        disabled>
+                    </td>
+                    <td>
                       <select class="tag-select searchColumn" name="state" style="font-size: 12px;">
                         <option selected value="" style="font-size: 12px;">- Chọn -</option>
                         <option value="Done" style="font-size: 12px;"> Hoàn Thành </option>
@@ -132,8 +135,15 @@
                   </tr>
 
                 <tbody class="report-list_body">
-                  <%for(let i=0 ; i < result.length; i ++){%>
-                  <tr id="item">
+                  <%for(let i=0 ; i < result.length; i ++){
+                    let state = ""
+                    let disabled = false
+                    if(result[i].hasOwnProperty("state")){
+                      state = result[i].state
+                      disabled = result[i].state == "Undone"
+                    }
+                    %>
+                  <tr id="item" class="<%=state%>">
                     <td class="text-center">
                       <%=i+1%>
                     </td>
@@ -158,10 +168,10 @@
                           %>Đang chờ<%
                           break;
                         case '1':
-                          %>Đang Xử lý<%
+                          %><span class="text-info">Đang Xử lý</span><%
                           break;
                         case '2':
-                          %>Đã xử lý<%
+                          %><span class="text-success">Đã xử lý</span><%
                           break;
                         default:
                           %><%
@@ -181,7 +191,11 @@
                     </td>
                     <td class="text-center">
                       <%if(result[i].hasOwnProperty('state')){%>
-                      <%=result[i].state == "Done" ? "Hoàn Thành" : "Chưa Hoàn Thành"  %>
+                      <% if(result[i].state == "Done") {%>
+                      <span class="text-success" style="font-weight : bold; font-size : 1.1rem;">Hoàn Thành</span>
+                      <%}else{%>
+                      <span class="text-danger" style="font-weight : bold; font-size : 1.1rem;">Chưa Hoàn Thành</span>
+                      <%}%>
                       <%}%>
                     </td>
                     <td class="text-center" id="detail" role="button">
@@ -204,10 +218,10 @@
       </div>
     </div>
     <% if(paging.pageCount > 1){ %>
-    <% include ../paging.ejs %>
-    <% } %>
-  </div>
-</div>
-<script>
+                  <% include ../paging.ejs %>
+                  <% } %>
+          </div>
+        </div>
+        <script>
 
-</script>
+        </script>

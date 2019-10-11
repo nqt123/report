@@ -22,7 +22,7 @@
             status:1
         }
         
-         $(".table-responsive").find(`a.btn-received[data-id=${targetIds}]`).text('Đã nhận');
+         $(".table-responsive").find(`a.btn-received[data-id=${targetIds}]`).css("display","none");
         fetch('/support-manager/' + targetIds, {
             method: 'PUT',
             body: JSON.stringify({ support }),
@@ -31,7 +31,8 @@
             }
             //  }).then(response => console.log(response));
             
-        }).then(res => res.json()).then(response => window.location.href = '/#support-manager')
+        }).then(res => res.json())
+        // .then(response => window.location.href = '/#support-manager')
         
     })
         // Load lại trang

@@ -102,13 +102,15 @@
                                 <a role="button" class="btn-remove btn-flat-bg" data-toggle="tooltip" data-placement="top" data-original-title="Xoá" data-id="<%- el._id %>"><i class="zmdi zmdi-close red f-23 "></i></a>
                                 <div class="btn btn-precessed  btn-block ">Đã xử lý</div>                                
                             <% }else{%>
+                                <%if(el.status == 0){%>
                                 <a class="btn btn-primary btn-block waves-effect btn-received" data-id="<%- el._id %>" data-status="<%- el.status %>" data-name="<%- el.name %>" data-toggle="tooltip" data-placement="top"  name="btn-received">
-                                    <%if(el.status == 0){%>
-                                        Nhận
-                                    <% }else if(el.status ==1){%>
-                                        Đã nhận
-                                    <%} %>
+                                 Nhận
                                 </a>
+                                <% }else if(el.status ==1){%>
+                                <a class="btn btn-primary btn-block waves-effect" >
+                                    Đã nhận
+                                </a>
+                                <%} %>
                             <%}%>
                             
                             <a class="btn btn-primary btn-block waves-effect btn-response" href="/#support-manager/new?_id=<%- el._id %>" data-id="<%- el._id %>" data-status="<%- el.status %>" data-name="<%- el.name %>" data-toggle="tooltip" data-placement="top" name="btn-response"> Phản hồi</a>

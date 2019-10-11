@@ -1,13 +1,90 @@
 <%- breadcrumb %>
 <div class="card">
-    <div class="lv-header-alt clearfix">
-        <h2 class="lvh-label hidden-xs"><%- title %></h2>
+    <div class="card-header">
+        <h2 class="m-b-5"><%- title %></h2>
     </div>
     <div class="card-body card-padding">
-        <div>Tên dự án: <%- body.name %></div>
-        <div>Loại sự cố: <%- body.type %></div>
-        <div>Tiêu đề sự cố: <%- body.title %></div>
-        <div>Nội dung sự cố: <%- body.description %></div>
-        <div class="clearfix"></div>
+        <form role="form" class="form-horizontal" id="frm-edit" >
+            <div class="form-group">
+                <label for="name" class="col-sm-3 control-label">Tên dự án :</label>
+                <div class="col-sm-6">
+                    <div class="fg-line">
+                        <input type="text" maxlength="60" class="form-control"  value="<%- body.name %>" readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="name" class="col-sm-3 control-label">Vị trí :</label>
+                <div class="col-sm-6">
+                    <div class="fg-line">
+                        <input type="text" maxlength="60" class="form-control"  value="<%- body.position %>" readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="name" class="col-sm-3 control-label">CRM đang sử dụng :</label>
+                <div class="col-sm-6">
+                    <div class="fg-line">
+                        <input type="text" maxlength="60" class="form-control"  value="<%- body.CRM %>" readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="name" class="col-sm-3 control-label">Loại sự cố :</label>
+                <div class="col-sm-6">
+                    <div class="fg-line">
+                        <input type="text" maxlength="60" class="form-control"  value="<%- body.type %>" readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="name" class="col-sm-3 control-label">Tiêu đề sự cố :</label>
+                <div class="col-sm-6">
+                    <div class="fg-line">
+                        <input type="text" maxlength="60" class="form-control"  value="<%- body.title %>" readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="name" class="col-sm-3 control-label">Nội dung sự cố :</label>
+                <div class="col-sm-6">
+                    <div class="fg-line">
+                        <input type="text" maxlength="60" class="form-control"  value="<%- body.description %>" readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="name" class="col-sm-3 control-label">Mức độ lỗi :</label>
+                <div class="col-sm-6">
+                    <div class="fg-line">
+                        <input type="text" maxlength="60" class="form-control"  value="<%- body.percentOfInfluence * 100 %> %" readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="name" class="col-sm-3 control-label">Mức độ ưu tiên xử lý :</label>
+                <div class="col-sm-6">
+                    <div class="fg-line">
+                        <input type="text" maxlength="60" class="form-control"  value="<%- body.prior %>" readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center">
+                <%if(body.status==0){%>
+                    <a class="btn btn-primary waves-effect" data-id="<%- body._id %>" data-status="<%- body._id  %>" data-name="<%- body._id  %>" data-toggle="tooltip" data-placement="top" id="btn-received" name="btn-received">
+                        Nhận
+                    </a>
+                <%}else if(body.status==1){%>
+                    <a class="btn btn-primary waves-effect" >
+                        Đã nhận
+                    </a>
+                <%}else if(body.status==2){%>
+                    <a class="btn btn-primary waves-effect" >
+                            Đã xử lý
+                    </a>
+                <%}%>
+                <a class="btn btn-primary waves-effect btn-response" href="/#support-manager/new?_id=<%- body._id %>" data-id="<%- body._id %>" data-status="<%- body.status %>" data-name="<%- body.name %>" data-toggle="tooltip" data-placement="top" name="btn-response"> Phản hồi</a>
+            </div>
+        </form>
     </div>
 </div>

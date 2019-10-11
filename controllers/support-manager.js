@@ -8,10 +8,10 @@ exports.index = {
         })
     },
     html: function (req, res) {
-        var page = _.has(req.query, 'page') ? parseInt(req.query.page) : 1;
-        var rows = _.has(req.query, 'rows') ? parseInt(req.query.rows) : 10;
+        const page = req.query.page ? req.query.page : 1
+        const limit = req.query.row ? req.query.row : 10
         let query = {};
-
+        let agg = _Report.aggregate();
         if (_.has(req.query, 'name')) {
             query.name = { $regex: new RegExp(_.stringRegex(req.query.name), 'i') };
         }
@@ -22,25 +22,30 @@ exports.index = {
             query.prior = +(req.query.prior);
         }
 
-        _Report
-            .find(query)
-            .sort({ "status": 1 })
-            .paginate(page, rows, function (error, result, pageCount) {
-                var paginator = new pagination.SearchPaginator({
-                    prelink: '/support-manager',
-                    current: page,
-                    rowsPerPage: rows,
-                    totalResult: pageCount
-                });
-                _Report.find({}, function (err, r) {
-                    _.render(req, res, 'support-manager', {
-                        title: 'Danh sách yêu cầu',
-                        report: result,
-                        paging: paginator.getPaginationData(),
-                        plugins: ['moment', ['bootstrap-select'], ['bootstrap-datetimepicker']]
-                    }, true, error);
-                }).sort({ "status": 1 })
-            });
+        if (!req.query.sort) {
+            agg._pipeline.push({ $sort: { status: 1 } });
+        }
+        agg._pipeline.push({
+            $lookup: { from: "users", localField: "createdBy", foreignField: "_id", as: "fieldName" }
+        })
+        if (!_.isEmpty(query)) agg._pipeline.push({ $match: { $and: [query] } });
+
+        _Report.aggregatePaginate(agg, { page, limit }, function (err, reports, node, count) {
+            if (err)
+                return res.send(err)
+            var paginator = new pagination.SearchPaginator({
+                prelink: '/support-manager',
+                current: page,
+                rowsPerPage: limit,
+                totalResult: count
+            })
+            return _.render(req, res, 'support-manager', {
+                title: 'Danh sách các Yêu cầu',
+                report: reports,
+                paging: paginator.getPaginationData(),
+                plugins: ['moment', ['bootstrap-select'], ['bootstrap-datetimepicker'], ['bootstrap-daterangepicker'], ['chosen']]
+            }, true, err);
+        })
     }
 }
 exports.new = function (req, res) {
@@ -66,12 +71,7 @@ exports.destroy = function (req, res) {
     })
 }
 exports.create = function (req, res) {
-    console.log(req.body)
     _SupportManager.create(req.body, function (error, result) {
-        if(error){
-            console.log(error)
-        }
-        console.log(result)
         let stt = {
             status: 2
         }
@@ -101,10 +101,11 @@ exports.create = function (req, res) {
 };
 
 exports.update = function (req, res) {
-    const report = _Report.findById(req.params.supportmanager).then(report => {
-        report.supporter.name = req.session.user.displayName
-        report.supporter.id = req.session.user._id
+    _Report.findById(req.body.support.id).then(report => {
         report.status = 1
+        report.supporter.name = req.session.user['displayName']
+        report.supporter.id = req.session.user['_id']
+
         report.save().then(result => {
             var transporter = nodeMailer.createTransport({
                 service: " Gmail",
