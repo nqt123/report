@@ -39,6 +39,7 @@ exports.index = {
                 rowsPerPage: limit,
                 totalResult: count
             })
+            console.log(reports[0].fieldName)
             return _.render(req, res, 'support-manager', {
                 title: 'Danh sách các Yêu cầu',
                 report: reports,

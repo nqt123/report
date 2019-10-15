@@ -8,3 +8,14 @@
 .Done:hover{
   color : black;
 }
+#empty-text{
+  display: flex;
+  height: 50vh;
+  justify-content: center;
+  align-items: center;
+  font-size: 4rem;
+  opacity: 0.7;
+  color: #b4b4b4;
+  cursor: pointer;
+}
+

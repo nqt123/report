@@ -33,10 +33,10 @@
               <table class="table table-bordered table-fix table-hover" id="tbl-ticket" style="overflow:auto">
                 <thead>
                   <tr>
-                    <th data-sort="none" role="button" class="bgm-orange c-white text-center sort" style="width: 5%;">
+                    <th data-sort="none" role="button" class="col-lg-3 bgm-orange c-white text-center sort" style="width: 5%;">
                       TT
                     </th>
-                    <th data-sort="none" sortName="name" role="button" class="bgm-orange c-white text-center sort">
+                    <th data-sort="none" sortName="name" role="button" class="col-lg-1 bgm-orange c-white text-center sort">
                       Tên Công ty
                     </th>
                     <th data-sort="none" sortName="updatedBy" role="button" class="bgm-orange c-white text-center sort">
@@ -70,15 +70,15 @@
                   </tr>
                 </thead>
                 <tbody>
-
-                  <tr class="filter" id="search-input" <td class="text-center">
-
+                  
+                  <tr class="filter" id="search-input" class="text-center">
+                    <td>
                     </td>
                     <td>
                       <input type="text" class="form-control input-sm searchColumn" name="name" placeholder="VD: 7Home">
                     </td>
                     <td>
-                      <input type="text" class="form-control input-sm searchColumn" name="creator"
+                      <input type="text" class="form-control input-sm searchColumn" name="createdBy"
                         placeholder=" VD: Quy Thang">
                     </td>
                     <td>
@@ -116,10 +116,6 @@
                         disabled>
                     </td>
                     <td>
-                      <input type="text" class="form-control input-sm searchColumn" name="createdAt" placeholder=" N/A"
-                        disabled>
-                    </td>
-                    <td>
                       <select class="tag-select searchColumn" name="state" style="font-size: 12px;">
                         <option selected value="" style="font-size: 12px;">- Chọn -</option>
                         <option value="Done" style="font-size: 12px;"> Hoàn Thành </option>
@@ -144,22 +140,22 @@
                     }
                     %>
                   <tr id="item" class="<%=state%>">
-                    <td class="text-center">
+                    <td class="text-center col-lg-1">
                       <%=i+1%>
                     </td>
                     <td hidden id="id">
                       <%=result[i]._id%>
                     </td>
-                    <td>
+                    <td class="col-lg-1">
                       <%=result[i].name%>
                     </td>
                     <td>
-                      Nguyen Quy Thang
+                      <%=result[i].creator.displayName%>
                     </td>
                     <td class="text-center">
                       <%=result[i].type%>
                     </td>
-                    <td class="text-center">
+                    <td class="text-center" id="report-name">
                       <%=result[i].title%>
                     </td>
                     <td class="text-center">
@@ -198,13 +194,24 @@
                       <%}%>
                       <%}%>
                     </td>
-                    <td class="text-center" id="detail" role="button">
-                      <i class="zmdi zmdi-eye text-success" style="font-size: 2rem;"></i>
+                    <td class="text-center" style="display: flex; justify-content:space-evenly;" role="button">
+                      <div id="detail" data-toggle="tooltip" data-placement="top" data-original-title="Chi Tiết"> <i
+                          class="zmdi zmdi-eye text-success" style="font-size: 2rem;"></i></div>
+                      <div id="delete" data-toggle="tooltip" data-placement="top" data-original-title="Xoá"> <i
+                          class="zmdi zmdi-delete text-danger" style="font-size: 2rem;"></i></div>
                     </td>
                   </tr>
                   <%}%>
                 </tbody>
               </table>
+              <%if(result.length == 0 ){%>
+
+                  <div id="empty-container" class="border">
+                    <a href="/#reports/new">
+                      <div class="text-center" id="empty-text">Nhấn để thêm yêu cầu</div>
+                    </a>
+                  </div>
+                  <%}%>
               <div class="text-center" id="ticket-total">
                 <!--<b>-->
                 <!--<span class="TXT_TOTAL"></span>:-->

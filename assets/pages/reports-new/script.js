@@ -13,7 +13,6 @@ const button = document.querySelector('#submitBtn')
 
 $form.addEventListener('submit', (e) => {
   e.preventDefault()
-  button.disabled = true
   const name = $name.value
   const position = $position.value
   const CRM = $CRM.value
@@ -33,6 +32,7 @@ $form.addEventListener('submit', (e) => {
     return textMessage.textContent = "Vui lòng nhập các trường bắt buộc"
   }
   else {
+    button.disabled = true
     textMessage.textContent = ""
     const report = {
       name,

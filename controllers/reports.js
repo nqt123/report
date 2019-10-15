@@ -14,15 +14,49 @@ exports.index = {
   html: function (req, res) {
     const page = req.query.page ? req.query.page : 1
     const limit = req.query.row ? req.query.row : 10
+    ///generate search field
+    let matchField = {}
+    let createdBy = {}
+    let supporter = {}
     var agg = Report.aggregate();
 
+    ///find CreatedBy
+    agg._pipeline.push({
+      $lookup: {
+        from: "users",
+        localField: "createdBy",
+        foreignField: "_id",
+        as: "creator"
+      }
+    }, {
+      $unwind: "$creator"
+    })
+    //Sorting
     if (!req.query.sort) {
       agg._pipeline.push({ $sort: { createdAt: -1 } })
     }
+    //Searching
+    if (req.query.name) {
+      matchField["name"] = { $regex: new RegExp(req.query.name, 'gi') }
+    }
+    if (req.query.state) {
+      matchField["state"] = req.query.state
+    }
+    // matchField["createdBy"] = { $regex: new RegExp(req.query.createdBy, 'gi') }
+    if (req.query.title) {
+      matchField["title"] = { $regex: new RegExp(req.query.title, 'gi') }
+    }
 
-    Report.aggregatePaginate(agg, { page, limit }, function (err, reports, node, count) {
+    if (req.query.createdBy) {
+      agg._pipeline.push({ $match: { "creator.displayName": { $regex: new RegExp(req.query.createdBy, 'gi') } } })
+    }
+    //Apply match with field generated
+    agg._pipeline.push({ $match: matchField })
+    // aggUser._pipeline.push({ $match: supporter })
+    Report.aggregatePaginate(agg, { page, limit, $unwind: "$createdBy", $match: createdBy, $match: supporter }, function (err, reports, node, count) {
       if (err)
         return res.send(err)
+      console.log(reports)
       var paginator = new pagination.SearchPaginator({
         prelink: '/reports',
         current: page,
@@ -124,6 +158,9 @@ exports.update = function (req, res) {
         report.status = 0
       }
     }
+    if(req.body.reason){
+      report.reason = req.body.reason
+    }
     report.save().then(result => {
       var transporter = nodeMailer.createTransport({
         service: 'Gmail',
@@ -154,31 +191,6 @@ exports.update = function (req, res) {
     })
   })
 }
-// exports.update = function (req, res) {
-//   const report = Report.findById(req.params.id)
-//   report.status = req.body.updatedStatusValue
-//   report.supporter = req.body.supporterId
-//   return report.save().then(result => {
-//     var transporter = nodeMailer.createTransport({
-//       service: 'Gmail',
-//       auth: {
-//         user: 'hoasaorequester@gmail.com',
-//         pass: 'Nqt123abc123'
-//       }
-//     })
-//     var mailOptions = {
-//       from: '"Hoa Sao Agent" <noreply@hoasao.vn>',
-//       to: 'quythang1997@gmail.com',
-//       subject: 'Your Support Request Has Been Accepted',
-//       html: `<p>Your Support Request Has Been Accepted</p>`
-//     }
-//     // transporter.sendMail(mailOptions, function (err, info) {
-//     //   if (err)
-//     //     return res.send(err)
-//     res.send(result)
-//     // })
-//   })
-// }
 exports.show = function (req, res) {
   const match = {}
   console.log(req.params.report)
@@ -214,5 +226,11 @@ exports.show = function (req, res) {
       result: result[0]
     }, true)
   })
-
+}
+exports.destroy = function (req, res) {
+  Report.findByIdAndRemove(req.body.id, function (error, Report) {
+    if (error)
+      return res.json(error)
+    res.json(Report)
+  })
 }

@@ -54,6 +54,9 @@ const reportSchema = new mongoose.Schema({
     id: {
       type: mongoose.Schema.Types.ObjectId
     }
+  },
+  reason : {
+    type: String
   }
 }, { timestamps: { createdAt: 'createdAt' } })
 
