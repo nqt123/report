@@ -66,14 +66,14 @@ buttonSearch.addEventListener('click', (e) => {
   for (let i = 0; i < searchColumns.length; i++) {
     searchTerm[searchColumns[i].attributes.name.value] = searchColumns[i].value != "" ? searchColumns[i].value : ""
   }
-  var searchString = "?"
+  var searchString = "&"
   Object.keys(searchTerm).forEach((key, i) => {
     if (searchTerm[key] == "") {
       return delete searchTerm[key]
     }
     searchString += key + "=" + searchTerm[key] + "&"
   })
-  if (searchString != "?") {
+  if (searchString != "&") {
     window.searchString = searchString
     location.hash = 'reports' + "?page=" + page + searchString
   }
