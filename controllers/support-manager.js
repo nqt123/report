@@ -79,8 +79,6 @@ exports.destroy = function(req,res){
 }
 exports.create = function (req, res) {    
     _SupportManager.create(req.body, function (error, result) {
-        
-   console.log(moment());
         let stt = {
             status:2,
             supporter:{
@@ -90,7 +88,6 @@ exports.create = function (req, res) {
         }
         _Report.findByIdAndUpdate(req.body.reportId, stt, function (error, ca) {
             let time=moment().diff(ca.createdAt,'minutes');
-        console.log(time);
         if(time>ca.processTime){
             _Report.findByIdAndUpdate(req.body.reportId,{late:true},function(err){
                 if(err){
@@ -104,7 +101,6 @@ exports.create = function (req, res) {
                     console.log(err);
                 }
             })
-            
         }
             var transporter = nodeMailer.createTransport({
                 service:" Gmail",
@@ -117,7 +113,12 @@ exports.create = function (req, res) {
                 from: '"Hoa Sao Supporter" <noreply@hoasao.vn>',
                 to: 'hoanghaivo98@gmail.com',
                 subject: 'Supporter Has Response Your Request',
-                html: `<p>Hỗ trợ viên ${req.session.user.name} đã phản hồi yêu cầu xử lý của bạn.</p>`
+                html: `<div>Hỗ trợ viên <strong> ${req.session.user.name} </strong> đã phản hồi yêu cầu xử lý của bạn.</div>
+                        <div>Dạng sự cố: ${result.typeOfCause}</div>
+                        <div>Chi tiết sự cố: ${result.detailCause}</div>
+                        <div>Nội dung xử lý: ${result.contentHandle}</div>
+                        <div>Giải pháp đề xuất: ${result.offerSolution}</div>
+                        <div>Trạng thái sau xử lý: ${result.statusAfterHandle}</div>`
             }
             transporter.sendMail(options)
                 .then(success=>{
@@ -154,7 +155,7 @@ exports.update = function (req, res) {
             from: '"Hoa Sao Supporter" <noreply@hoasao.vn>',
             to: 'hoanghaivo98@gmail.com',
             subject: 'Your Request Has Been Received',
-            html: `<p>Hỗ trợ viên : ${req.session.user.name} đã nhận yêu cầu xử lý của bạn.</p>`
+            html: `<p>Hỗ trợ viên :<strong> ${req.session.user.name} </strong> đã nhận yêu cầu xử lý của bạn.</p>`
         }
         transporter.sendMail(options,function(err,info){
             if(err){

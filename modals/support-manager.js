@@ -4,7 +4,6 @@ var SupportManagerSchema = new mongoose.Schema({
     detailCause:{type:String,default:""},
     contentHandle:{type:String,default:""},
     offerSolution:{type:String,default:""},
-    typeOfIncident:{type:String,default:""},
     statusAfterHandle:{type:String,default:""},
     reportId:{type:mongoose.Schema.Types.ObjectId}
 },{ timestamps: { createdAt: 'createdAt' } },{id: false, versionKey: 'v'});

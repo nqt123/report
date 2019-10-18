@@ -32,7 +32,7 @@
             headers: {
                 'Content-Type': 'application/json'
             }
-        }).then(res => res.json())
+        }).then(res => _.LoadPage(window.location.hash))
         
     })
         // Load lại trang
