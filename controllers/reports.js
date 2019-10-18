@@ -2,6 +2,8 @@ const Report = require('../modals/report')
 const nodeMailer = require('nodemailer')
 const Company = require('../modals/company')
 const SupportManager = require('../modals/support-manager')
+const SlaMenu = require('../modals/sla-menu')
+const SlaList = require('../modals/sla-list')
 const mongoose = require('mongoose')
 exports.index = {
   json: function (req, res) {
@@ -15,11 +17,11 @@ exports.index = {
     const page = req.query.page ? req.query.page : 1
     const limit = req.query.row ? req.query.row : 10
     ///generate search field
+
     let matchField = {}
     let createdBy = {}
     let supporter = {}
     var agg = Report.aggregate();
-
     ///find CreatedBy
     agg._pipeline.push({
       $lookup: {
@@ -56,7 +58,6 @@ exports.index = {
     Report.aggregatePaginate(agg, { page, limit, $unwind: "$createdBy", $match: createdBy, $match: supporter }, function (err, reports, node, count) {
       if (err)
         return res.send(err)
-      console.log(reports)
       var paginator = new pagination.SearchPaginator({
         prelink: '/reports',
         current: page,
@@ -107,29 +108,15 @@ exports.create = function (req, res) {
       from: '"Hoa Sao Agent" <noreply@hoasao.vn>',
       to: 'quythang1997@gmail.com',
       subject: 'New Support Request From Agent',
-      html: `<p style="font-size:30px;">YÊU CẦU CẦN XỬ LÝ MỚI</p>
-             <table>
-              <tr>
-                <td style="font-size : 15px; font-weight: bold; color: blue;">Tên dự án :</td>
-                <td>${result.name}</td>
-              </tr>
-              <tr>
-               <td style="font-size : 15px; font-weight: bold; color: blue;">Vị trí :</td>
-                <td>${result.position}</td>
-              </tr>
-              <tr>
-               <td style="font-size : 15px; font-weight: bold; color: blue;">Tiêu đề :</td>
-                <td>${result.title}</td>
-              </tr>
-              <tr>
-               <td style="font-size : 15px; font-weight: bold; color: blue;">Mô tả :</td>
-                <td>${result.description}</td>
-              </tr>
-              <tr>
-               <td style="font-size : 15px; font-weight: bold; color: blue;">Độ ưu tiên :</td>
-                <td>${result.prior}</td>
-              </tr>
-             </table>
+      html: `<div style="display: inline-block;background-color: #fefefe; height: 50px;line-height: 50px;"><span style="color:#ff375f;">Y</span><span style="color:#ff4b4c;">ê</span><span style="color:#ff6039;">u</span><span style="color:#ff7426;"> </span><span style="color:#ff8913;">C</span><span style="color:#ff9d00;">ầ</span><span style="color:#ffa802;">u</span><span style="color:#ffb404;"> </span><span style="color:#ffbf06;">M</span><span style="color:#ffcb08;">ớ</span><span style="color:#ffd60a;">i</span><span style="color:#cbd51e;"> </span><span style="color:#98d431;">T</span><span style="color:#64d245;">ừ</span><span style="color:#30d158;"> </span><span style="color:#26da79;">K</span><span style="color:#1de39b;">h</span><span style="color:#13edbc;">ố</span><span style="color:#0af6de;">i</span><span style="color:#00ffff;"> </span><span style="color:#02e6ff;">D</span><span style="color:#04ceff;">ự</span><span style="color:#06b5ff;"> </span><span style="color:#089dff;">Á</span><span style="color:#0a84ff;">n</span></div>
+             <div><span style="font-weight: bold; color: black;">Dự án:</span> ${result.name}</div>
+             <div><span style="font-weight: bold; color: black;">Vị trí:</span> ${result.position}</div>
+             <div><span style="font-weight: bold; color: black;">Số lượng nhận sự trong ca:</span> ${result.agentNumberInShift}</div>
+             <div><span style="font-weight: bold; color: black;">Số lượng nhận sự ảnh hưởng:</span> ${result.agentNumberInfluence}</div>
+             <div><span style="font-weight: bold; color: black;">Độ ảnh hưởng:</span> ${result.prior}</div>
+             <div><span style="font-weight: bold; color: black;">Loại:</span> ${result.typeDisplay}</div>
+             <div><span style="font-weight: bold; color: black;">Tiêu đề:</span> ${result.title}</div>
+             <div><span style="font-weight: bold; color: black;">Mô tả:</span> ${result.description}</div>
       `
     }
     transporter.sendMail(mailOptions, function (err, info) {
@@ -141,24 +128,52 @@ exports.create = function (req, res) {
 };
 
 exports.new = function (req, res) {
-  const company = Company.find({}).then(result =>
-    _.render(req, res, 'reports-new', {
-      title: 'Thêm mới Yêu cầu',
-      result
-    }, true)
-  )
+  const company = Company.find({}).then(result => {
+    SlaMenu.find({}).sort({ displayName: 1 }).then(list => {
+      if (req.query.type) {
+        const result = SlaList.aggregate([
+          {
+            $lookup: {
+              from: "slamenus",
+              localField: "category",
+              foreignField: "_id",
+              as: "category"
+            }
+          },
+          {
+            $unwind: "$category"
+          },
+          {
+            $match: {
+              "category.name": req.query.type
+            }
+          }
+        ], (err, result) => {
+          if (err)
+            return console.log(err)
+          return res.json(result)
+        })
+      }
+      else {
+        _.render(req, res, 'reports-new', {
+          title: 'Thêm mới Yêu cầu',
+          result,
+          listSla: list
+        }, true)
+      }
+    })
+  })
 };
 
 exports.update = function (req, res) {
   const report = Report.findById(req.params.report).then(report => {
-    console.log(req.body)
     if (req.body.updateState) {
       report.state = req.body.updateState
       if (req.body.updateState == "Undone") {
         report.status = 0
       }
     }
-    if(req.body.reason){
+    if (req.body.reason) {
       report.reason = req.body.reason
     }
     report.save().then(result => {
@@ -193,7 +208,6 @@ exports.update = function (req, res) {
 }
 exports.show = function (req, res) {
   const match = {}
-  console.log(req.params.report)
   SupportManager.aggregate([
     {
       $lookup:
