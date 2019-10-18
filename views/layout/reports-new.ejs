@@ -1,7 +1,4 @@
 <%-breadcrumb%>
-<script>
-
-</script>
 <div class="card">
   <div class="card-header">
     <h2 class="m-b-5"><%- title %></h2>
@@ -17,7 +14,7 @@
         <div class="col-sm-6">
           <select class="fg-line form-control" id="name">
             <%for(let i =0 ; i < result.length ; i++){%>
-              <option value="<%=result[i].name%>"><%=result[i].name%></option>
+            <option value="<%=result[i].name%>"><%=result[i].name%></option>
             <%}%>
           </select>
         </div>
@@ -44,14 +41,23 @@
         <label for="type" class="col-sm-3 control-label">Loại sự cố</span></label>
         <div class="col-sm-6">
           <select class="fg-line form-control" id="type">
-            <option value="Phần cứng">Phần cứng</option>
-            <option value="Phần mềm">Phần mềm</option>
-            <option value="Khác">Khác</option>
+              <option value=""> --Chọn-- </option>
+            <%for(let i = 0 ; i< listSla.length ; i++){%>
+            <option value="<%=listSla[i].name%>" data-typeDisplay="<%=listSla[i].displayName%>"><%=listSla[i].displayName%></option>
+            <%}%>
           </select>
         </div>
       </div>
       <div class="form-group">
-        <label for="title" class="col-sm-3 control-label">Tiêu đề sự cố <span class="required">*</span></span></label>
+          <label for="type" class="col-sm-3 control-label">Nội dung Sự cố</span></label>
+          <div class="col-sm-6">
+            <select class="fg-line form-control" id="report-description">
+              
+            </select>
+          </div>
+        </div>
+      <div class="form-group">
+        <label for="title" class="col-sm-3 control-label">Tiêu đề sự cố </span></label>
         <div class="col-sm-6">
           <div class="fg-line">
             <input type="text" value="" class="form-control input-sm" id="title" name="title">
@@ -60,7 +66,7 @@
         </div>
       </div>
       <div class="form-group">
-        <label for="description" class="col-sm-3 control-label">Nội dung sự cố<span class="required">*</span></label>
+        <label for="description" class="col-sm-3 control-label">Nội dung sự cố</label>
         <div class="col-sm-6">
           <div class="fg-line">
             <input type="text" value="" class="form-control input-sm" id="description" name="description">
@@ -89,6 +95,8 @@
           </div>
         </div>
       </div>
+      <input type="hidden" value="0" id="processTime" >
+      <input type="hidden" value="0" id="typeDisplay" >
       <div class="form-group m-b-0">
         <div class="col-sm-offset-3 col-sm-10">
           <a type="button" class="btn btn-default btn-icon-text m-t-10 m-r-10 waves-effect" href="/#reports"><i
@@ -100,3 +108,8 @@
     </form>
   </div>
 </div>
+<script>
+  document.querySelector('#type').addEventListener('change', (e)=>{
+
+  })
+</script>

@@ -2,8 +2,7 @@ const mongoose = require('mongoose')
 
 const reportSchema = new mongoose.Schema({
   name: {
-    type: String,
-    required: true
+    type: String
   },
   position: {
 
@@ -15,12 +14,10 @@ const reportSchema = new mongoose.Schema({
 
   },
   title: {
-    type: String,
-    required: true
+    type: String
   },
   description: {
-    type: String,
-    required: true
+    type: String
   },
   agentNumberInShift: {
     type: Number
@@ -57,6 +54,13 @@ const reportSchema = new mongoose.Schema({
   },
   reason : {
     type: String
+  },
+  processTime : {
+    type : Number,
+    default : 0
+  },
+  typeDisplay : {
+    type : String
   }
 }, { timestamps: { createdAt: 'createdAt' } })
 
