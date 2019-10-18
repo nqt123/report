@@ -1,7 +1,7 @@
 <%- breadcrumb %>
 <div class="card">
     <div class="card-header">
-        <h2 class="m-b-5"><%- title %></h2>
+        <h2 class="m-b-5 "><%- title %></h2>
     </div>
     <div class="card-body card-padding">
         <form role="form" class="form-horizontal" id="frm-edit" >
@@ -48,9 +48,7 @@
             <div class="form-group">
                 <label for="name" class="col-sm-3 control-label">Nội dung sự cố :</label>
                 <div class="col-sm-6">
-                    <div class="fg-line">
-                        <input type="text" maxlength="60" class="form-control"  value="<%- body.description %>" readonly>
-                    </div>
+                        <textarea type="text" rows="6" class="form-control input-sm" readonly><%- body.description %></textarea>
                 </div>
             </div>
             <div class="form-group">
@@ -69,6 +67,17 @@
                     </div>
                 </div>
             </div>
+
+            <%if(body.reason){%>
+             <div class="form-group ">
+                 <hr width="70%">
+                <label for="name" class="col-sm-3 control-label"> Phản hồi của Agent sau xử lý :</label>
+                <div class="col-sm-6">
+                        <textarea type="text" rows="6" class="form-control input-sm" readonly><%- body.reason %></textarea>
+                </div>
+            </div>
+            <%}%>
+           
             <div class="text-center">
                 <%if(body.status==0){%>
                     <a class="btn btn-primary waves-effect" data-id="<%- body._id %>" data-status="<%- body._id  %>" data-name="<%- body._id  %>" data-toggle="tooltip" data-placement="top" id="btn-received" name="btn-received">
@@ -84,6 +93,7 @@
                     </a>
                 <%}%>
                 <a class="btn btn-primary waves-effect btn-response" href="/#support-manager/new?_id=<%- body._id %>" data-id="<%- body._id %>" data-status="<%- body.status %>" data-name="<%- body.name %>" data-toggle="tooltip" data-placement="top" name="btn-response"> Phản hồi</a>
+                <a type="button" class="btn btn-default btn-icon-text waves-effect" href="/#support-manager"><i class="zmdi zmdi-arrow-left"></i>Quay lại</a>
             </div>
         </form>
     </div>

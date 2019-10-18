@@ -5,12 +5,7 @@
     <div class="lv-header-alt clearfix m-b-5">
         <h2 class="lvh-label hidden-xs">Danh sách các yêu cầu</h2>
         <ul class="lv-actions actions">
-            <li><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" data-original-title="Refresh"><i class="zmdi zmdi-refresh"></i></a></li>
-            <li class="hidden" id="li-hidden">
-                <a role="button" data-toggle="tooltip" data-placement="top" data-original-title="Xóa các mục đánh dấu" id="btn-delSelection">
-                    <i class="zmdi zmdi-delete"></i>
-                </a>
-            </li>
+            <li><a href="javascript:void(0)" data-toggle="tooltip" data-placement="top" data-original-title="Làm mới danh sách"><i class="zmdi zmdi-refresh"></i></a></li>
         </ul>
     </div>
     <div class="card-body">
@@ -18,14 +13,16 @@
             <table class="table table-bordered table-fix" id="table-categorys">
                 <thead>
                 <tr>
-                    <th class="bgm-orange c-white text-center w-30">#</th>
+                    <th class="bgm-orange c-white text-center w-30">TT</th>
                     <th class="w-120 bgm-orange c-white text-center">Tên dự án</th>
                     <th class="w-90 bgm-orange c-white text-center">Loại sự cố</th>
-                    <th class="w-120 bgm-orange c-white text-center">Tiêu đề sự cố</th>
-                    <th class="w-90 bgm-orange c-white text-center">Mức độ lỗi</th>
-                    <th class="w-90 bgm-orange c-white text-center">Mức độ ưu tiên xử lý</th>
-                    <th class="w-90 bgm-orange c-white text-center">Người gửi yêu cầu</th>
-                    <th class="w-90 bgm-orange c-white text-center">Tác vụ</th>
+                    <th class="w-120 bgm-orange c-white text-center">Tiêu đề</th>
+                    <th class="w-90 bgm-orange c-white text-center">Thời gian gửi</th>
+                    <th class="w-90 bgm-orange c-white text-center">Mức độ ưu tiên</th>
+                    <th class="w-120 bgm-orange c-white text-center">Người gửi</th>
+                    <th class="w-120 bgm-orange c-white text-center">Người nhận</th>
+                    <th class="w-90 bgm-orange c-white text-center">Trạng thái</th>
+                    <th class="w-120 bgm-orange c-white text-center">Tác vụ</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -35,13 +32,9 @@
                     <td class="text-center"><input class="form-control filter" type="text" placeholder="Tên dự án" id="name" name="name"></td>
                     <td class="text-center">
                         <select class="selectpicker" id="type" name="type">
-                            <option value=""><span class=""></span>-------</option>
-                            <option value="Phần cứng"><span class=""></span>Phần cứng</option>
-                            <option value="Phần mềm"><span class=""></span>Phần mềm</option>
-                            <option value="Khác"><span class=""></span>Khác</option>
                         </select>
                     </td>
-                    <td></td>
+                    <td class="text-center"><input class="form-control filter" type="text" placeholder="Tiều đề" id="title" name="title"></td>
                     <td class="text-center">
                     </td>
                     <td class="text-center">
@@ -67,14 +60,23 @@
                         </select>
                     </td>
                     <td></td>
+                    <td></td>
+                    <td class="text-center">
+                        <select class="selectpicker" id="status" name="status">
+                            <option value=""><span class="">-------</span></option>
+                            <option value="1"><span class="">Đã nhận</span></option>
+                            <option value="2"><span class="">Đã xử lý</span></option>
+                        </select>
+                    </td>
                     <td><button class="btn btn-primary btn-block waves-effect" id="btn-search" name="btn-search"><i class="zmdi zmdi-filter-list m-r-5"></i> Lọc</button></td>
                 </tr>
-                <script> var isZeroList = false; </script>
-                <% if (report.length == 0){ %>
-                <script> isZeroList   = true; </script>
-                <%}else{ %>
-                    <% report.forEach(function(el, i) { %>
-                    <tr>
+                    <% reports.forEach(function(el, i) { 
+                        let status= ""
+                        if(el.hasOwnProperty("status")){
+                            status = el.status
+                        }
+                    %>
+                    <tr id="item" class="stt<%=status%>">
                         <td class="select-cell text-center"><%- i+1 %></td>
                         <td>
                             <a href="/#support-manager/<%- el._id %>"><%- el.name %></a>
@@ -82,7 +84,7 @@
                         <input type="hidden" value="<%- el._id %>" name="id">
                         <td class="text-center text-capitalize"><%- el.type %></td>
                         <td class="text-center"><%- el.title %></td>
-                        <td class="text-center"><%- el.percentOfInfluence * 100 %>%</td>
+                        <td class="text-center"><%- moment(el.createdAt).format("HH:mm - Do MMM YYYY ") %></td>
                         <td class="text-center">
                             <%if(el.prior == 1){%>
                                 Mức 1
@@ -96,32 +98,45 @@
                                 Khẩn cấp
                             <%}%>
                         </td>
-                        <td class="text-center"><%- el.fieldName[0].displayName %></td>
+                       
+                        <td class="text-center"><%- el.fieldName[0].name%></td>
+                        <td class="text-center">
+                            <%if(el.hasOwnProperty("supporter")){%>
+                                <%- el.supporter.name%>
+                            <%}%>
+                        </td>
+                        <td>
+                            <%if(el.status ==0){%>
+                                <span class="" style="font-weight : bold; font-size : 1.1rem;">Chưa xử lý</span>
+                            <%}else if(el.status == 1){%>
+                                <span class="text-success" style="font-weight : bold; font-size : 1.1rem;">Đã được nhận</span>
+                            <%}else if(el.status ==2){%>
+                                <span class="text-danger" style="font-weight : bold; font-size : 1.1rem;">Đã xử lý</span>
+                            <%}%>
+                        </td>
                         <td class="text-center" >
-                            <% if(el.status == 2){ %>
-                                <a role="button" class="btn-remove btn-flat-bg" data-toggle="tooltip" data-placement="top" data-original-title="Xoá" data-id="<%- el._id %>"><i class="zmdi zmdi-close red f-23 "></i></a>
-                                <div class="btn btn-precessed  btn-block ">Đã xử lý</div>                                
-                            <% }else{%>
-                                <%if(el.status == 0){%>
-                                <a class="btn btn-primary btn-block waves-effect btn-received" data-id="<%- el._id %>" data-status="<%- el.status %>" data-name="<%- el.name %>" data-toggle="tooltip" data-placement="top"  name="btn-received">
+                            
+                            <%if(el.status == 0){%>
+                                <a class="btn btn-primary btn-inline waves-effect btn-received" data-id="<%- el._id %>" data-status="<%- el.status %>" data-name="<%- el.name %>" data-toggle="tooltip" data-placement="top"  name="btn-received">
                                  Nhận
                                 </a>
-                                <% }else if(el.status ==1){%>
-                                <a class="btn btn-primary btn-block waves-effect" >
-                                    Đã nhận
-                                </a>
-                                <%} %>
-                            <%}%>
-                            
-                            <a class="btn btn-primary btn-block waves-effect btn-response" href="/#support-manager/new?_id=<%- el._id %>" data-id="<%- el._id %>" data-status="<%- el.status %>" data-name="<%- el.name %>" data-toggle="tooltip" data-placement="top" name="btn-response"> Phản hồi</a>
-                            <!-- <a class="p-t-3 btn-flat-bg edit-category" href="/#support/<%- el._id %>/edit" data-id="<%- el._id %>" data-status="<%- el.status %>" data-name="<%- el.name %>" data-toggle="tooltip" data-placement="top" data-original-title="Sửa"><i class="zmdi zmdi-edit green f-17"></i></a> -->
-                            <!-- <a role="button" class="btn-remove btn-flat-bg" data-toggle="tooltip" data-placement="top" data-original-title="Xoá" data-id="<%- el._id %>"><i class="zmdi zmdi-close red f-23 "></i></a> -->
+                            <% }%>
+                            <a class="btn btn-primary btn-inline waves-effect btn-response" href="/#support-manager/new?_id=<%- el._id %>" data-id="<%- el._id %>" data-status="<%- el.status %>" data-name="<%- el.name %>" data-toggle="tooltip" data-placement="top" name="btn-response"> Phản hồi</a>
+                            <%if(el.status == 2){ %>
+                                <a role="button" class="btn-remove btn-flat-bg" data-toggle="tooltip" data-placement="top" data-original-title="Xoá" data-id="<%- el._id %>"><i class="zmdi zmdi-close red f-23 "></i></a>                                
+                            <% }%>
                         </td>
                     </tr>
+                    
                     <% }); %>
-                <%}%>
+                    
                 </tbody>
             </table>
+            <% if (reports.length == 0){ %>
+                <div id="empty-container" class="border">
+                    <div class="text-center" id="empty-text">Không có yêu cầu mới</div>
+                </div>
+            <%}%>
         </div>
 
         <% include ../paging.ejs %>
