@@ -10,8 +10,8 @@
                         <label for="name" class="col-sm-3 control-label">Loại nguyên nhân</label>
                         <div class="col-sm-6">
                             <select class="selectpicker" id="typeOfCause" name="typeOfCause">
-                                    <%for(let i =0 ; i < reports.length ; i++){%>
-                                        <option value="<%=reports[i].name%>"><%=reports[i].displayName%></option>
+                                    <%for(let i =0 ; i < result.length ; i++){%>
+                                        <option value="<%=result[i].name%>"><%=result[i].displayName%></option>
                                     <%}%>
                             </select>
                         </div>

@@ -42,7 +42,8 @@ const reportSchema = new mongoose.Schema({
     type: String
   },
   late: {
-    type: Boolean
+    type: Boolean,
+    default : false
   },
   supporter: {
     name: {
