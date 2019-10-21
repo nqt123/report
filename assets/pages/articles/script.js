@@ -320,6 +320,8 @@ var DFT = function ($) {
                     $this.toggleAttr('data-sort', 'none');
                     break;
             }
+            console.log(sort);
+            
             $this.siblings().toggleAttr('data-sort', 'none');
             $this.children('i').removeClass('zmdi-sort-asc');
             $this.children('i').removeClass('zmdi-sort-desc');

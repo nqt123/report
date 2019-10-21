@@ -1,7 +1,8 @@
 const refreshBtn = document.querySelector('#refreshBtn')
 const itemList = document.querySelectorAll('#item')
 const buttonSearch = document.querySelector('#btn-search')
-const liList = document.querySelectorAll('div.paginate ul.pagination li')
+const liList = document.querySelectorAll('div.
+ ul.pagination li')
 //Refresh Button Event
 refreshBtn.addEventListener('click', (e) => {
   console.log(itemList.length)
@@ -66,6 +67,7 @@ buttonSearch.addEventListener('click', (e) => {
   for (let i = 0; i < searchColumns.length; i++) {
     searchTerm[searchColumns[i].attributes.name.value] = searchColumns[i].value != "" ? searchColumns[i].value : ""
   }
+
   var searchString = "&"
   Object.keys(searchTerm).forEach((key, i) => {
     if (searchTerm[key] == "") {

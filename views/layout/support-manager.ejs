@@ -14,35 +14,37 @@
             <table class="table table-bordered table-fix" id="table-categorys">
                 <thead>
                     <tr>
-                        <th class="bgm-orange c-white text-center w-30">TT</th>
-                        <th class="w-120 bgm-orange c-white text-center">Tên dự án</th>
-                        <th class="w-90 bgm-orange c-white text-center">Loại sự cố</th>
-                        <th class="w-120 bgm-orange c-white text-center">Tiêu đề</th>
-                        <th class="w-90 bgm-orange c-white text-center">Thời gian gửi</th>
-                        <th class="w-90 bgm-orange c-white text-center">Mức độ ưu tiên</th>
-                        <th class="w-120 bgm-orange c-white text-center">Người gửi</th>
-                        <th class="w-120 bgm-orange c-white text-center">Người nhận</th>
-                        <th class="w-90 bgm-orange c-white text-center">Trạng thái</th>
-                        <th class="w-120 bgm-orange c-white text-center">Tác vụ</th>
+                        <th role="button" class="bgm-orange c-white text-center w-30 sort" data-sort="none" data-field="TT"><span>TT</span></th>
+                        <th role="button" class="w-120 bgm-orange c-white text-center sort" data-sort="none" data-field="name"><span>Tên dự án</span></th>
+                        <th role="button" class="w-90 bgm-orange c-white text-center sort" data-sort="none" data-field="type"><span>Loại sự cố</span></th>
+                        <th role="button" class="w-120 bgm-orange c-white text-center sort" data-sort="none" data-field="title"><span>Tiêu đề</span></th>
+                        <th role="button" class="w-90 bgm-orange c-white text-center sort" data-sort="none" data-field="createdAt"><span>Thời gian gửi</span></th>
+                        <th role="button" class="w-90 bgm-orange c-white text-center sort" data-sort="none" data-field="prior"><span>Mức độ ưu tiên</span></th>
+                        <th class="w-120 bgm-orange c-white text-center sort" ><span>Người gửi</span></th>
+                        <th class="w-120 bgm-orange c-white text-center sort" ><span>Người nhận</span></th>
+                        <th role="button" class="w-90 bgm-orange c-white text-center sort" data-sort="none" data-field="status"><span>Trạng thái</span></th>
+                        <th role="button" class="w-120 bgm-orange c-white text-center sort" >Tác vụ</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr id="searchForm" class="filter">
                         <td class="text-center">
                         </td>
-                        <td class="text-center"><input class="form-control filter" type="text" placeholder="Tên dự án"
-                                id="name" name="name"></td>
                         <td class="text-center">
-                            <select class="selectpicker" id="type" name="type">
+                            <input class="form-control searchCol" type="text" placeholder="Tên dự án" id="name" name="name">
+                        </td>
+                        <td class="text-center">
+                            <select class="tag-select searchCol" id="type" name="type">
                                 <option value=""><span class="">-------</span></option>
                             </select>
                         </td>
-                        <td class="text-center"><input class="form-control filter" type="text" placeholder="Tiều đề"
-                                id="title" name="title"></td>
+                        <td class="text-center">
+                            <input class="form-control searchCol" type="text" placeholder="Tiều đề" id="title" name="title">
+                        </td>
                         <td class="text-center">
                         </td>
                         <td class="text-center">
-                            <select class="selectpicker" id="prior" name="prior">
+                            <select class="tag-select searchCol" id="prior" name="prior">
                                 <option value="">
                                     -------
                                 </option>
@@ -66,7 +68,7 @@
                         <td></td>
                         <td></td>
                         <td class="text-center">
-                            <select class="selectpicker" id="status" name="status">
+                            <select class="tag-select searchCol" id="status" name="status">
                                 <option value=""><span class="">-------</span></option>
                                 <option value="1"><span class="">Đã nhận</span></option>
                                 <option value="2"><span class="">Đã xử lý</span></option>
