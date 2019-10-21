@@ -98,7 +98,6 @@ exports.index = {
             // Lấy dữ liệu danh sách campaign ở màn hình list /campains
             var sort = _.cleanSort(req.query,'');
             var query = _.cleanRequest(req.query);
-
             _async.parallel({
                 mainData: function(next){
                     var _pageCount = 0;

@@ -3,6 +3,7 @@ exports.index = {
         var page = _.has(req.query, 'page') ? parseInt(req.query.page) : 1;
         var rows = _.has(req.query, 'rows') ? parseInt(req.query.rows) : 10;
         var sort = _.cleanSort(req.query, '');
+        
         var aggregate = _Articles.aggregate();
         aggregate._pipeline = [{$lookup: {from: 'users', localField: 'author', foreignField: '_id', as: 'author'}},
             {$lookup: {from: 'users', localField: 'updater', foreignField: '_id', as: 'updater'}}];

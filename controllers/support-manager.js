@@ -11,26 +11,32 @@ exports.index = {
         const page = req.query.page ? req.query.page : 1
         const limit = req.query.row ? req.query.row : 10
         let query = {};
+        let sort = _.cleanSort(req.query, '');
+        
         let agg = _Report.aggregate();
+
+        //search
         if (_.has(req.query, 'name')) {
-            query.name = { $regex: new RegExp(_.stringRegex(req.query.name), 'i') };
+            query.name = { $regex: new RegExp(_.stringRegex(req.query.name), 'gi') };
         }
         if (_.has(req.query, 'type')) {
-            query.type = { $regex: new RegExp(_.stringRegex(req.query.type), 'i') };
+            query.type = { $regex: new RegExp(_.stringRegex(req.query.type), 'gi') };
         }
         if (_.has(req.query, 'title')) {
-            query.title = { $regex: new RegExp(_.stringRegex(req.query.title), 'i') };
+            query.title = { $regex: new RegExp(_.stringRegex(req.query.title), 'gi') };
         }
         if (_.has(req.query, 'prior')) {
             query.prior = +(req.query.prior);
         }
         if (_.has(req.query, 'status')) {
-            query.status = { $regex: new RegExp(_.stringRegex(req.query.status), 'i') };
+            query.status = { $regex: new RegExp(_.stringRegex(req.query.status), 'gi') };
         }
-
+        //sort
         if (!req.query.sort) {
             agg._pipeline.push({ $sort: { status: 1 } });
         }
+        if (!_.isEmpty(sort)) agg._pipeline.push({$sort: sort});
+        
         agg._pipeline.push({ $lookup: { from: "users", localField: "createdBy", foreignField: "_id", as: "fieldName" } })
         if (!_.isEmpty(query)) agg._pipeline.push({ $match: { $and: [query] } });
 
@@ -79,8 +85,6 @@ exports.destroy = function (req, res) {
 }
 exports.create = function (req, res) {
     _SupportManager.create(req.body, function (error, result) {
-
-        console.log(moment());
         let stt = {
             status: 2,
             supporter: {
@@ -90,7 +94,6 @@ exports.create = function (req, res) {
         }
         _Report.findByIdAndUpdate(req.body.reportId, stt, function (error, ca) {
             let time = moment().diff(ca.createdAt, 'minutes');
-            console.log(time);
             if (time > ca.processTime) {
                 _Report.findByIdAndUpdate(req.body.reportId, { late: true }, function (err) {
                     if (err) {
@@ -104,7 +107,6 @@ exports.create = function (req, res) {
                         console.log(err);
                     }
                 })
-
             }
             var transporter = nodeMailer.createTransport({
                 service: " Gmail",
@@ -117,7 +119,12 @@ exports.create = function (req, res) {
                 from: '"Hoa Sao Supporter" <noreply@hoasao.vn>',
                 to: 'hoanghaivo98@gmail.com',
                 subject: 'Supporter Has Response Your Request',
-                html: `<p>Hỗ trợ viên ${req.session.user.name} đã phản hồi yêu cầu xử lý của bạn.</p>`
+                html: `<div>Hỗ trợ viên <strong> ${req.session.user.name} </strong> đã phản hồi yêu cầu xử lý của bạn.</div>
+                        <div>Dạng sự cố: ${result.typeOfCause}</div>
+                        <div>Chi tiết sự cố: ${result.detailCause}</div>
+                        <div>Nội dung xử lý: ${result.contentHandle}</div>
+                        <div>Giải pháp đề xuất: ${result.offerSolution}</div>
+                        <div>Trạng thái sau xử lý: ${result.statusAfterHandle}</div>`
             }
             transporter.sendMail(options)
                 .then(success => {
