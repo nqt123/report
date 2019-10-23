@@ -139,12 +139,14 @@
                   <%for(let i=0 ; i < result.length; i ++){
                     let state = ""
                     let disabled = false
+                    let seen= result[i].seen ? "seen" : "unseen"
                     if(result[i].hasOwnProperty("state")){
                       state = result[i].state
                       disabled = result[i].state == "Undone"
                     }
+
                     %>
-                  <tr id="item" class="<%=state%>">
+                  <tr id="item" class="<%=state%> <%=seen%>">
                     <td class="text-center col-lg-1">
                       <%=i+1%>
                     </td>
