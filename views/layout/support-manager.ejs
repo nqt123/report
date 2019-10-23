@@ -93,11 +93,13 @@
                     </tr>
                     <% reports.forEach(function(el, i) { 
                         let status= ""
+                        let seen= el.seen ? "seen" : "unseen"
                         if(el.hasOwnProperty("status")){
                             status = el.status
                         }
                     %>
-                    <tr id="item" class="stt<%=status%>">
+                    
+                    <tr id="item" class="stt<%=status%> <%- seen%>">
                         <td class="select-cell text-center"><%- i+1 %></td>
                         <td>
                             <%- el.name %>
@@ -130,40 +132,45 @@
                             <%if(el.status ==0){%>
                             <span class="" style="font-weight : bold; font-size : 1.1rem;">Chưa xử lý</span>
                             <%}else if(el.status == 1){%>
-                            <span class="text-success" style="font-weight : bold; font-size : 1.1rem;">Đã được
+                            <span class="text-info" style="font-weight : bold; font-size : 1.1rem;">Đã được
                                 nhận</span>
                             <%}else if(el.status ==2){%>
-                            <span class="text-danger" style="font-weight : bold; font-size : 1.1rem;">Đã xử lý</span>
+                            <span class="text-success" style="font-weight : bold; font-size : 1.1rem;">Đã xử lý</span>
+                            <%}else if(el.status ==3){%>
+                                <span class="text-success" style="font-weight : bold; font-size : 1.1rem;">Đã hoàn thành</span>
+                            <%}else if(el.status ==4){%>
+                                <span class="text-success" style="font-weight : bold; font-size : 1.1rem;">Chưa hoàn thành</span>
                             <%}%>
                         </td>
                         <td class="text-center" style="display: flex; justify-content:space-evenly;" role="button" >
-                            <%if(el.status == 2){ %>
-                            <div id="delete" class="btn-remove" data-toggle="tooltip" data-placement="top"
-                                data-original-title="Xoá" data-id="<%- el._id %>"><i
-                                    class="zmdi zmdi-delete text-danger" style="font-size: 2rem;"></i></div>
-                            <% }%>
-                            <%if(el.status == 0){%>
-                            <div class="btn-received" data-id="<%- el._id %>" data-status="<%- el.status %>"
-                                data-name="<%- el.name %>" data-toggle="tooltip" data-placement="top"
-                                name="btn-received" data-original-title="Nhận yêu cầu">
-                                <i class="zmdi zmdi-wrench text-success" style="font-size: 2rem;"></i>
-                            </div>
-                            <% }else if(el.status == 1 ){%>
-                                <div></div>
-                            <%}%>
-                            <div data-toggle="tooltip" data-placement="top" data-original-title="Phản hồi">
-                                <a href="/#support-manager/new?_id=<%- el._id %>" data-id="<%- el._id %>"
-                                    data-status="<%- el.status %>" data-name="<%- el.name %>">
-                                    <i class="zmdi zmdi-comments text-success" style="font-size: 2rem;"></i>
-                                </a>
-                            </div>
-                            
                             <div id="detail" data-toggle="tooltip" data-placement="top" data-original-title="Chi tiết">
                                     <a href="/#support-manager/<%- el._id %>" data-id="<%- el._id %>"
                                     data-status="<%- el.status %>" data-name="<%- el.name %>">
                                     <i class="zmdi zmdi-eye text-success" style="font-size: 2rem;"></i>
                                 </a>
                             </div>
+                            <div data-toggle="tooltip" data-placement="top" data-original-title="Phản hồi">
+                                <a href="/#support-manager/new?_id=<%- el._id %>" data-id="<%- el._id %>"
+                                    data-status="<%- el.status %>" data-name="<%- el.name %>">
+                                    <i class="zmdi zmdi-comments text-success" style="font-size: 2rem;"></i>
+                                </a>
+                            </div>
+                            <%if(el.status == 0){%>
+                            <div class="btn-received" data-id="<%- el._id %>" data-status="<%- el.status %>"
+                                data-name="<%- el.name %>" data-toggle="tooltip" data-placement="top"
+                                name="btn-received" data-original-title="Nhận yêu cầu">
+                                <i class="zmdi zmdi-wrench text-success" style="font-size: 2rem;"></i>
+                            </div>
+                            <% }else if(el.status == 1 || el.status ==4 ){%>
+                                <div style="width:1em"></div>
+                            <%}%>
+                            
+                            <%if(el.status == 2 || el.status ==3 ){ %>
+                            <div id="delete" class="btn-remove" data-toggle="tooltip" data-placement="top"
+                                data-original-title="Xoá" data-id="<%- el._id %>"><i
+                                    class="zmdi zmdi-delete text-danger" style="font-size: 2rem;"></i></div>
+                            <% }%>
+                            
                         </td>
                     </tr>
 

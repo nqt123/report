@@ -5,7 +5,7 @@ $(".btn-received").bind('click', function () {
     let support = {
         id: targetIds
     }
-    $(".table-responsive").find(`div.btn-received[data-id=${targetIds}]`).css("display", "none");
+    // $(".table-responsive").find(`div.btn-received[data-id=${targetIds}]`).css("display", "none");
     fetch('/support-manager/' + targetIds, {
         method: 'PUT',
         body: JSON.stringify({ support }),

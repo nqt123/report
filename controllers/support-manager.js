@@ -39,7 +39,7 @@ exports.index = {
             }
             //sort
             if (!req.query.sort) {
-                agg._pipeline.push({ $sort: { status: 1 } });
+                agg._pipeline.push({ $sort: { updatedAt: 1 } });
             }
             if (!_.isEmpty(sort)) agg._pipeline.push({ $sort: sort });
 
@@ -165,7 +165,7 @@ exports.update = function (req, res) {
                 from: '"Hoa Sao Supporter" <noreply@hoasao.vn>',
                 to: 'hoanghaivo98@gmail.com',
                 subject: 'Your Request Has Been Received',
-                html: `<p>H? tr? viên : ${req.session.user.name} dã nh?n yêu c?u x? lý c?a b?n.</p>`
+                html: `<p>Hỗ trợ viên : ${req.session.user.name} đã nhận yêu cầu xử lý của bạn.</p>`
             }
             transporter.sendMail(options, function (err, info) {
                 if (err) {
@@ -179,7 +179,7 @@ exports.update = function (req, res) {
 
 exports.show = function (req, res) {
     _Report
-        .findById((req.params.supportmanager), function (err, result) {
+        .findByIdAndUpdate((req.params.supportmanager),{seen:true}, function (err, result) {
             _.render(req, res, 'support-manager-view', {
                 title: "Chi tiết yêu cầu",
                 body: result
