@@ -21,9 +21,9 @@ $reject.addEventListener('click', (e) => {
     }
     const state = {
       updateState: "Undone",
-      reason : inputValue
+      reason: inputValue
     }
- 
+
     fetch('/reports/' + reportId, {
       method: "PUT",
       body: JSON.stringify(state),
@@ -31,7 +31,7 @@ $reject.addEventListener('click', (e) => {
         'Content-Type': 'application/json'
       }
     }).then(res => res.text()).then(response => location.hash = "reports")
-    swal("Phản hồi thành công","","success");
+    swal("Phản hồi thành công", "", "success");
   });
 
 })
@@ -40,12 +40,28 @@ $resolve.addEventListener('click', (e) => {
   const state = {
     updateState: "Done"
   }
-  console.log('/reports/' + reportId)
-  fetch('/reports/' + reportId, {
-    method: "PUT",
-    body: JSON.stringify(state),
-    headers: {
-      'Content-Type': 'application/json'
+  swal({
+    title: "Nội dung",
+    text: "Hãy nhập lí do của vấn đề",
+    type: "input",
+    showCancelButton: true,
+    closeOnConfirm: false,
+    inputPlaceholder: "Nhập nội dung phản hồi (Không bắt buộc)"
+  }, function (inputValue) {
+    const state = {
+      updateState: "Done",
+      reason: inputValue
     }
-  }).then(res => res.text()).then(response => location.hash = "reports")
+    if (inputValue === "") {
+      delete state.value
+    }
+    fetch('/reports/' + reportId, {
+      method: "PUT",
+      body: JSON.stringify(state),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.text()).then(response => location.hash = "reports")
+    swal("Phản hồi thành công", "", "success");
+  });
 })

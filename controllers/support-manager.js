@@ -148,38 +148,32 @@ exports.create = function (req, res) {
 };
 
 exports.update = function (req, res) {
-    let item = {
-        status: 1,
-        supporter: {
-            name: req.session.user.displayName,
-            id: req.session.user._id
-        }
-    }
-    _Report.findByIdAndUpdate(req.params.supportmanager, item, function (error, ca) {
+    _Report.findById(req.body.support.id).then(report => {
+        report.status = 1
+        report.supporter.name = req.session.user['displayName']
+        report.supporter.id = req.session.user['_id']
 
-        if (error) {
-            res.send(error)
-        }
-        var transporter = nodeMailer.createTransport({
-            service: " Gmail",
-            auth: {
-                user: "hoasaorequester@gmail.com",
-                pass: "Nqt123abc123"
+        report.save().then(result => {
+            var transporter = nodeMailer.createTransport({
+                service: " Gmail",
+                auth: {
+                    user: "hoasaorequester@gmail.com",
+                    pass: "Nqt123abc123"
+                }
+            })
+            var options = {
+                from: '"Hoa Sao Supporter" <noreply@hoasao.vn>',
+                to: 'hoanghaivo98@gmail.com',
+                subject: 'Your Request Has Been Received',
+                html: `<p>H? tr? viên : ${req.session.user.name} dã nh?n yêu c?u x? lý c?a b?n.</p>`
             }
+            transporter.sendMail(options, function (err, info) {
+                if (err) {
+                    return res.send(err);
+                }
+                res.send(info)
+            })
         })
-        var options = {
-            from: '"Hoa Sao Supporter" <noreply@hoasao.vn>',
-            to: 'hoanghaivo98@gmail.com',
-            subject: 'Your Request Has Been Received',
-            html: `<p>Hỗ trợ viên :<strong> ${req.session.user.name} </strong> đã nhận yêu cầu xử lý của bạn.</p>`
-        }
-        transporter.sendMail(options, function (err, info) {
-            if (err) {
-                return res.send(err);
-            }
-            res.send(info)
-        })
-        // res.json({code: (error ? 500 : 200), message: error ? error : ca});
     })
 };
 

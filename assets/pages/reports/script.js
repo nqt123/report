@@ -1,8 +1,7 @@
 const refreshBtn = document.querySelector('#refreshBtn')
 const itemList = document.querySelectorAll('#item')
 const buttonSearch = document.querySelector('#btn-search')
-const liList = document.querySelectorAll('div.
- ul.pagination li')
+const liList = document.querySelectorAll('div ul.pagination li')
 //Refresh Button Event
 refreshBtn.addEventListener('click', (e) => {
   console.log(itemList.length)
@@ -18,40 +17,40 @@ for (let i = 0; i < itemList.length; i++) {
   })
 }
 
-//Delete foreach row
-for (let i = 0; i < itemList.length; i++) {
-  itemList[i].querySelector('#delete').addEventListener('click', function (e) {
-    const reportName = document.querySelector('#report-name').textContent
-    swal({
-      title: `Xác nhận xoá yêu cầu tiêu đề ${reportName}`,
-      text: "Sau khi xoá yêu cầu sẽ không thể phục hồi",
-      type: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#DD6B55",
-      confirmButtonText: "Yes",
-      cancelButtonText: "No",
-      closeOnConfirm: true,
-      closeOnCancel: true,
-    },
-      function (isConfirm) {
-        if (isConfirm) {
-          const id = itemList[i].querySelector('td#id').textContent.trim()
-          fetch('/reports/' + id, {
-            method: 'DELETE',
-            body: JSON.stringify({ id }),
-            headers: {
-              'Content-type': 'application/json'
-            }
-            // }).then(res => res.json()).then(response => _.LoadPage(window.location.hash))
-          }).then(res => res.json()).then(response => {
-            _.LoadPage(location.hash)
-          })
-        }
-      }
-    );
-  })
-}
-//
+// //Delete foreach row
+// for (let i = 0; i < itemList.length; i++) {
+//   itemList[i].querySelector('#delete').addEventListener('click', function (e) {
+//     const reportName = document.querySelector('#report-name').textContent
+//     swal({
+//       title: `Xác nhận xoá yêu cầu tiêu đề ${reportName}`,
+//       text: "Sau khi xoá yêu cầu sẽ không thể phục hồi",
+//       type: "warning",
+//       showCancelButton: true,
+//       confirmButtonColor: "#DD6B55",
+//       confirmButtonText: "Yes",
+//       cancelButtonText: "No",
+//       closeOnConfirm: true,
+//       closeOnCancel: true,
+//     },
+//       function (isConfirm) {
+//         if (isConfirm) {
+//           const id = itemList[i].querySelector('td#id').textContent.trim()
+//           fetch('/reports/' + id, {
+//             method: 'DELETE',
+//             body: JSON.stringify({ id }),
+//             headers: {
+//               'Content-type': 'application/json'
+//             }
+//             // }).then(res => res.json()).then(response => _.LoadPage(window.location.hash))
+//           }).then(res => res.json()).then(response => {
+//             _.LoadPage(location.hash)
+//           })
+//         }
+//       }
+//     );
+//   })
+// }
+// //
 
 const $searchButtons = document.querySelectorAll('.searchColumn')
 for (let i = 0; i < $searchButtons.length; i++) {

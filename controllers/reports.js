@@ -38,8 +38,14 @@ exports.index = {
       agg._pipeline.push({ $sort: { createdAt: -1 } })
     }
     //Searching
+    if (req.query.supporter) {
+      matchField["supporter.name"] = req.query.supporter
+    }
     if (req.query.name) {
       matchField["name"] = { $regex: new RegExp(req.query.name, 'gi') }
+    }
+    if (req.query.status) {
+      matchField["status"] = { $regex: new RegExp(req.query.status, 'gi') }
     }
     if (req.query.state) {
       matchField["state"] = req.query.state
@@ -52,6 +58,7 @@ exports.index = {
     if (req.query.createdBy) {
       agg._pipeline.push({ $match: { "creator.displayName": { $regex: new RegExp(req.query.createdBy, 'gi') } } })
     }
+
     //Apply match with field generated
     agg._pipeline.push({ $match: matchField })
     // aggUser._pipeline.push({ $match: supporter })
@@ -149,6 +156,7 @@ exports.new = function (req, res) {
             }
           }
         ], (err, result) => {
+          console.log(result)
           if (err)
             return console.log(err)
           return res.json(result)
@@ -168,10 +176,8 @@ exports.new = function (req, res) {
 exports.update = function (req, res) {
   const report = Report.findById(req.params.report).then(report => {
     if (req.body.updateState) {
+      report.status = req.body.updateState == "Done" ? 3 : 4
       report.state = req.body.updateState
-      if (req.body.updateState == "Undone") {
-        report.status = 0
-      }
     }
     if (req.body.reason) {
       report.reason = req.body.reason

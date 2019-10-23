@@ -10,7 +10,7 @@
     </div>
     <form class="form-horizontal" id="form-create-report">
       <div class="form-group">
-        <label for="name" class="col-sm-3 control-label">Tên Dự án <span class="required">*</span></label>
+        <label for="name" class="col-sm-3 control-label">Tên Dự án<span class="required">*</span></label>
         <div class="col-sm-6">
           <select class="fg-line form-control" id="name">
             <%for(let i =0 ; i < result.length ; i++){%>
@@ -38,26 +38,34 @@
         </div>
       </div>
       <div class="form-group">
-        <label for="type" class="col-sm-3 control-label">Loại sự cố</span></label>
+        <label for="type" class="col-sm-3 control-label">Loại sự cố<span
+            class="required">*</span></span></label>
         <div class="col-sm-6">
           <select class="fg-line form-control" id="type">
-              <option value=""> --Chọn-- </option>
+              <option value="-1"> --Chọn-- </option>
             <%for(let i = 0 ; i< listSla.length ; i++){%>
-            <option value="<%=listSla[i].name%>" data-typeDisplay="<%=listSla[i].displayName%>"><%=listSla[i].displayName%></option>
+            <option value="<%=listSla[i].name%>" data-typeDisplay="<%=listSla[i].displayName%>">
+              <%=listSla[i].displayName%></option>
             <%}%>
           </select>
         </div>
       </div>
       <div class="form-group">
-          <label for="type" class="col-sm-3 control-label">Nội dung Sự cố</span></label>
+          <label for="type" class="col-sm-3 control-label">Dạng Sự cố</span></label>
           <div class="col-sm-6">
             <select class="fg-line form-control" id="report-description">
               
             </select>
           </div>
         </div>
+        <div class="form-group">
+          <label for="type" class="col-sm-3 control-label">SLA Sự cố</span></label>
+          <div class="col-sm-6">
+            <input class="fg-line form-control" id="sla" readonly />
+          </div>
+        </div>
       <div class="form-group">
-        <label for="title" class="col-sm-3 control-label">Tiêu đề sự cố </span></label>
+        <label for="title" class="col-sm-3 control-label">Tiêu đề sự cố<span class="required">*</span></span></label>
         <div class="col-sm-6">
           <div class="fg-line">
             <input type="text" value="" class="form-control input-sm" id="title" name="title">
@@ -66,11 +74,10 @@
         </div>
       </div>
       <div class="form-group">
-        <label for="description" class="col-sm-3 control-label">Nội dung sự cố</label>
+        <label for="description" class="col-sm-3 control-label">Nội dung sự cố<span class="required">*</span></label>
         <div class="col-sm-6">
           <div class="fg-line">
             <input type="text" value="" class="form-control input-sm" id="description" name="description">
-            <input type="hidden" value="" id="updateId">
           </div>
         </div>
       </div>
@@ -80,7 +87,6 @@
         <div class="col-sm-6">
           <div class="fg-line">
             <input type="text" value="" class="form-control input-sm" id="agentNumberInShift" name="agentNumberInShift">
-            <input type="hidden" value="" id="updateId">
           </div>
         </div>
       </div>
@@ -91,7 +97,15 @@
           <div class="fg-line">
             <input type="text" value="" class="form-control input-sm" id="agentNumberInfluence"
               name="agentNumberInfluence">
-            <input type="hidden" value="" id="updateId">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="agentNumberInfluence" class="col-sm-3 control-label">Mức độ ảnh hưởng</label>
+        <div class="col-sm-6">
+          <div class="fg-line">
+            <input type="text" value="" class="form-control input-sm" id="priorValue"
+              name="" readonly>
           </div>
         </div>
       </div>
@@ -102,7 +116,7 @@
           <a type="button" class="btn btn-default btn-icon-text m-t-10 m-r-10 waves-effect" href="/#reports"><i
               class="m-r-5 zmdi zmdi-arrow-left"></i>Quay lại</a>
           <button type="submit" class="btn btn-primary btn-icon-text m-t-10 waves-effect" id="submitBtn"><i
-              class="m-r-5 zmdi zmdi-plus-circle-o"></i>Xác nhận</button>
+              class="m-r-5 zmdi zmdi-plus-circle-o"></i>Gửi yêu cầu</button>
         </div>
       </div>
     </form>
