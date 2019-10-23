@@ -12,50 +12,59 @@ exports.index = {
         const limit = req.query.row ? req.query.row : 10
         let query = {};
         let sort = _.cleanSort(req.query, '');
-        
-        let agg = _Report.aggregate();
 
-        //search
-        if (_.has(req.query, 'name')) {
-            query.name = { $regex: new RegExp(_.stringRegex(req.query.name), 'gi') };
-        }
-        if (_.has(req.query, 'type')) {
-            query.type = { $regex: new RegExp(_.stringRegex(req.query.type), 'gi') };
-        }
-        if (_.has(req.query, 'title')) {
-            query.title = { $regex: new RegExp(_.stringRegex(req.query.title), 'gi') };
-        }
-        if (_.has(req.query, 'prior')) {
-            query.prior = +(req.query.prior);
-        }
-        if (_.has(req.query, 'status')) {
-            query.status = { $regex: new RegExp(_.stringRegex(req.query.status), 'gi') };
-        }
-        //sort
-        if (!req.query.sort) {
-            agg._pipeline.push({ $sort: { status: 1 } });
-        }
-        if (!_.isEmpty(sort)) agg._pipeline.push({$sort: sort});
-        
-        agg._pipeline.push({ $lookup: { from: "users", localField: "createdBy", foreignField: "_id", as: "fieldName" } })
-        if (!_.isEmpty(query)) agg._pipeline.push({ $match: { $and: [query] } });
+        _async.parallel({
+            menus: function (next) {
+                _SlaMenu.find({}, next);
+            }
+        }, function (error, result) {
+            menus = result.menus
 
-        _Report.aggregatePaginate(agg, { page, limit }, function (err, results, node, count) {
-            if (err)
-                return res.send(err)
-            var paginator = new pagination.SearchPaginator({
-                prelink: '/support-manager',
-                current: page,
-                rowsPerPage: limit,
-                totalResult: count
+            let agg = _Report.aggregate();
+
+            if (_.has(req.query, 'name')) {
+                query.name = { $regex: new RegExp(_.stringRegex(req.query.name), 'gi') };
+            }
+            if (_.has(req.query, 'typeDisplay')) {
+                query.typeDisplay = { $regex: new RegExp(_.stringRegex(req.query.typeDisplay), 'gi') };
+            }
+            if (_.has(req.query, 'title')) {
+                query.title = { $regex: new RegExp(_.stringRegex(req.query.title), 'gi') };
+            }
+            if (_.has(req.query, 'prior')) {
+                query.prior = +(req.query.prior);
+            }
+            if (_.has(req.query, 'status')) {
+                query.status = { $regex: new RegExp(_.stringRegex(req.query.status), 'gi') };
+            }
+            //sort
+            if (!req.query.sort) {
+                agg._pipeline.push({ $sort: { status: 1 } });
+            }
+            if (!_.isEmpty(sort)) agg._pipeline.push({ $sort: sort });
+
+            agg._pipeline.push({ $lookup: { from: "users", localField: "createdBy", foreignField: "_id", as: "fieldName" } })
+
+            if (!_.isEmpty(query)) agg._pipeline.push({ $match: { $and: [query] } });
+            _Report.aggregatePaginate(agg, { page, limit }, function (err, results, node, count) {
+                if (err)
+                    return res.send(err)
+                var paginator = new pagination.SearchPaginator({
+                    prelink: '/support-manager',
+                    current: page,
+                    rowsPerPage: limit,
+                    totalResult: count
+                })
+                return _.render(req, res, 'support-manager', {
+                    title: 'Danh sách các Yêu cầu',
+                    reports: results,
+                    menus: menus,
+                    paging: paginator.getPaginationData(),
+                    plugins: ['moment', ['bootstrap-select'], ['bootstrap-datetimepicker'], ['bootstrap-daterangepicker'], ['chosen']]
+                }, true, err);
             })
-            return _.render(req, res, 'support-manager', {
-                title: 'Danh sách các Yêu cầu',
-                reports: results,
-                paging: paginator.getPaginationData(),
-                plugins: ['moment', ['bootstrap-select'], ['bootstrap-datetimepicker'], ['bootstrap-daterangepicker'], ['chosen']]
-            }, true, err);
-        })
+        }
+        )
     }
 }
 exports.new = function (req, res) {
@@ -88,10 +97,11 @@ exports.create = function (req, res) {
         let stt = {
             status: 2,
             supporter: {
-                name: req.session.user.name,
+                name: req.session.user.displayName,
                 id: req.session.user._id
             }
         }
+
         _Report.findByIdAndUpdate(req.body.reportId, stt, function (error, ca) {
             let time = moment().diff(ca.createdAt, 'minutes');
             if (time > ca.processTime) {
@@ -141,7 +151,7 @@ exports.update = function (req, res) {
     let item = {
         status: 1,
         supporter: {
-            name: req.session.user.name,
+            name: req.session.user.displayName,
             id: req.session.user._id
         }
     }
