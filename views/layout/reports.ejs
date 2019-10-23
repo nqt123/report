@@ -33,44 +33,48 @@
               <table class="table table-bordered table-fix table-hover" id="tbl-ticket" style="overflow:auto">
                 <thead>
                   <tr>
-                    <th data-sort="none" role="button" class="col-lg-3 bgm-orange c-white text-center sort" style="width: 5%;">
+                    <th data-sort="none" role="button" class="col-lg-3 bgm-orange c-white text-center sort"
+                      style="width: 5%;">
                       TT
                     </th>
-                    <th data-sort="none" sortName="name" role="button" class="col-lg-1 bgm-orange c-white text-center sort">
-                      Tên Công ty
-                    </th>
-                    <th data-sort="none" sortName="updatedBy" role="button" class="bgm-orange c-white text-center sort">
-                      Người tạo
+                    <th data-sort="none" sortName="name" role="button"
+                      class="col-lg-1 bgm-orange c-white text-center sort">
+                      Tên dự án
                     </th>
                     <th data-sort="none" sortName="field_product_type" role="button"
                       class="bgm-orange c-white text-center sort">
-                      Loại
+                      Dạng Sự cố
                     </th>
                     <th data-sort="none" sortName="status" role="button" class="bgm-orange c-white text-center sort">
-                      Tiêu đề
+                      Tiêu đề sự cố
+                    </th>
+                    <th data-sort="none" sortName="status" role="button" class="bgm-orange c-white text-center sort">
+                      Mức độ ảnh hưởng
+                    </th>
+                    <th data-sort="none" sortName="updatedBy" role="button" class="bgm-orange c-white text-center sort">
+                      Người gửi yêu cầu
+                    </th>
+                    <th class="bgm-orange c-white text-center">
+                      Thời gian bắt đầu
                     </th>
                     <th class="bgm-orange c-white text-center">
                       Trạng thái yêu cầu
                     </th>
                     <th class="bgm-orange c-white text-center">
+                      Kỹ thuật xử lý
+                    </th>
+                    <th class="bgm-orange c-white text-center">
                       Trạng thái
                     </th>
-                    <th class="bgm-orange c-white text-center">
-                      Supporter
-                    </th>
-                    <th class="bgm-orange c-white text-center">
-                      Ngày tạo
-                    </th>
-                    <th class="bgm-orange c-white text-center">
+                    <!-- <th class="bgm-orange c-white text-center">
                       Tình trạng
-                    </th>
+                    </th> -->
                     <th class="bgm-orange c-white text-center">
                       Chi tiết
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  
                   <tr class="filter" id="search-input" class="text-center">
                     <td>
                     </td>
@@ -78,18 +82,23 @@
                       <input type="text" class="form-control input-sm searchColumn" name="name" placeholder="VD: 7Home">
                     </td>
                     <td>
+                      <input type="text" class="form-control input-sm searchColumn" name="typeDisplay"
+                        placeholder="VD: 7Home">
+                    </td>
+                    <td>
+                      <input type="text" class="form-control input-sm searchColumn" name="title"
+                        placeholder=" VD: Quy Thang">
+                    </td>
+                    <td>
+                      <input type="text" class="form-control input-sm searchColumn" name="prior"
+                        placeholder=" VD: Quy Thang">
+                    </td>
+                    <td>
                       <input type="text" class="form-control input-sm searchColumn" name="createdBy"
                         placeholder=" VD: Quy Thang">
                     </td>
                     <td>
-                      <select name="type" class="tag-select searchColumn" id="" disabled>
-                        <option value="" selected>- Chọn -</option>
-                        <option value="product">Placeholder</option>
-                        <option value="customer-demand">Placeholder</option>
-                      </select>
-                    </td>
-                    <td>
-                      <input type="text" class="form-control input-sm searchColumn" name="title"
+                      <input type="text" class="form-control input-sm searchColumn" name="createdBy"
                         placeholder=" VD: Quy Thang">
                     </td>
                     <td>
@@ -101,27 +110,23 @@
                       </select>
                     </td>
                     <td>
+                      <input type="text" class="form-control input-sm searchColumn" name="supporter"
+                        placeholder=" VD: Nguyen Quy Thang">
+                    </td>
+                    <td>
                       <select class="tag-select searchColumn" name="late">
                         <option selected value="">- Chọn -</option>
                         <option value=false> Đúng hạn </option>
                         <option value=true> Quá hạn </option>
                       </select>
                     </td>
-                    <td>
-                      <input type="text" class="form-control input-sm searchColumn" name="supporter"
-                        placeholder=" VD: Nguyen Quy Thang">
-                    </td>
-                    <td>
-                      <input type="text" class="form-control input-sm searchColumn" name="createdAt" placeholder=" N/A"
-                        disabled>
-                    </td>
-                    <td>
+                    <!-- <td>
                       <select class="tag-select searchColumn" name="state" style="font-size: 12px;">
                         <option selected value="" style="font-size: 12px;">- Chọn -</option>
                         <option value="Done" style="font-size: 12px;"> Hoàn Thành </option>
                         <option value="Undone" style="font-size: 12px;"> Chưa Hoàn Thành </option>
                       </select>
-                    </td>
+                    </td> -->
                     <td>
                       <button type="button" class="btn btn-primary btn-block waves-effect" id="btn-search"
                         name="btn-search">
@@ -149,14 +154,20 @@
                     <td class="col-lg-1">
                       <%=result[i].name%>
                     </td>
-                    <td>
-                      <%=result[i].creator.displayName%>
-                    </td>
                     <td class="text-center">
                       <%=result[i].typeDisplay%>
                     </td>
                     <td class="text-center" id="report-name">
                       <%=result[i].title%>
+                    </td>
+                    <td class="text-center">
+                      <%=result[i].percentOfInfluence*100%>%
+                    </td>
+                    <td>
+                      <%=result[i].creator.displayName%>
+                    </td>
+                    <td>
+                      <%=moment(result[i].createdAt).format("HH:mm - Do MMM YYYY")%>
                     </td>
                     <td class="text-center">
                       <%switch (result[i].status) {
@@ -169,13 +180,16 @@
                         case '2':
                           %><span class="text-success">Đã xử lý</span><%
                           break;
+                        case '3':
+                          %><span class="text-success">Đã hoàn thành</span><%
+                          break;
+                        case '4':
+                          %><span class="text-success">Chưa hoàn thành</span><%
+                          break;
                         default:
                           %><%
                           break;
                       }%>
-                    </td>
-                    <td>
-
                     </td>
                     <td>
                       <%if(result[i].hasOwnProperty('supporter')){%>
@@ -183,22 +197,13 @@
                       <%}%>
                     </td>
                     <td>
-                      <%=moment(result[i].createdAt).format("HH:mm - Do MMM YYYY")%>
-                    </td>
-                    <td class="text-center">
-                      <%if(result[i].hasOwnProperty('state')){%>
-                      <% if(result[i].state == "Done") {%>
-                      <span class="text-success" style="font-weight : bold; font-size : 1.1rem;">Hoàn Thành</span>
-                      <%}else{%>
-                      <span class="text-danger" style="font-weight : bold; font-size : 1.1rem;">Chưa Hoàn Thành</span>
-                      <%}%>
+                      <%if(result[i].hasOwnProperty('late')){%>
+                      <%=result[i].late == true ? "Quá hạn" : "Đúng hạn"%>
                       <%}%>
                     </td>
                     <td class="text-center" style="display: flex; justify-content:space-evenly;" role="button">
                       <div id="detail" data-toggle="tooltip" data-placement="top" data-original-title="Chi Tiết"> <i
                           class="zmdi zmdi-eye text-success" style="font-size: 2rem;"></i></div>
-                      <div id="delete" data-toggle="tooltip" data-placement="top" data-original-title="Xoá"> <i
-                          class="zmdi zmdi-delete text-danger" style="font-size: 2rem;"></i></div>
                     </td>
                   </tr>
                   <%}%>
@@ -206,12 +211,12 @@
               </table>
               <%if(result.length == 0 ){%>
 
-                  <div id="empty-container" class="border">
-                    <a href="/#reports/new">
-                      <div class="text-center" id="empty-text">Nhấn để thêm yêu cầu</div>
-                    </a>
-                  </div>
-                  <%}%>
+              <div id="empty-container" class="border">
+                <a href="/#reports/new">
+                  <div class="text-center" id="empty-text">Nhấn để thêm yêu cầu</div>
+                </a>
+              </div>
+              <%}%>
               <div class="text-center" id="ticket-total">
                 <!--<b>-->
                 <!--<span class="TXT_TOTAL"></span>:-->
@@ -225,8 +230,8 @@
       </div>
     </div>
     <% if(paging.pageCount > 1){ %>
-                  <% include ../paging.ejs %>
-                  <% } %>
+              <% include ../paging.ejs %>
+              <% } %>
           </div>
         </div>
         <script>
