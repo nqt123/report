@@ -1,0 +1,21 @@
+div.column {
+  width: 48%;
+  border: 1px solid gray;
+  border-radius: 7px;
+  padding: 5px;
+  max-height: 400px;
+  overflow: scroll;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+div.modal-body {
+  display: flex;
+  justify-content: space-between;
+}
+
+div.column header {
+  height: 30px;
+  line-height: 30px;
+  border-bottom: 1px solid gray;
+}

@@ -4,6 +4,8 @@ const Company = require('../modals/company')
 const SupportManager = require('../modals/support-manager')
 const SlaMenu = require('../modals/sla-menu')
 const SlaList = require('../modals/sla-list')
+const SupportEmail = require('../modals/support-email')
+const User = require('../modals/users')
 const mongoose = require('mongoose')
 exports.index = {
   json: function (req, res) {
@@ -35,7 +37,7 @@ exports.index = {
     })
     //Sorting
     if (!req.query.sort) {
-      agg._pipeline.push({ $sort: { createdAt: -1 } })
+      agg._pipeline.push({ $sort: { updatedAt: -1 } })
     }
     //Searching
     if (req.query.supporter) {
@@ -102,7 +104,6 @@ exports.create = function (req, res) {
     report.prior = 5
   }
 
-
   report.save().then(result => {
     var transporter = nodeMailer.createTransport({
       service: 'Gmail',
@@ -113,7 +114,7 @@ exports.create = function (req, res) {
     })
     var mailOptions = {
       from: '"Hoa Sao Agent" <noreply@hoasao.vn>',
-      to: 'hoanghaivo98@gmail.com',
+      to: req.body.emailList,
       subject: 'New Support Request From Agent',
       html: `<div style="display: inline-block;background-color: #fefefe; height: 50px;line-height: 50px;"><span style="color:#ff375f;">Y</span><span style="color:#ff4b4c;">ê</span><span style="color:#ff6039;">u</span><span style="color:#ff7426;"> </span><span style="color:#ff8913;">C</span><span style="color:#ff9d00;">ầ</span><span style="color:#ffa802;">u</span><span style="color:#ffb404;"> </span><span style="color:#ffbf06;">M</span><span style="color:#ffcb08;">ớ</span><span style="color:#ffd60a;">i</span><span style="color:#cbd51e;"> </span><span style="color:#98d431;">T</span><span style="color:#64d245;">ừ</span><span style="color:#30d158;"> </span><span style="color:#26da79;">K</span><span style="color:#1de39b;">h</span><span style="color:#13edbc;">ố</span><span style="color:#0af6de;">i</span><span style="color:#00ffff;"> </span><span style="color:#02e6ff;">D</span><span style="color:#04ceff;">ự</span><span style="color:#06b5ff;"> </span><span style="color:#089dff;">Á</span><span style="color:#0a84ff;">n</span></div>
              <div><span style="font-weight: bold; color: black;">Dự án:</span> ${result.name}</div>
@@ -128,7 +129,7 @@ exports.create = function (req, res) {
     }
     transporter.sendMail(mailOptions, function (err, info) {
       if (err)
-        return res.send(err)
+        console.log(err)
     })
     res.send(result)
   })
@@ -137,6 +138,18 @@ exports.create = function (req, res) {
 exports.new = function (req, res) {
   const company = Company.find({}).then(result => {
     SlaMenu.find({}).sort({ displayName: 1 }).then(list => {
+      if (req.query.email) {
+        let supportEmail;
+        SupportEmail.find({}).then(result => {
+          supportEmail = result
+        })
+        return User.find({}).then(result => {
+          res.send({
+            supportEmail,
+            userEmail: result
+          })
+        })
+      }
       if (req.query.type) {
         const result = SlaList.aggregate([
           {
@@ -156,7 +169,6 @@ exports.new = function (req, res) {
             }
           }
         ], (err, result) => {
-          console.log(result)
           if (err)
             return console.log(err)
           return res.json(result)

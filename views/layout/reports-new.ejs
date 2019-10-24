@@ -115,15 +115,50 @@
         <div class="col-sm-offset-3 col-sm-10">
           <a type="button" class="btn btn-default btn-icon-text m-t-10 m-r-10 waves-effect" href="/#reports"><i
               class="m-r-5 zmdi zmdi-arrow-left"></i>Quay lại</a>
-          <button type="submit" class="btn btn-primary btn-icon-text m-t-10 waves-effect" id="submitBtn"><i
-              class="m-r-5 zmdi zmdi-plus-circle-o"></i>Gửi yêu cầu</button>
+              <button type="submit" class="btn btn-primary btn-icon-text m-t-10 waves-effect" data-toggle="modal" id="submitBtn" data-target="#selectEmail">
+                Gửi yêu cầu
+              </button>
+        </div>
+      </div>
+      <div class="modal fade" id="selectEmail">
+        <div class="modal-dialog">
+          <div class="modal-content">
+      
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">NGƯỜI NHẬN YÊU CẦU</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+      
+            <!-- Modal body -->
+            <div class="modal-body">
+              <div class="column card">
+                <header class="text-center">NHÓM XỬ LÝ</header>
+                <div id="SupportEmail">
+
+                </div>
+              </div>
+              <div class="column card">
+                  <header class="text-center">NHÂN SỰ</header>
+                  <div id="UserEmail">
+                  </div>
+                </div>
+            </div>
+      
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-success" id="createReport" data-dismiss="modal">Gửi</button>
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Đóng</button>
+            </div>
+      
+          </div>
         </div>
       </div>
     </form>
   </div>
 </div>
 <script>
-  document.querySelector('#type').addEventListener('change', (e)=>{
+  document.querySelector('#type').addEventListener('change', (e) => {
 
   })
 </script>
