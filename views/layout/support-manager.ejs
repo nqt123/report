@@ -10,20 +10,27 @@
         </ul>
     </div>
     <div class="card-body">
-        <div class="table-responsive" style="min-height: 500px">
+        <div class="table-responsive" style="min-height: 200px">
             <table class="table table-bordered table-fix" id="table-categorys">
                 <thead>
                     <tr>
-                        <th role="button" class="bgm-orange c-white text-center w-30 sort" data-sort="none" data-field="TT"><span>TT</span></th>
-                        <th role="button" class="w-120 bgm-orange c-white text-center sort" data-sort="none" data-field="name"><span>Tên dự án</span></th>
-                        <th role="button" class="w-90 bgm-orange c-white text-center sort" data-sort="none" data-field="type"><span>Loại sự cố</span></th>
-                        <th role="button" class="w-120 bgm-orange c-white text-center sort" data-sort="none" data-field="title"><span>Tiêu đề</span></th>
-                        <th role="button" class="w-90 bgm-orange c-white text-center sort" data-sort="none" data-field="createdAt"><span>Thời gian gửi</span></th>
-                        <th role="button" class="w-90 bgm-orange c-white text-center sort" data-sort="none" data-field="prior"><span>Mức độ ưu tiên</span></th>
-                        <th class="w-120 bgm-orange c-white text-center sort" ><span>Người gửi</span></th>
-                        <th class="w-120 bgm-orange c-white text-center sort" ><span>Người nhận</span></th>
-                        <th role="button" class="w-90 bgm-orange c-white text-center sort" data-sort="none" data-field="status"><span>Trạng thái</span></th>
-                        <th role="button" class="w-120 bgm-orange c-white text-center sort" >Tác vụ</th>
+                        <th role="button" class="bgm-orange c-white text-center w-30 sort" data-sort="none"
+                            data-field="TT"><span>TT</span></th>
+                        <th role="button" class="w-120 bgm-orange c-white text-center sort" data-sort="none"
+                            data-field="name"><span>Tên dự án</span></th>
+                        <th role="button" class="w-90 bgm-orange c-white text-center sort" data-sort="none"
+                            data-field="type"><span>Loại sự cố</span></th>
+                        <th role="button" class="w-120 bgm-orange c-white text-center sort" data-sort="none"
+                            data-field="title"><span>Tiêu đề</span></th>
+                        <th role="button" class="w-90 bgm-orange c-white text-center sort" data-sort="none"
+                            data-field="createdAt"><span>Thời gian gửi</span></th>
+                        <th role="button" class="w-90 bgm-orange c-white text-center sort" data-sort="none"
+                            data-field="prior"><span>Mức độ ưu tiên</span></th>
+                        <th class="w-120 bgm-orange c-white text-center sort"><span>Người gửi</span></th>
+                        <th class="w-120 bgm-orange c-white text-center sort"><span>Người nhận</span></th>
+                        <th role="button" class="w-90 bgm-orange c-white text-center sort" data-sort="none"
+                            data-field="status"><span>Trạng thái</span></th>
+                        <th role="button" class="w-120 bgm-orange c-white text-center sort">Tác vụ</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -31,22 +38,28 @@
                         <td class="text-center">
                         </td>
                         <td class="text-center">
-                            <input class="form-control searchCol" type="text" placeholder="Tên dự án" id="name" name="name">
+                            <input class="form-control searchCol" type="text" placeholder="Tên dự án" id="name"
+                                name="name">
                         </td>
                         <td class="text-center">
-                            <select class="tag-select searchCol" id="type" name="type">
-                                <option value=""><span class="">-------</span></option>
+                            <select class="tag-select searchCol" id="typeDisplay" name="typeDisplay">
+                                <option value="">-Chọn-</option>
+                                <%for(let i=0; i< menus.length;i++){%>
+                                <option value="<%-menus[i].displayName%>" data-typeDisplay="menus[i].displayName">
+                                    <%-menus[i].displayName%></option>
+                                <%}%>
                             </select>
                         </td>
                         <td class="text-center">
-                            <input class="form-control searchCol" type="text" placeholder="Tiều đề" id="title" name="title">
+                            <input class="form-control searchCol" type="text" placeholder="Tiều đề" id="title"
+                                name="title">
                         </td>
                         <td class="text-center">
                         </td>
                         <td class="text-center">
                             <select class="tag-select searchCol" id="prior" name="prior">
                                 <option value="">
-                                    -------
+                                    -Chọn-
                                 </option>
                                 <option value="1">
                                     Mức 1
@@ -69,7 +82,8 @@
                         <td></td>
                         <td class="text-center">
                             <select class="tag-select searchCol" id="status" name="status">
-                                <option value=""><span class="">-------</span></option>
+                                <option value=""><span class="">-Chọn-</span></option>
+                                <option value="0"><span class="">Đang chờ</span></option>
                                 <option value="1"><span class="">Đã nhận</span></option>
                                 <option value="2"><span class="">Đã xử lý</span></option>
                             </select>
@@ -79,14 +93,16 @@
                     </tr>
                     <% reports.forEach(function(el, i) { 
                         let status= ""
+                        let seen= el.seen ? "seen" : "unseen"
                         if(el.hasOwnProperty("status")){
                             status = el.status
                         }
                     %>
-                    <tr id="item" class="stt<%=status%>">
+                    
+                    <tr id="item" class="stt<%=status%> <%- seen%>">
                         <td class="select-cell text-center"><%- i+1 %></td>
                         <td>
-                            <a href="/#support-manager/<%- el._id %>"><%- el.name %></a>
+                            <%- el.name %>
                         </td>
                         <input type="hidden" value="<%- el._id %>" name="id">
                         <td class="text-center text-capitalize"><%- el.typeDisplay %></td>
@@ -106,7 +122,7 @@
                             <%}%>
                         </td>
                        
-                        <td class="text-center"><%- el.fieldName[0].name%></td>
+                        <td class="text-center"><%- el.fieldName[0].displayName%></td>
                         <td class="text-center">
                             <%if(el.hasOwnProperty("supporter")){%>
                             <%- el.supporter.name%>
@@ -116,30 +132,45 @@
                             <%if(el.status ==0){%>
                             <span class="" style="font-weight : bold; font-size : 1.1rem;">Chưa xử lý</span>
                             <%}else if(el.status == 1){%>
-                            <span class="text-success" style="font-weight : bold; font-size : 1.1rem;">Đã được
+                            <span class="text-info" style="font-weight : bold; font-size : 1.1rem;">Đã được
                                 nhận</span>
                             <%}else if(el.status ==2){%>
-                            <span class="text-danger" style="font-weight : bold; font-size : 1.1rem;">Đã xử lý</span>
+                            <span class="text-success" style="font-weight : bold; font-size : 1.1rem;">Đã xử lý</span>
+                            <%}else if(el.status ==3){%>
+                                <span class="text-success" style="font-weight : bold; font-size : 1.1rem;">Đã hoàn thành</span>
+                            <%}else if(el.status ==4){%>
+                                <span class="text-success" style="font-weight : bold; font-size : 1.1rem;">Chưa hoàn thành</span>
                             <%}%>
                         </td>
-                        <td class="text-center" >
-                            
+                        <td class="text-center" style="display: flex; justify-content:space-evenly;" role="button" >
+                            <div id="detail" data-toggle="tooltip" data-placement="top" data-original-title="Chi tiết">
+                                    <a href="/#support-manager/<%- el._id %>" data-id="<%- el._id %>"
+                                    data-status="<%- el.status %>" data-name="<%- el.name %>">
+                                    <i class="zmdi zmdi-eye text-success" style="font-size: 2rem;"></i>
+                                </a>
+                            </div>
+                            <div data-toggle="tooltip" data-placement="top" data-original-title="Phản hồi">
+                                <a href="/#support-manager/new?_id=<%- el._id %>" data-id="<%- el._id %>"
+                                    data-status="<%- el.status %>" data-name="<%- el.name %>">
+                                    <i class="zmdi zmdi-comments text-success" style="font-size: 2rem;"></i>
+                                </a>
+                            </div>
                             <%if(el.status == 0){%>
-                            <a class="btn btn-primary btn-inline waves-effect btn-received" data-id="<%- el._id %>"
-                                data-status="<%- el.status %>" data-name="<%- el.name %>" data-toggle="tooltip"
-                                data-placement="top" name="btn-received">
-                                Nhận
-                            </a>
-                            <% }%>
-                            <a class="btn btn-primary btn-inline waves-effect btn-response"
-                                href="/#support-manager/new?_id=<%- el._id %>" data-id="<%- el._id %>"
-                                data-status="<%- el.status %>" data-name="<%- el.name %>" data-toggle="tooltip"
-                                data-placement="top" name="btn-response"> Phản hồi</a>
-                            <%if(el.status == 2){ %>
-                            <a role="button" class="btn-remove btn-flat-bg" data-toggle="tooltip" data-placement="top"
+                            <div class="btn-received" data-id="<%- el._id %>" data-status="<%- el.status %>"
+                                data-name="<%- el.name %>" data-toggle="tooltip" data-placement="top"
+                                name="btn-received" data-original-title="Nhận yêu cầu">
+                                <i class="zmdi zmdi-wrench text-success" style="font-size: 2rem;"></i>
+                            </div>
+                            <% }else if(el.status == 1 || el.status ==4 ){%>
+                                <div style="width:1em"></div>
+                            <%}%>
+                            
+                            <%if(el.status == 2 || el.status ==3 ){ %>
+                            <div id="delete" class="btn-remove" data-toggle="tooltip" data-placement="top"
                                 data-original-title="Xoá" data-id="<%- el._id %>"><i
-                                    class="zmdi zmdi-close red f-23 "></i></a>
+                                    class="zmdi zmdi-delete text-danger" style="font-size: 2rem;"></i></div>
                             <% }%>
+                            
                         </td>
                     </tr>
 

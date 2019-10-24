@@ -5,7 +5,7 @@ $(".btn-received").bind('click', function () {
     let support = {
         id: targetIds
     }
-    $(".table-responsive").find(`a.btn-received[data-id=${targetIds}]`).css("display", "none");
+    // $(".table-responsive").find(`div.btn-received[data-id=${targetIds}]`).css("display", "none");
     fetch('/support-manager/' + targetIds, {
         method: 'PUT',
         body: JSON.stringify({ support }),
@@ -77,7 +77,7 @@ buttonSearch.addEventListener('click', (e) => {
 })
 
 //sort
-$(document).on('click', '.sort', function(e){
+$(document).on('click', '.table-fix th', function (e) {
     let $this = $(this)
     let sort = 'none'
     if (_.isUndefined($this.attr('data-field'))) return false
@@ -91,17 +91,16 @@ $(document).on('click', '.sort', function(e){
             $this.attr('data-sort', 'desc')
             break;
         case 'desc':
-            $this.attr('data-sort','none')
+            $this.attr('data-sort', 'none')
             break;
     }
-    
-    $this.siblings().attr('data-sort','none')
+
+    $this.siblings().attr('data-sort', 'none')
     $this.children('span').removeClass('zmdi-sort-asc')
     $this.children('span').removeClass('zmdi-sort-desc')
     $this.children('span').addClass(_.isEqual(sort, 'none') ? '' : ('zmdi-sort-' + sort));
     let name = $this.attr('data-field');
-    
-   location.hash = "support-manager" + "?sort=" + name +":" + sort
+    location.hash = "support-manager" + "?sort=" + name + ":" + sort
 })
 
 var DFT = function ($) {
