@@ -8,6 +8,8 @@ refreshBtn.addEventListener('click', (e) => {
   e.preventDefault()
   _.LoadPage(window.location.hash);
 })
+
+
 //New Report Route and Scroll Top
 for (let i = 0; i < itemList.length; i++) {
   itemList[i].querySelector('#detail').addEventListener('click', function (e) {
@@ -16,6 +18,17 @@ for (let i = 0; i < itemList.length; i++) {
     window.scrollTo({ top: 25, behavior: 'smooth' })
   })
 }
+//Bind Item
+for (let i = 0; i < itemList.length; i++) {
+  itemList[i].addEventListener('click', (e) => {
+    const id = itemList[i].querySelector('td#id').textContent.trim()
+    location.hash = 'reports' + '/' + id
+    window.scrollTo({ top: 25, behavior: 'smooth' })
+  })
+}
+
+
+
 
 // //Delete foreach row
 // for (let i = 0; i < itemList.length; i++) {

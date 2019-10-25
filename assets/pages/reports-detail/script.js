@@ -12,7 +12,7 @@ $reject.addEventListener('click', (e) => {
     type: "input",
     showCancelButton: true,
     closeOnConfirm: false,
-    inputPlaceholder: "Write something"
+    inputPlaceholder: "Lí do không hoàn thành"
   }, function (inputValue) {
     if (inputValue === false) return false;
     if (inputValue === "") {
@@ -41,8 +41,7 @@ $resolve.addEventListener('click', (e) => {
     updateState: "Done"
   }
   swal({
-    title: "Nội dung",
-    text: "Hãy nhập lí do của vấn đề",
+    title: "Nội dung phản hồi",
     type: "input",
     showCancelButton: true,
     closeOnConfirm: false,

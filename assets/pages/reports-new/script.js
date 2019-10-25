@@ -1,4 +1,4 @@
-console.log("Loaded 123123")
+
 const $form = document.querySelector('#form-create-report')
 const $name = document.querySelector('#name')
 const $position = document.querySelector('#position')
@@ -15,8 +15,77 @@ const $typeDisplay = document.querySelector('#typeDisplay')
 const reportList = document.querySelector('#report-description')
 const $sla = document.querySelector('#sla')
 const $priorValue = document.querySelector('#priorValue')
-$form.addEventListener('submit', (e) => {
+const $submitBtn = document.querySelector('#submitBtn')
+const $selectModal = document.querySelector('#selectEmail')
+const $createReport = document.querySelector('#createReport')
+const $SupportEmail = document.querySelector('#SupportEmail')
+const $UserEmail = document.querySelector('#UserEmail')
+const $emails = document.getElementsByName('email')
+
+
+$submitBtn.addEventListener('click', (e) => {
+  $SupportEmail.innerHTML = ""
+  $UserEmail.innerHTML = ""
   e.preventDefault()
+  const name = $name.value
+  const type = $type.value
+  const title = $title.value
+  const description = $description.value
+  const agentNumberInShift = $agentNumberInShift.value
+  const agentNumberInfluence = $agentNumberInfluence.value
+  if (parseInt(agentNumberInShift) < parseInt(agentNumberInfluence)) {
+    $selectModal.id = "None"
+    window.scrollTo({ top: 25, behavior: 'smooth' })
+    return textMessage.textContent = "Số lượng nhân sự trong ca phải lớn hơn số lượng nhận sự ảnh hưởng"
+  }
+  if (name == "" || agentNumberInShift == "" || type == -1 || agentNumberInfluence == "" || title == "" || description == "") {
+    $selectModal.id = "None"
+    window.scrollTo({ top: 25, behavior: 'smooth' })
+    return textMessage.textContent = "Vui lòng nhập các trường bắt buộc"
+  }
+  else {
+    $selectModal.id = "selectEmail"
+  }
+  fetch('/reports/new?email=' + true,
+    {
+      method: "GET",
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    }
+  ).then(res => res.json()).then(respond => {
+    respond.supportEmail.forEach(email => {
+      $SupportEmail.insertAdjacentHTML('beforeend',
+        `
+      <div class="form-check">
+        <input class="form-check-input" name="email" type="checkbox" value="${email.email}">
+        <label class="form-check-label" for="defaultCheck2">
+          ${email.name}
+       </label>
+      </div>
+      `)
+    })
+    respond.userEmail.forEach(email => {
+      $UserEmail.insertAdjacentHTML('beforeend',
+        `
+      <div class="form-check">
+        <input class="form-check-input" name="email" type="checkbox" value="${email.email}">
+        <label class="form-check-label" for="defaultCheck2">
+          ${email.name}
+       </label>
+      </div>
+      `)
+    })
+  })
+})
+createReport.addEventListener('click', (e) => {
+  e.preventDefault()
+  const emailList = []
+  const checkedValue = document.querySelectorAll('.form-check-input:checked')
+  for(let i = 0 ; i < checkedValue.length ; i++){
+    emailList.push(checkedValue[i].value)
+  }
   const name = $name.value
   const position = $position.value
   const CRM = $CRM.value
@@ -27,45 +96,35 @@ $form.addEventListener('submit', (e) => {
   const agentNumberInfluence = $agentNumberInfluence.value
   const processTime = parseInt(reportList.value)
   const typeDisplay = reportList.options[document.querySelector('#report-description').selectedIndex].text
-
   let percentOfInfluence = 0
-  if (parseInt(agentNumberInShift) < parseInt(agentNumberInfluence)) {
-    return textMessage.textContent = "Số lượng nhân sự trong ca phải lớn hơn số lượng nhận sự ảnh hưởng"
+  button.disabled = true
+  textMessage.textContent = ""
+  const report = {
+    name,
+    position,
+    CRM,
+    processTime,
+    type,
+    typeDisplay,
+    title,
+    description,
+    agentNumberInShift,
+    agentNumberInfluence,
+    percentOfInfluence,
+    emailList
   }
-  else {
-    percentOfInfluence = agentNumberInShift == 0 || agentNumberInShift == "" ? 1 : (agentNumberInfluence / agentNumberInShift).toFixed(3)
-  }
-  if (name == "" || agentNumberInShift == "" || type == -1 || agentNumberInfluence == "" || title == "" || description == "") {
-    return textMessage.textContent = "Vui lòng nhập các trường bắt buộc"
-  }
-  else {
-    button.disabled = true
-    textMessage.textContent = ""
-    const report = {
-      name,
-      position,
-      CRM,
-      processTime,
-      type,
-      typeDisplay,
-      title,
-      description,
-      agentNumberInShift,
-      agentNumberInfluence,
-      percentOfInfluence
-    }
-    console.log(report)
-    fetch('/reports',
-      {
-        method: "POST",
-        body: JSON.stringify(report),
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
+
+  fetch('/reports',
+    {
+      method: "POST",
+      body: JSON.stringify(report),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
       }
-    ).then(res => res.json()).then(respond => window.location.hash = 'reports')
-  }
+    }
+  ).then(res => res.json()).then(respond => window.location.hash = 'reports')
+
 })
 
 $type.addEventListener('change', (e) => {
