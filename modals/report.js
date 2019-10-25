@@ -56,6 +56,14 @@ const reportSchema = new mongoose.Schema({
     type : Boolean,
     default : false
   },
+  supportseen:[{
+    name:{
+      type:String
+    },
+    id:{
+      type:mongoose.Schema.Types.ObjectId
+    }
+  }],
   reason : {
     type: String
   },

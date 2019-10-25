@@ -1,5 +1,5 @@
 const buttonSearch = document.querySelector("#btn-search");
-
+const bt = document.querySelector("#empty-container div")
 $(".btn-received").bind('click', function () {
     let targetIds = $(this).data("id");
     let support = {
@@ -18,6 +18,8 @@ $(".btn-received").bind('click', function () {
 // Load lại trang
 $('.zmdi-refresh').bind('click', function () {
     _.LoadPage(location.hash = "support-manager");
+    console.log(bt);
+    
 });
 
 // Xóa 1 phần tử
@@ -75,7 +77,18 @@ buttonSearch.addEventListener('click', (e) => {
     }
 
 })
+//processing after search
 
+if($(".table-responsive tbody tr").length==1){
+    swal({
+        title: "Thông báo",
+        text: "Không tìm thấy bản ghi phù hợp",
+        type: "warning", showCancelButton: false, confirmButtonColor: "#DD6B55", confirmButtonText: "Quay lại!"
+    },
+    function () {
+        window.history.back();
+    })
+}
 //sort
 $(document).on('click', '.table-fix th', function (e) {
     let $this = $(this)

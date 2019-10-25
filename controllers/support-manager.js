@@ -39,7 +39,7 @@ exports.index = {
             }
             //sort
             if (!req.query.sort) {
-                agg._pipeline.push({ $sort: { updatedAt: 1 } });
+                agg._pipeline.push({ $sort: { status: 1 } });
             }
             if (!_.isEmpty(sort)) agg._pipeline.push({ $sort: sort });
 
@@ -103,7 +103,7 @@ exports.create = function (req, res) {
         }
 
         _Report.findByIdAndUpdate(req.body.reportId, stt, function (error, ca) {
-            let time = moment().diff(ca.createdAt, 'minutes');
+            let time = moment().diff(ca.updatedAt, 'minutes');
             if (time > ca.processTime) {
                 _Report.findByIdAndUpdate(req.body.reportId, { late: true }, function (err) {
                     if (err) {
@@ -178,11 +178,16 @@ exports.update = function (req, res) {
 };
 
 exports.show = function (req, res) {
+    let supportseen = {
+        id: req.session.user._id,
+        name: req.session.user.displayName
+    }
     _Report
-        .findByIdAndUpdate((req.params.supportmanager),{seen:true}, function (err, result) {
+        .findByIdAndUpdate((req.params.supportmanager), { seen: true, $addToSet: { supportseen: supportseen } }, function (err, result) {
             _.render(req, res, 'support-manager-view', {
                 title: "Chi tiết yêu cầu",
                 body: result
             }, true, err);
         });
+
 };

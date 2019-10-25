@@ -1,4 +1,4 @@
-/* .stt1{
+.stt1{
     color: #A3A3A3;
   background-color: rgb(236, 255, 236);
 }
@@ -7,7 +7,7 @@
 }
 .stt1:hover{
     color: black;
-} */
+}
 .unseen{
     font-weight: bold;
 }
