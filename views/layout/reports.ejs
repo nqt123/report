@@ -58,13 +58,16 @@
                       Thời gian bắt đầu
                     </th>
                     <th class="bgm-orange c-white text-center">
-                      Trạng thái yêu cầu
+                      Trạng thái xử lý
                     </th>
                     <th class="bgm-orange c-white text-center">
                       Kỹ thuật xử lý
                     </th>
                     <th class="bgm-orange c-white text-center">
                       Trạng thái
+                    </th>
+                    <th class="bgm-orange c-white text-center">
+                      Thời gian kết thúc
                     </th>
                     <!-- <th class="bgm-orange c-white text-center">
                       Tình trạng
@@ -120,6 +123,10 @@
                         <option value=true> Quá hạn </option>
                       </select>
                     </td>
+                    <td>
+                      <input type="text" class="form-control input-sm searchColumn" name="supporter"
+                        placeholder=" VD: Nguyen Quy Thang">
+                    </td>
                     <!-- <td>
                       <select class="tag-select searchColumn" name="state" style="font-size: 12px;">
                         <option selected value="" style="font-size: 12px;">- Chọn -</option>
@@ -163,7 +170,7 @@
                       <%=result[i].title%>
                     </td>
                     <td class="text-center">
-                      <%=result[i].percentOfInfluence*100%>%
+                      <%=result[i].agentNumberInfluence%>/<%=result[i].agentNumberInShift%>
                     </td>
                     <td>
                       <%=result[i].creator.displayName%>
@@ -199,10 +206,13 @@
                       <%}%>
                     </td>
                     <td>
-                      <%if(result[i].hasOwnProperty('late')){%>
+                      <%if(result[i].hasOwnProperty('late') && result[i].processTime != 0){%>
                       <%=result[i].late == true ? "Quá hạn" : "Đúng hạn"%>
+                      <%} else if(result[i].processTime == 0){%>
+                      Chưa có SLA
                       <%}%>
                     </td>
+                    <td></td>
                     <td class="text-center" style="display: flex; justify-content:space-evenly;" role="button">
                       <div id="detail" data-toggle="tooltip" data-placement="top" data-original-title="Chi Tiết"> <i
                           class="zmdi zmdi-eye text-success" style="font-size: 2rem;"></i></div>

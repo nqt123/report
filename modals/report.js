@@ -65,6 +65,12 @@ const reportSchema = new mongoose.Schema({
   },
   typeDisplay : {
     type : String
+  },
+  lastRespondAt : {
+    type : Date
+  },
+  endAt : {
+    type : Date
   }
 }, { timestamps: { createdAt: 'createdAt' } })
 
