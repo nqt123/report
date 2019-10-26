@@ -190,6 +190,7 @@ exports.update = function (req, res) {
     if (req.body.updateState) {
       report.status = req.body.updateState == "Undone" ? 3 : 4
       report.state = req.body.updateState
+      report.endAt = report.lastRespondAt
     }
     if (req.body.reason) {
       report.reason = req.body.reason
