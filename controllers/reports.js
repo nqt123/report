@@ -188,7 +188,7 @@ exports.new = function (req, res) {
 exports.update = function (req, res) {
   const report = Report.findById(req.params.report).then(report => {
     if (req.body.updateState) {
-      report.status = req.body.updateState == "Done" ? 3 : 4
+      report.status = req.body.updateState == "Undone" ? 3 : 4
       report.state = req.body.updateState
     }
     if (req.body.reason) {

@@ -39,10 +39,12 @@ exports.index = {
             }
             //sort
             if (!req.query.sort) {
-                agg._pipeline.push({ $sort: { updatedAt: 1 } });
+                agg._pipeline.push({ $sort: { status: 1 } });
             }
             if (!_.isEmpty(sort)) agg._pipeline.push({ $sort: sort });
 
+            
+            
             agg._pipeline.push({ $lookup: { from: "users", localField: "createdBy", foreignField: "_id", as: "fieldName" } })
 
             if (!_.isEmpty(query)) agg._pipeline.push({ $match: { $and: [query] } });
@@ -59,6 +61,7 @@ exports.index = {
                     title: 'Danh sách các Yêu cầu',
                     reports: results,
                     menus: menus,
+                    sortData:sort,
                     paging: paginator.getPaginationData(),
                     plugins: ['moment', ['bootstrap-select'], ['bootstrap-datetimepicker'], ['bootstrap-daterangepicker'], ['chosen']]
                 }, true, err);
@@ -81,7 +84,7 @@ exports.new = function (req, res) {
 
 exports.destroy = function (req, res) {
     _Report.findById(req.params.supportmanager, function (err, kq) {
-        if (!kq.status == 2) {
+        if (!kq.status == 4) {
             res.json({ code: (error ? 500 : 200), message: error ? error : ca });
         }
         else {
@@ -103,7 +106,7 @@ exports.create = function (req, res) {
         }
 
         _Report.findByIdAndUpdate(req.body.reportId, stt, function (error, ca) {
-            let time = moment().diff(ca.createdAt, 'minutes');
+            let time = moment().diff(ca.updatedAt, 'minutes');
             if (time > ca.processTime) {
                 _Report.findByIdAndUpdate(req.body.reportId, { late: true }, function (err) {
                     if (err) {
@@ -129,12 +132,12 @@ exports.create = function (req, res) {
                 from: '"Hoa Sao Supporter" <noreply@hoasao.vn>',
                 to: 'hoanghaivo98@gmail.com',
                 subject: 'Supporter Has Response Your Request',
-                html: `<div>Hỗ trợ viên <strong> ${req.session.user.name} </strong> đã phản hồi yêu cầu xử lý của bạn.</div>
-                        <div>Dạng sự cố: ${result.typeOfCause}</div>
-                        <div>Chi tiết sự cố: ${result.detailCause}</div>
-                        <div>Nội dung xử lý: ${result.contentHandle}</div>
-                        <div>Giải pháp đề xuất: ${result.offerSolution}</div>
-                        <div>Trạng thái sau xử lý: ${result.statusAfterHandle}</div>`
+                html: `<div>Hỗ trợ viên <span style="font-weight:bold;color:green"> ${req.session.user.name} </span> đã phản hồi yêu cầu xử lý của bạn.</div>
+                        <div>Dạng sự cố:<span style="font-weight: bold; color: black;"> ${result.typeOfCause} </span ></div>
+                        <div>Chi tiết sự cố:<span style="font-weight: bold; color: black;" > ${result.detailCause} </span > </div>
+                        <div>Nội dung xử lý: <span style="font-weight: bold; color: black;"> ${result.contentHandle} </span > </div>
+                        <div>Giải pháp đề xuất:<span style="font-weight: bold; color: black;" > ${result.offerSolution}</span ></div>
+                        <div>Trạng thái sau xử lý:<span style="font-weight: bold; color: black;" > ${result.statusAfterHandle} </span ></div>`
             }
             transporter.sendMail(options)
                 .then(success => {
@@ -154,6 +157,7 @@ exports.update = function (req, res) {
         report.supporter.id = req.session.user['_id']
 
         report.save().then(result => {
+
             var transporter = nodeMailer.createTransport({
                 service: " Gmail",
                 auth: {
@@ -165,7 +169,11 @@ exports.update = function (req, res) {
                 from: '"Hoa Sao Supporter" <noreply@hoasao.vn>',
                 to: 'hoanghaivo98@gmail.com',
                 subject: 'Your Request Has Been Received',
-                html: `<p>Hỗ trợ viên : ${req.session.user.name} đã nhận yêu cầu xử lý của bạn.</p>`
+                html: `<p>Hỗ trợ viên :<span style="font-weight: bold; color: green;"> ${req.session.user.name} </span > đã nhận yêu cầu xử lý của bạn.</p>
+                        <p>Tên dự án:<span style="font-weight: bold; color: black;">${result.name}</span ></p>
+                        <p>Loại sự cố:<span style="font-weight: bold; color: black;">${result.typeDisplay}</span ></p>
+                        <p>Tiêu đề sự cố:<span style="font-weight: bold; color: black;">${result.title}</span ></p>
+                        <p>Chi tiết sự cố:<span style="font-weight: bold; color: black;">${result.description}</span ></p>`
             }
             transporter.sendMail(options, function (err, info) {
                 if (err) {
@@ -178,11 +186,16 @@ exports.update = function (req, res) {
 };
 
 exports.show = function (req, res) {
+    let supportseen = {
+        id: req.session.user._id,
+        name: req.session.user.displayName
+    }
     _Report
-        .findByIdAndUpdate((req.params.supportmanager),{seen:true}, function (err, result) {
+        .findByIdAndUpdate((req.params.supportmanager), { seen: true, $addToSet: { supportseen: supportseen } }, function (err, result) {
             _.render(req, res, 'support-manager-view', {
                 title: "Chi tiết yêu cầu",
                 body: result
             }, true, err);
         });
+
 };

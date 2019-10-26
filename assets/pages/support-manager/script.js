@@ -1,11 +1,13 @@
 const buttonSearch = document.querySelector("#btn-search");
-
+const bt = document.querySelector("#empty-container div")
 $(".btn-received").bind('click', function () {
     let targetIds = $(this).data("id");
     let support = {
         id: targetIds
     }
-    // $(".table-responsive").find(`div.btn-received[data-id=${targetIds}]`).css("display", "none");
+    $(".table-responsive").find(`div.btn-received[data-id=${targetIds}] i.zmdi-wrench`).css("display", "none");
+    $(".table-responsive").find(`div.btn-received[data-id=${targetIds}] i.zmdi-rotate-right`).css("display", "block");
+
     fetch('/support-manager/' + targetIds, {
         method: 'PUT',
         body: JSON.stringify({ support }),
@@ -18,8 +20,8 @@ $(".btn-received").bind('click', function () {
 // Load lại trang
 $('.zmdi-refresh').bind('click', function () {
     _.LoadPage(location.hash = "support-manager");
-});
 
+});
 // Xóa 1 phần tử
 $('.btn-remove').bind('click', function () {
     let _id = $(this).attr('data-id');
@@ -75,7 +77,18 @@ buttonSearch.addEventListener('click', (e) => {
     }
 
 })
+//processing after search
 
+if ($(".table-responsive tbody tr").length == 1) {
+    swal({
+        title: "Thông báo",
+        text: "Không tìm thấy bản ghi phù hợp",
+        type: "warning", showCancelButton: false, confirmButtonColor: "#DD6B55", confirmButtonText: "Quay lại!"
+    },
+        function () {
+            window.history.back();
+        })
+}
 //sort
 $(document).on('click', '.table-fix th', function (e) {
     let $this = $(this)
@@ -94,11 +107,10 @@ $(document).on('click', '.table-fix th', function (e) {
             $this.attr('data-sort', 'none')
             break;
     }
-
     $this.siblings().attr('data-sort', 'none')
-    $this.children('span').removeClass('zmdi-sort-asc')
-    $this.children('span').removeClass('zmdi-sort-desc')
-    $this.children('span').addClass(_.isEqual(sort, 'none') ? '' : ('zmdi-sort-' + sort));
+    $this.children('i').removeClass('zmdi-sort-asc');
+    $this.children('i').removeClass('zmdi-sort-desc');
+    $this.children('i').addClass(_.isEqual(sort, 'none') ? '' : ('zmdi-sort-' + sort));
     let name = $this.attr('data-field');
     location.hash = "support-manager" + "?sort=" + name + ":" + sort
 })
