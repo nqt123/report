@@ -17,5 +17,8 @@ div.modal-body {
 div.column header {
   height: 30px;
   line-height: 30px;
-  border-bottom: 1px solid gray;
+  margin-bottom: 5px;
+}
+.list-group-item{
+  width:170px;
 }

@@ -22,7 +22,8 @@ const $SupportEmail = document.querySelector('#SupportEmail')
 const $UserEmail = document.querySelector('#UserEmail')
 const $emails = document.getElementsByName('email')
 
-
+var userList = []
+var supportList = []
 $submitBtn.addEventListener('click', (e) => {
   $SupportEmail.innerHTML = ""
   $UserEmail.innerHTML = ""
@@ -55,13 +56,16 @@ $submitBtn.addEventListener('click', (e) => {
       }
     }
   ).then(res => res.json()).then(respond => {
+    userList = respond.userEmail
+    supportList = respond.supportEmail.email
+
     respond.supportEmail.forEach(email => {
       $SupportEmail.insertAdjacentHTML('beforeend',
         `
-      <div class="form-check">
+        <div class="form-check">
         <input class="form-check-input" name="email" type="checkbox" value="${email.email}">
         <label class="form-check-label" for="defaultCheck2">
-          ${email.name}
+          ${email.email}<br> (${email.displayName})
        </label>
       </div>
       `)
@@ -72,7 +76,7 @@ $submitBtn.addEventListener('click', (e) => {
       <div class="form-check">
         <input class="form-check-input" name="email" type="checkbox" value="${email.email}">
         <label class="form-check-label" for="defaultCheck2">
-          ${email.name}
+          ${email.email}<br> (${email.displayName})
        </label>
       </div>
       `)
@@ -83,7 +87,7 @@ createReport.addEventListener('click', (e) => {
   e.preventDefault()
   const emailList = []
   const checkedValue = document.querySelectorAll('.form-check-input:checked')
-  for(let i = 0 ; i < checkedValue.length ; i++){
+  for (let i = 0; i < checkedValue.length; i++) {
     emailList.push(checkedValue[i].value)
   }
   const name = $name.value
@@ -160,6 +164,22 @@ $agentNumberInfluence.addEventListener('change', (e) => {
 $agentNumberInShift.addEventListener('change', (e) => {
   $priorValue.value = priorCalculator()
 })
+function updateResult(query) {
+  let resultList = document.querySelector("#UserEmail");
+  resultList.innerHTML = "";
+  userList.map((user) => user.email).map(function (email, index) {
+    query.split(" ").map(function (word) {
+      if (email.toLowerCase().indexOf(word.toLowerCase()) != -1) {
+        resultList.innerHTML += `      <div class="form-check">
+        <input class="form-check-input" name="email" type="checkbox" value="${email}">
+        <label class="form-check-label" for="defaultCheck2">
+        ${userList[index].email}<br> (${userList[index].displayName})
+       </label>
+      </div>`;
+      }
+    })
+  })
+}
 const priorCalculator = () => {
   let result;
   if ($agentNumberInShift.value == 0 || $agentNumberInShift.value == "") {
