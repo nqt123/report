@@ -93,6 +93,7 @@ exports.create = function (req, res) {
     } else {
       report.uniqueId = 0
     }
+    
     if (report.percentOfInfluence <= 0.2) {
       report.prior = 1
     }

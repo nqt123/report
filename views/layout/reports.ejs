@@ -170,7 +170,26 @@
                       <%=result[i].title%>
                     </td>
                     <td class="text-center">
-                      <%=result[i].agentNumberInfluence%>/<%=result[i].agentNumberInShift%>
+                      <%switch (result[i].prior) {
+                          case 1:
+                            %>Hỗ Trợ<%
+                            break;
+                          case 2:
+                            %>Trung Bình<%
+                            break;
+                          case 3:
+                            %>Cao<%
+                            break;
+                          case 4:
+                            %>Nghiêm trọng<%
+                            break;
+                          case 5:
+                            %>Khẩn cấp<%
+                            break;
+                          default:
+                            %>N/A<%
+                            break;
+                        }%>
                     </td>
                     <td>
                       <%=result[i].creator.displayName%>
