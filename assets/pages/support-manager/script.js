@@ -79,16 +79,16 @@ buttonSearch.addEventListener('click', (e) => {
 })
 //processing after search
 
-if ($(".table-responsive tbody tr").length == 1) {
-    swal({
-        title: "Thông báo",
-        text: "Không tìm thấy bản ghi phù hợp",
-        type: "warning", showCancelButton: false, confirmButtonColor: "#DD6B55", confirmButtonText: "Quay lại!"
-    },
-        function () {
-            window.history.back();
-        })
-}
+// if ($(".table-responsive tbody tr").length == 1) {
+//     swal({
+//         title: "Thông báo",
+//         text: "Không tìm thấy bản ghi phù hợp",
+//         type: "warning", showCancelButton: false, confirmButtonColor: "#DD6B55", confirmButtonText: "Quay lại!"
+//     },
+//         function () {
+//             window.history.back();
+//         })
+// }
 //sort
 $(document).on('click', '.table-fix th', function (e) {
     let $this = $(this)

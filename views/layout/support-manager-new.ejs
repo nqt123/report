@@ -5,23 +5,23 @@
         <small class="text-muted"><i>Những trường có dấu <span class="c-red">*</span> là bắt buộc nhập.</i></small>
     </div>
     <div class="card-body card-padding">
-        <form role="form" class="form-horizontal" id="spt-response" >
-                <div class="form-group">
-                        <label for="name" class="col-sm-3 control-label">Loại nguyên nhân</label>
-                        <div class="col-sm-6">
-                            <select class="selectpicker" id="typeOfCause" name="typeOfCause">
-                                    <%for(let i =0 ; i < result.length ; i++){%>
-                                        <option value="<%=result[i].name%>"><%=result[i].displayName%></option>
-                                    <%}%>
-                            </select>
-                        </div>
+        <form role="form" class="form-horizontal" id="spt-response">
+            <div class="form-group">
+                <label for="name" class="col-sm-3 control-label">Nguyên nhân<span class="required">*</span></label>
+                <div class="col-sm-6">
+                    <select class="selectpicker validate[required]" id="typeOfCause" name="typeOfCause">
+                        <option value="Kỹ thuật">Kỹ thuật</option>
+                        <option value="Nhà cung cấp">Nhà cung cấp</option>
+                        <option value="Đối tác">Đối tác</option>
+                        <option value="Khác">Khác</option>
+                    </select>
                 </div>
+            </div>
             <div class="form-group">
                 <label for="name" class="col-sm-3 control-label">Chi tiết nguyên nhân<span class="required">*</span></label>
                 <div class="col-sm-6">
                     <div class="fg-line">
                         <input type="text" maxlength="60" class="form-control validate[required]" id="detailCause" name="detailCause">
-                        <input type="hidden" id="x-name" value="">
                     </div>
                 </div>
             </div>
@@ -30,35 +30,37 @@
                 <div class="col-sm-6">
                     <div class="fg-line">
                         <input type="text" maxlength="60" class="form-control validate[required]" id="contentHandle" name="contentHandle">
-                        <input type="hidden" id="x-name" value="">
                     </div>
                 </div>
             </div>
             <div class="form-group">
-                <label for="name" class="col-sm-3 control-label">Giải pháp đề xuất<span class="required">*</span></label>
+                <label for="name" class="col-sm-3 control-label">Tình trạng sau xử lý</label>
+                <div class="col-sm-6">
+                    <select class="selectpicker" id="statusAfterHandle" name="statusAfterHandle">
+                        <option value="Đã khắc phục"><span class=""></span>Đã khắc phục</option>
+                        <option value="Chưa khắc phục"><span class=""></span>Chưa khắc phục</option>
+                        <option value="Khác"><span class=""></span>Khác</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="name" class="col-sm-3 control-label">Giải pháp đề xuất</label>
                 <div class="col-sm-6">
                     <div class="fg-line">
-                        <input type="text" maxlength="60" class="form-control validate[required]" id="offerSolution" name="offerSolution">
-                        <input type="hidden" id="x-name" value="">
+                        <input type="text" maxlength="60" class="form-control " id="offerSolution" name="offerSolution">
                     </div>
                 </div>
             </div>
-            <div class="form-group">
-                    <label for="name" class="col-sm-3 control-label">Tình trạng sau xử lý</label>
-                    <div class="col-sm-6">
-                        <select class="selectpicker" id="statusAfterHandle" name="statusAfterHandle">
-                            <option value="Xử lý thành công"><span class=""></span>Xử lý thành công</option>
-                            <option value="Xử lý không thành công"><span class=""></span>Xử lý không thành công</option>
-                        </select>
-                    </div>
-            </div>
+            
             <input type="hidden" value="<%- user._id%>" name="reportId">
-            <div class="form-group m-b-0">
-                <div class="col-sm-offset-3 col-sm-10">
-                    <a class="btn btn-default btn-icon-text m-t-10 m-r-10 waves-effect waves-effect" id="btn-back" name="btn-back" href="/#support-manager"><i class="m-r-5 zmdi zmdi-arrow-left"></i>Quay lại</a>
-                    <button type="submit" class="btn btn-primary btn-icon-text m-t-10 waves-effect"><i class="m-r-5 zmdi zmdi-check"></i>Xác nhận</button>
-                </div>
-            </div>
+                        <div class="form-group m-b-0">
+                            <div class="col-sm-offset-3 col-sm-10">
+                                <a class="btn btn-default btn-icon-text m-t-10 m-r-10 waves-effect waves-effect"
+                                    id="btn-back" name="btn-back"><i class="m-r-5 zmdi zmdi-arrow-left"></i>Quay lại</a>
+                                <button type="submit" class="btn btn-primary btn-icon-text m-t-10 waves-effect"><i
+                                        class="m-r-5 zmdi zmdi-check"></i>Xác nhận</button>
+                            </div>
+                        </div>
         </form>
     </div>
 </div>

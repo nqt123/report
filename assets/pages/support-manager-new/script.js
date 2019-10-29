@@ -17,6 +17,9 @@ var DFT = function ($) {
             }
         });
     };
+    $("#btn-back").on("click",function(){
+        window.history.back()
+    })
     return {
         init: function () {
             bindSubmit();
