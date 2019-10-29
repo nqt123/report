@@ -1,0 +1,112 @@
+<%- breadcrumb %>
+
+<div class="card">
+  <div class="lv-header-alt clearfix m-b-5">
+    <h2 class="lvh-label hidden-xs"><%- title %></h2>
+    <ul class="lv-actions actions">
+      <li>
+        <a href="/#sla/new" data-toggle="tooltip" data-placement="top" data-original-title="Thêm Yêu cầu mới">
+          <i class="zmdi zmdi-plus"></i>
+        </a>
+      </li>
+
+      <li>
+        <a href="#" data-toggle="tooltip" data-placement="top" data-original-title="Làm mới danh sách" id="refreshBtn">
+          <i class="zmdi zmdi-refresh"></i>
+        </a>
+      </li>
+      <li class="hidden" id="li-hidden">
+        <a role="button" data-toggle="tooltip" data-placement="top" data-original-title="Xóa các mục đánh dấu"
+          id="btn-delSelection">
+          <i class="zmdi zmdi-delete"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="">
+    <div>
+      <div class="panel-body p-0">
+        <div class="tab-content">
+          <div role="tabpanel" style="height: 100%" class="tab-pane animated active" id="tab-not-process-ticket">
+            <form role="form" id="frm-report-inbound-ticket">
+              <table class="table table-bordered table-fix table-hover" id="tbl-ticket" style="overflow:auto">
+                <thead>
+                  <tr>
+                    <th data-sort="none" role="button" class="col-lg-3 bgm-orange c-white text-center sort"
+                      style="width: 5%;">
+                      TT
+                    </th>
+                    <th data-sort="none" sortName="name" role="button" class="bgm-orange c-white text-center sort">
+                      Loại Sự cố
+                    </th>
+                    <th data-sort="none" sortName="field_product_type" role="button"
+                      class="bgm-orange c-white text-center sort">
+                      Dạng Sự cố
+                    </th>
+                    <!-- <th class="bgm-orange c-white text-center">
+                      Tình trạng
+                    </th> -->
+                    <th class="bgm-orange c-white text-center">
+                      SLA (Phút)
+                    </th>
+                    <th class="bgm-orange c-white text-center">
+                      Ghi chú
+                    </th>
+                    <th class="bgm-orange c-white text-center">
+                      Thao tác
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                <tbody class="report-list_body">
+                  <%result.forEach((e,i) => {%>
+                  <tr id="item">
+                    <td id="id" hidden>
+                      <%=e._id%>
+                    </td>
+                    <td>
+                      <%=i%>
+                    </td>
+                    <td>
+                      <%= e.category.displayName%>
+                    </td>
+                    <td>
+                      <%=e.name%>
+                    </td>
+                    <td class="text-center">
+                      <%=e.processTime%>
+                    </td>
+                    <td>
+                      <%=e.note%>
+                    </td>
+                    <td class="text-center" style="display: flex; justify-content:space-evenly;" role="button">
+                      <div data-toggle="tooltip" data-placement="top" data-original-title="Xoá"> <i id="delete"
+                          class="zmdi zmdi-delete text-danger" style="font-size: 2rem;"></i></div>
+                      <div data-toggle="tooltip" data-placement="top" data-original-title="Cập nhật"> <i id="update"
+                          class="zmdi zmdi-edit text-info" style="font-size: 2rem;"></i></div>
+                    </td>
+                  </tr>
+                  <%});%>
+                </tbody>
+              </table>
+              <div class="text-center" id="ticket-total">
+                <!--<b>-->
+                <!--<span class="TXT_TOTAL"></span>:-->
+                <!--<span class="bold c-red" id="ticket-total">100</span>-->
+                <!--</b>-->
+              </div>
+              <div class="text-center" id="ticket-paging"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% if(paging.pageCount > 1){ %>
+    <% include ../paging.ejs %>
+    <% } %>
+  </div>
+</div>
+<script>
+
+</script>

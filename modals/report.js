@@ -79,6 +79,10 @@ const reportSchema = new mongoose.Schema({
   },
   endAt : {
     type : Date
+  },
+  uniqueId : {
+    type : Number,
+    unique : true,
   }
 }, { timestamps: { createdAt: 'createdAt' } })
 

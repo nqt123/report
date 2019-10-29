@@ -1,0 +1,44 @@
+<%-breadcrumb%>
+<div class="card">
+  <div class="card-header">
+    <h2 class="m-b-5"><%- title %></h2>
+    <small class="text-muted"><i>Những trường có dấu <span class="c-red">*</span> là bắt buộc nhập. </i></small>
+  </div>
+  <div class="card-body card-padding">
+    <div id="warning-message" class="text-center m-b-10 text-danger">
+
+    </div>
+    <form class="form-horizontal" action="sla" method="POST" id="create-form">
+      <input type="text" id="id" hidden value="<%=sla._id%>">
+      <div class="form-group">
+        <label for="" class="col-sm-3 control-label">Dạng sự cố</span></label>
+        <div class="col-sm-6">
+          <div class="fg-line">
+            <input type="text" value="<%=sla.name%>" class="form-control input-sm" id="name" name="name">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="CRM" class="col-sm-3 control-label">SLA (Phút)</span></label>
+        <div class="col-sm-6">
+          <div class="fg-line">
+            <input type="text" value="<%=sla.processTime%>" class="form-control input-sm" id="processTime" name="processTime">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="type" class="col-sm-3 control-label">Ghi chú</label>
+        <div class="col-sm-6">
+          <div class="fg-line">
+            <input type="text" value="<%=sla.note%>" class="form-control input-sm" id="note" name="note">
+          </div>
+        </div>
+      </div>
+      <div class="text-center">
+        <button type="submit" id="update" class="btn btn-success">Gửi</button>
+        <button type="button" id="back" class="btn btn-danger">Đóng</button>
+      </div>
+    </form>
+  </div>
+</div>

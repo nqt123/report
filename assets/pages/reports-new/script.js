@@ -127,7 +127,7 @@ createReport.addEventListener('click', (e) => {
         'Accept': 'application/json'
       }
     }
-  ).then(res => res.json()).then(respond => window.location.hash = 'reports')
+  ).then(res => res.json()).then(respond => location.hash = 'reports')
 
 })
 
@@ -214,10 +214,10 @@ const convertMinutes = (value) => {
     slaTime = value + " phút"
   }
   else if (value > 60 && value <= 24 * 60) {
-    slaTime = value / 60 + " giờ" + value % 60 + " phút"
+    slaTime = (value / 60).toFixed() + " giờ " + value % 60 + " phút"
   }
   else {
-    slaTime = value / (60 * 24) + " ngày " + (value % 1440) / 60 + " giờ " + value % 60 + " phút"
+    slaTime = (value / (60 * 24)).toFixed() + " ngày " + (value % 1440) / 60 + " giờ " + value % 60 + " phút"
   }
   return slaTime
 }
