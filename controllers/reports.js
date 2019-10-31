@@ -202,6 +202,7 @@ exports.update = function (req, res) {
     }
     if (req.body.reason) {
       report.reason = req.body.reason
+      report.seen = false
     }
     report.save().then(result => {
       var transporter = nodeMailer.createTransport({
