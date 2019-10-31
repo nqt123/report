@@ -51,21 +51,22 @@ btnSearch.addEventListener('click', (e) => {
   searchColumn.forEach(col => {
     searchTerm[col.attributes.name.value] = col.value || ""
   })
-
-  var searchString = "&"
-  Object.keys(searchTerm).forEach((key, i) => {
-    if (searchTerm[key] == "") {
-      return delete searchTerm[key]
+  if (location.hash == '#sla') {
+    var searchString = "&"
+    Object.keys(searchTerm).forEach((key, i) => {
+      if (searchTerm[key] == "") {
+        return delete searchTerm[key]
+      }
+      searchString += key + "=" + searchTerm[key] + "&"
+    })
+    if (searchString != "&") {
+      window.searchString = searchString
+      location.hash = 'sla' + "?page=" + page + searchString
     }
-    searchString += key + "=" + searchTerm[key] + "&"
-  })
-  if (searchString != "&") {
-    window.searchString = searchString
-    location.hash = 'sla' + "?page=" + page + searchString
-  }
-  else {
-    window.searchString = ''
-    location.hash = 'sla'
+    else {
+      window.searchString = ''
+      location.hash = 'sla'
+    }
   }
 })
 for (let i = 0; i < liList.length; i++) {
@@ -76,10 +77,12 @@ for (let i = 0; i < liList.length; i++) {
   })
 }
 
-document.querySelector('body').addEventListener('keyup',(e)=>{
-  if(e.keyCode == 13){
+document.querySelector('body').addEventListener('keyup', (e) => {
+  if (e.keyCode == 13) {
     e.preventDefault()
-    btnSearch.click()
+    if (location.hash == '#sla') {
+      btnSearch.click()
+    }
   }
 })
 
