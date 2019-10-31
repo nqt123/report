@@ -46,7 +46,8 @@
                             <select class="tag-select searchCol" id="typeDisplay" name="typeDisplay">
                                 <option style="font-size: 1.1rem;" value="">-Chọn-</option>
                                 <%for(let i=0; i< lists.length;i++){%>
-                                <option style="font-size: 1.1rem;" value="<%-lists[i].name%>" data-typeDisplay="lists[i].name">
+                                <option style="font-size: 1.1rem;" value="<%-lists[i].name%>"
+                                    data-typeDisplay="lists[i].name">
                                     <%-lists[i].name%></option>
                                 <%}%>
                             </select>
@@ -81,13 +82,13 @@
                         <td class="text-center"><input class="form-control" type="datetime-local"></td>
                         <td class="text-center"><input class="form-control" type="text" placeholder="VD:Hoang Hai"></td>
                         <td class="text-center">
-                            <select class="tag-select searchCol" id="status" name="status">
-                                <option value=""><span class="">-Chọn-</span></option>
-                                <option value="0"><span class="">Đang chờ</span></option>
-                                <option value="1"><span class="">Đã nhận</span></option>
-                                <option value="2"><span class="">Đã xử lý</span></option>
-                                <option value="3"><span class="">Đã hoàn thành</span></option>
-                                <option value="4"><span class="">Chưa hoàn thành</span></option>
+                            <select class="tag-select searchCol" id="status" name="status" >
+                                <option style="font-size: 1.1rem;" value="">-Chọn-</option>
+                                <option style="font-size: 1.1rem;" value="0">Đang chờ</option>
+                                <option style="font-size: 1.1rem;" value="1">Đã nhận</option>
+                                <option style="font-size: 1.1rem;" value="2">Đã xử lý</option>
+                                <option style="font-size: 1.1rem;" value="3">Đã hoàn thành</option>
+                                <option style="font-size: 1.1rem;" value="4">Chưa hoàn thành</option>
                             </select>
                         </td>
                         <td class="text-center"><input class="form-control" type="datetime-local"></td>
@@ -103,7 +104,7 @@
                     %>
 
                     <tr id="item" class="stt<%=status%> <%- seen%>">
-                        <td class="select-cell text-center"><%- i+1 %></td>
+                        <td class="select-cell text-center"><%- el.uniqueId %></td>
                         <td>
                             <%- el.name %>
                         </td>
@@ -147,52 +148,52 @@
                             <%}%>
                         </td>
                         <td class="text-center"><%-el.endAt%></td>
-                        <td class="text-center" style="display: flex; justify-content:space-evenly;"  >
+                        <td class="text-center" style="display: flex; justify-content:space-evenly;">
                             <div id="detail" data-toggle="tooltip" data-placement="top" data-original-title="Chi tiết">
-                                    <a href="/#support-manager/<%- el._id %>" data-id="<%- el._id %>"
-                            data-status="<%- el.status %>" data-name="<%- el.name %>">
-                            <i class="zmdi zmdi-eye text-success " style="font-size: 2rem;"></i>
-                            </a>
-        </div>
-        <div data-toggle="tooltip" data-placement="top" data-original-title="Phản hồi">
-            <a href="/#support-manager/new?_id=<%- el._id %>" data-id="<%- el._id %>" data-status="<%- el.status %>"
-                data-name="<%- el.name %>">
-                <i class="zmdi zmdi-comments text-success" style="font-size: 2rem;"></i>
+                                <a href="/#support-manager/<%- el._id %>" data-id="<%- el._id %>"
+                                    data-status="<%- el.status %>" data-name="<%- el.name %>">
+                                    <i class="zmdi zmdi-eye text-success " style="font-size: 2rem;"></i>
+                                </a>
+                            </div>
+                            <div data-toggle="tooltip" data-placement="top" data-original-title="Phản hồi">
+                                <a href="/#support-manager/new?_id=<%- el._id %>" data-id="<%- el._id %>"
+                                    data-status="<%- el.status %>" data-name="<%- el.name %>">
+                                    <i class="zmdi zmdi-comments text-success" style="font-size: 2rem;"></i>
 
-            </a>
-        </div>
-        <%if(el.status == 0){%>
-        <div class="btn-received" data-id="<%- el._id %>" data-status="<%- el.status %>" data-name="<%- el.name %>"
-            data-toggle="tooltip" data-placement="top" name="btn-received" data-original-title="Nhận yêu cầu"
-            role="button">
-            <i class="zmdi zmdi-wrench text-success" style="font-size: 2rem;"></i>
-            <i class="zmdi zmdi-rotate-right zmdi-hc-lg zmdi-hc-spin text-success"
-                style="font-size: 2rem;display: none;"></i>
-        </div>
-        <% }else if(el.status == 1 || el.status ==2 || el.status == 3 ){%>
-        <div style="width:1.2em"></div>
-        <%}%>
+                                </a>
+                            </div>
+                            <%if(el.status == 0){%>
+                            <div class="btn-received" data-id="<%- el._id %>" data-status="<%- el.status %>"
+                                data-name="<%- el.title %>" data-toggle="tooltip" data-placement="top"
+                                name="btn-received" data-original-title="Nhận yêu cầu" role="button">
+                                <i class="zmdi zmdi-wrench text-success" style="font-size: 2rem;"></i>
+                                <i class="zmdi zmdi-rotate-right zmdi-hc-lg zmdi-hc-spin text-success"
+                                    style="font-size: 2rem;display: none;"></i>
+                            </div>
+                            <% }else if(el.status == 1 || el.status ==2 || el.status == 3 ){%>
+                            <div style="width:1.2em"></div>
+                            <%}%>
                             
                             <%if( el.status == 4 ){ %>
-        <div id="delete" role="button" class="btn-remove" data-toggle="tooltip" data-placement="top"
-            data-original-title="Xoá" data-id="<%- el._id %>"><i class="zmdi zmdi-delete text-danger"
-                style="font-size: 2rem;"></i></div>
-        <% }%>
+                            <div id="delete" role="button" class="btn-remove" data-toggle="tooltip" data-placement="top"
+                                data-original-title="Xoá" data-id="<%- el._id %>"><i
+                                    class="zmdi zmdi-delete text-danger" style="font-size: 2rem;"></i></div>
+                            <% }%>
 
-        </td>
-        </tr>
+                        </td>
+                    </tr>
 
-        <% }); %>
+                    <% }); %>
 
-        </tbody>
-        </table>
-        <% if (reports.length == 0){ %>
-        <div id="empty-container" class="border">
-            <div class="text-center" id="empty-text">Không có yêu cầu mới</div>
-        </div>
-        <%}%>
+                </tbody>
+            </table>
+            <% if (reports.length == 0){ %>
+            <div id="empty-container" class="border">
+                <div class="text-center" id="empty-text">Không có yêu cầu mới</div>
+            </div>
+            <%}%>
         </div>
 
         <% include ../paging.ejs %>
+        </div>
     </div>
-</div>

@@ -79,7 +79,7 @@ exports.new = function (req, res) {
 exports.destroy = function (req, res) {
   _Report.findById(req.params.supportmanager, function (err, kq) {
     if (!kq.status == 4) {
-      res.json({ code: (error ? 500 : 200), message: error ? error : ca });
+      res.json({ code: 500, message:"Không thể xóa"  });
     }
     else {
       _Report.findByIdAndRemove(req.params.supportmanager, function (error) {
@@ -170,10 +170,7 @@ exports.update = function (req, res) {
                         <p>Chi tiết sự cố:<span style="font-weight: bold; color: black;">${result.description}</span ></p>`
       }
       transporter.sendMail(options, function (err, info) {
-        if (err) {
-          return res.send(err);
-        }
-        res.send(info)
+        return res.json({code :(err ? 500 :200),message : err ? err :info})
       })
     })
   })
