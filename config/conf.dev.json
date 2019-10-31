@@ -6,7 +6,7 @@
     "name": "7home"
   },
   "database": {
-    "name": "crmdb",
+    "name": "7home",
     "ip": "localhost",
     "port": 27017,
     "user": "",

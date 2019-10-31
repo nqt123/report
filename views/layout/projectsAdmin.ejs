@@ -23,7 +23,6 @@
       </li>
     </ul>
   </div>
-
   <div class="">
     <div>
       <div class="panel-body p-0">
@@ -97,33 +96,49 @@
                     </td>
                     <td></td>
                     <td class="text-center">
-                      <%=e.CRM ? "X" : null%>
+                      <%if(e.CRM){%>
+                      <input type="checkbox" checked>
+                      <%}%>
                     </td>
                     <td class="text-center">
-                      <%=e.Voice ? "X" : null%>
+                        <%if(e.Voice){%>
+                      <input type="checkbox" checked>
+                      <%}%>
                     </td>
                     <td class="text-center">
-                      <%=e.Chat ? "X" : null%>
+                        <%if(e.Chat){%>
+                      <input type="checkbox" checked>
+                      <%}%>
                     </td>
                     <td class="text-center">
-                      <%=e.Email ? "X" : null%>
+                        <%if(e.Email){%>
+                      <input type="checkbox" checked>
+                      <%}%>
                     </td>
                     <td class="text-center">
-                      <%=e.smartIVR ? "X" : null%>
+                        <%if(e.smartIVR){%>
+                      <input type="checkbox" checked>
+                      <%}%>
                     </td>
                     <td class="text-center">
-                      <%=e.SMS ? "X" : null%>
+                        <%if(e.SMS){%>
+                      <input type="checkbox" checked>
+                      <%}%>
                     </td>
-                    <td>
-                      <%=e.hardware ? "X" : null%>
+                    <td class="text-center">
+                        <%if(e.hardware){%>
+                      <input type="checkbox" checked>
+                      <%}%>
                     </td>
-                    <td>
-                      <%=e.connection ? "X" : null%>
+                    <td class="text-center">
+                        <%if(e.connection){%>
+                      <input type="checkbox" checked>
+                      <%}%>
                     </td>
-                    <td>
-                      <%=e.IP%>
+                    <td class="text-center">
+                        <%=e.IP%>
                     </td>
-                    <td>
+                    <td class="text-center">
                       <%=e.agentNumber%>
                     </td>
                     <td class="text-center" style="display: flex; justify-content:space-evenly;" role="button">

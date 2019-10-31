@@ -33,7 +33,13 @@ for (let i = 0; i < rows.length; i++) {
     );
   })
 }
-
+for (let i = 0; i < rows.length; i++) {
+  const updateBtn = rows[i].querySelector('#update')
+  const id = rows[i].querySelector('#id').innerHTML.trim()
+  updateBtn.addEventListener('click', function (e) {
+    location.hash = 'projectsAdmin/' + id+'/edit'
+  })
+}
 
 var DFT = function ($) {
   return {

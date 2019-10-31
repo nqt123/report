@@ -20,6 +20,7 @@ const $selectModal = document.querySelector('#selectEmail')
 const $createReport = document.querySelector('#createReport')
 const $SupportEmail = document.querySelector('#SupportEmail')
 const $UserEmail = document.querySelector('#UserEmail')
+const $backBtn = document.querySelector('#backBtn')
 const $emails = document.getElementsByName('email')
 
 var userList = []
@@ -51,8 +52,7 @@ $submitBtn.addEventListener('click', (e) => {
     {
       method: "GET",
       headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Content-Type': 'application/json'
       }
     }
   ).then(res => res.json()).then(respond => {
@@ -127,8 +127,13 @@ createReport.addEventListener('click', (e) => {
         'Accept': 'application/json'
       }
     }
-  ).then(res => res.json()).then(respond => location.hash = 'reports')
-
+    // ).then(res => res.json()).then(respond => location.hash = 'reports')
+  ).then(res => res.json()).then(respond => {
+    swal("Gửi yêu cầu thành công", "", "success");
+    setTimeout(() => {
+      $backBtn.click()
+    }, 200);
+  })
 })
 
 $type.addEventListener('change', (e) => {
@@ -138,8 +143,7 @@ $type.addEventListener('change', (e) => {
     {
       method: "GET",
       headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
+        'Content-Type': 'application/json'
       }
     }
   ).then(res => res.json()).then(respond => {

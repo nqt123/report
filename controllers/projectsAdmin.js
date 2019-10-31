@@ -16,7 +16,7 @@ exports.index = function (req, res) {
     })
 
     return _.render(req, res, 'projectsAdmin', {
-      title: 'Danh sách các Yêu cầu',
+      title: 'Dánh sách Dự Án',
       result: result,
       paging: paginator.getPaginationData(),
       plugins: ['moment', ['bootstrap-select'], ['bootstrap-datetimepicker'], ['bootstrap-daterangepicker'], ['chosen']]
@@ -53,14 +53,15 @@ exports.destroy = function (req, res) {
     res.json(project)
   })
 }
-// exports.edit = function (req, res) {
-//   SlaList.findById(req.params.sla).then(result => {
-//     _.render(req, res, 'slas-edit', {
-//       title: 'Cập nhật SLA',
-//       sla: result
-//     }, true)
-//   })
-// }
+exports.edit = function (req, res) {
+  console.log(req.params)
+  ProjectAdmin.findById(req.params.projectsadmin).then(result => {
+    _.render(req, res, 'projectsAdmin-edit', {
+      title: 'Chỉnh sửa Dự Án',
+      project: result
+    }, true)
+  })
+}
 // //name, processTime, note
 // exports.update = function (req, res) {
 //   SlaList.findById(req.body.id).then(sla => {
