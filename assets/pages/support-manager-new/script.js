@@ -7,16 +7,29 @@ var DFT = function ($) {
             onValidationComplete: function (form, status) {
                 if (status) {
                     _AjaxData('/support-manager', 'POST', $(form).getData(), function (resp) {
+                        console.log(resp);
+                        
                         if (_.isEqual(resp.code, 200)) {
-                            window.location.hash = 'support-manager';
+                            swal({
+                                title:"Thành công",
+                                text:"Phản hồi đã được gửi",
+                                type:"success"
+                            },
+                                function () {
+                                    window.location.hash = 'support-manager'; 
+                                }
+                            )
                         } else {
-                            swal({title: 'Thông báo !', text: resp.message});
+                            swal({title: 'Thông báo !', type:"error", text: resp.message});
                         }
                     });
                 }
             }
         });
     };
+    $("#btn-back").on("click",function(){
+        window.history.back()
+    })
     return {
         init: function () {
             bindSubmit();
