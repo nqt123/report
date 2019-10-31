@@ -8,6 +8,30 @@ exports.index = function (req, res) {
 
   var agg = SlaList.aggregate();
 
+  const searchData = {}
+
+  if (req.query.name) {
+    agg._pipeline.push({
+      $match: {
+        name: new RegExp(req.query.name, 'gi')
+      }
+    })
+  }
+  if (req.query.processTime) {
+    agg._pipeline.push({
+      $match: {
+        processTime: parseInt(req.query.processTime)
+      }
+    })
+  }
+  if (req.query.note) {
+    agg._pipeline.push({
+      $match: {
+        note: new RegExp(req.query.note, 'gi')
+      }
+    })
+  }
+
   agg._pipeline.push({
     $lookup: {
       from: "slamenus",
@@ -22,6 +46,13 @@ exports.index = function (req, res) {
   agg._pipeline.push({
     $sort: { createdAt: -1 }
   })
+  if (req.query.category) {
+    agg._pipeline.push({
+      $match: {
+        "category.displayName": new RegExp(req.query.category, 'gi')
+      }
+    })
+  }
   SlaList.aggregatePaginate(agg, { page, limit }, function (err, result, node, count) {
     var paginator = new pagination.SearchPaginator({
       prelink: '/sla',

@@ -92,6 +92,7 @@ buttonSearch.addEventListener('click', (e) => {
     location.hash = 'reports' + "?page=" + page + searchString
   }
   else {
+    window.searchString = ""
     location.hash = 'reports'
   }
 })

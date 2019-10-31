@@ -5,7 +5,7 @@
     <h2 class="lvh-label hidden-xs"><%- title %></h2>
     <ul class="lv-actions actions">
       <li>
-        <a href="/#sla/new" data-toggle="tooltip" data-placement="top" data-original-title="Thêm Yêu cầu mới">
+        <a href="/#projectsAdmin/new" data-toggle="tooltip" data-placement="top" data-original-title="Thêm Yêu cầu mới">
           <i class="zmdi zmdi-plus"></i>
         </a>
       </li>
@@ -38,20 +38,44 @@
                       TT
                     </th>
                     <th data-sort="none" sortName="name" role="button" class="bgm-orange c-white text-center sort">
-                      Loại Sự cố
+                      Tên dự án
                     </th>
                     <th data-sort="none" sortName="field_product_type" role="button"
                       class="bgm-orange c-white text-center sort">
-                      Dạng Sự cố
+                      thời gian off
                     </th>
                     <!-- <th class="bgm-orange c-white text-center">
                       Tình trạng
                     </th> -->
                     <th class="bgm-orange c-white text-center">
-                      SLA (Phút)
+                      CRM
                     </th>
                     <th class="bgm-orange c-white text-center">
-                      Ghi chú
+                      Voice
+                    </th>
+                    <th class="bgm-orange c-white text-center">
+                      Chat
+                    </th>
+                    <th class="bgm-orange c-white text-center">
+                      Email
+                    </th>
+                    <th class="bgm-orange c-white text-center">
+                      Smart IVR
+                    </th>
+                    <th class="bgm-orange c-white text-center">
+                      SMS
+                    </th>
+                    <th class="bgm-orange c-white text-center">
+                      Phần cứng
+                    </th>
+                    <th class="bgm-orange c-white text-center">
+                      Đường truyền
+                    </th>
+                    <th class="bgm-orange c-white text-center">
+                      IP
+                    </th>
+                    <th class="bgm-orange c-white text-center">
+                      Số lượng Agent
                     </th>
                     <th class="bgm-orange c-white text-center">
                       Thao tác
@@ -60,57 +84,47 @@
                 </thead>
                 <tbody>
                 <tbody class="report-list_body">
-                  <tr class="filter" id="search-input" class="text-center">
-                    <td>
-                    </td>
-                    <td>
-                      <input type="text" class="form-control input-sm searchColumn" name="category" placeholder="VD: 7Home">
-                    </td>
-                    <td>
-                        <input type="text" class="form-control input-sm searchColumn" name="name"
-                          placeholder=" VD: Quy Thang">
-                      </td>
-                    <td>
-                      <input type="text" class="form-control input-sm searchColumn" name="processTime"
-                        placeholder="VD: 7Home">
-                    </td>
-                    <td>
-                      <input type="text" class="form-control input-sm searchColumn" name="note"
-                        placeholder=" VD: Quy Thang">
-                    </td>
-                    <!-- <td>
-                          <select class="tag-select searchColumn" name="state" style="font-size: 12px;">
-                            <option selected value="" style="font-size: 12px;">- Chọn -</option>
-                            <option value="Done" style="font-size: 12px;"> Hoàn Thành </option>
-                            <option value="Undone" style="font-size: 12px;"> Chưa Hoàn Thành </option>
-                          </select>
-                        </td> -->
-                    <td>
-                      <button type="button" class="btn btn-primary btn-block waves-effect" id="btn-search"
-                        name="btn-search">
-                        <i class="zmdi zmdi-filter-list m-r-5"></i> Lọc
-                      </button>
-                    </td>
-                  </tr>
                   <%result.forEach((e,i) => {%>
                   <tr id="item">
+                    <td class="text-center">
+                      <%=i+1%>
+                    </td>
                     <td id="id" hidden>
                       <%=e._id%>
                     </td>
-                    <td class="text-center">
-                      <%=i%>
-                    </td>
-                    <td>
-                      <%= e.category.displayName%>
-                    </td>
-                    <td>
+                    <td id="id">
                       <%=e.name%>
                     </td>
+                    <td></td>
                     <td class="text-center">
-                      <%=e.processTime%>
+                      <%=e.CRM ? "X" : null%>
+                    </td>
+                    <td class="text-center">
+                      <%=e.Voice ? "X" : null%>
+                    </td>
+                    <td class="text-center">
+                      <%=e.Chat ? "X" : null%>
+                    </td>
+                    <td class="text-center">
+                      <%=e.Email ? "X" : null%>
+                    </td>
+                    <td class="text-center">
+                      <%=e.smartIVR ? "X" : null%>
+                    </td>
+                    <td class="text-center">
+                      <%=e.SMS ? "X" : null%>
                     </td>
                     <td>
-                      <%=e.note%>
+                      <%=e.hardware ? "X" : null%>
+                    </td>
+                    <td>
+                      <%=e.connection ? "X" : null%>
+                    </td>
+                    <td>
+                      <%=e.IP%>
+                    </td>
+                    <td>
+                      <%=e.agentNumber%>
                     </td>
                     <td class="text-center" style="display: flex; justify-content:space-evenly;" role="button">
                       <div data-toggle="tooltip" data-placement="top" data-original-title="Xoá"> <i id="delete"

@@ -25,3 +25,9 @@ document.querySelector('#update').addEventListener('click', (e) => {
     }
   }).then(res => res.json()).then(respond => location.hash = 'sla')
 })
+var DFT = function ($) {
+  return {
+    init: function () {
+    }
+  }
+}(jQuery);

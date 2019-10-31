@@ -29,3 +29,9 @@ $form.addEventListener('submit', (e) => {
 document.querySelector('#back').addEventListener('click', (e)=>{
   location.hash = 'sla'
 })
+var DFT = function ($) {
+  return {
+    init: function () {
+    }
+  }
+}(jQuery);
