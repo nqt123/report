@@ -2,6 +2,9 @@ const mongoose = require('mongoose')
 
 const reportSchema = new mongoose.Schema({
   name: {
+    type: mongoose.Schema.Types.ObjectId
+  },
+  displayName: {
     type: String
   },
   position: {
@@ -52,37 +55,40 @@ const reportSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId
     }
   },
-  seen : {
-    type : Boolean,
-    default : false
+  seen: {
+    type: Boolean,
+    default: false
   },
-  supportseen:[{
-    name:{
-      type:String
+  for: [{
+    type: mongoose.Schema.Types.ObjectId
+  }],
+  supportseen: [{
+    name: {
+      type: String
     },
-    id:{
-      type:mongoose.Schema.Types.ObjectId
+    id: {
+      type: mongoose.Schema.Types.ObjectId
     }
   }],
-  reason : {
+  reason: {
     type: String
   },
-  processTime : {
-    type : Number,
-    default : 0
+  processTime: {
+    type: Number,
+    default: 0
   },
-  typeDisplay : {
-    type : String
+  typeDisplay: {
+    type: String
   },
-  lastRespondAt : {
-    type : Date
+  lastRespondAt: {
+    type: Date
   },
-  endAt : {
-    type : Date
+  endAt: {
+    type: Date
   },
-  uniqueId : {
-    type : Number,
-    unique : true,
+  uniqueId: {
+    type: Number,
+    unique: true,
   }
 }, { timestamps: { createdAt: 'createdAt' } })
 

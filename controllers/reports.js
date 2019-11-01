@@ -7,6 +7,7 @@ const SlaList = require('../modals/sla-list')
 const SupportEmail = require('../modals/support-email')
 const User = require('../modals/users')
 const mongoose = require('mongoose')
+const ProjectAdmin = require('../modals/projectsAdmin')
 exports.index = {
   json: function (req, res) {
     Report.find({}, function (err, reports) {
@@ -93,7 +94,7 @@ exports.create = function (req, res) {
     } else {
       report.uniqueId = 0
     }
-    
+
     if (report.percentOfInfluence <= 0.2) {
       report.prior = 1
     }
@@ -144,7 +145,7 @@ exports.create = function (req, res) {
 };
 
 exports.new = function (req, res) {
-  const company = Company.find({}).then(result => {
+  const company = ProjectAdmin.find({}).then(result => {
     SlaMenu.find({}).sort({ displayName: 1 }).then(list => {
       if (req.query.email) {
         let supportEmail;
@@ -156,6 +157,11 @@ exports.new = function (req, res) {
             supportEmail,
             userEmail: result
           })
+        })
+      }
+      if (req.query.id) {
+        return ProjectAdmin.find({ _id: req.query.id }).then(project => {
+          return res.send(project)
         })
       }
       if (req.query.type) {
@@ -237,6 +243,15 @@ exports.update = function (req, res) {
 exports.show = function (req, res) {
   const match = {}
   SupportManager.aggregate([
+    {
+      $lookup:
+      {
+        from: "reports",
+        localField: "name",
+        foreignField: "_id",
+        as: "projectsAdmin"
+      }
+    },
     {
       $lookup:
       {

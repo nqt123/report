@@ -51,7 +51,7 @@ btnSearch.addEventListener('click', (e) => {
   searchColumn.forEach(col => {
     searchTerm[col.attributes.name.value] = col.value || ""
   })
-  if (location.hash == '#sla') {
+  if (location.hash.includes('#sla')) {
     var searchString = "&"
     Object.keys(searchTerm).forEach((key, i) => {
       if (searchTerm[key] == "") {

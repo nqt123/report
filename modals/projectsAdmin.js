@@ -6,6 +6,17 @@ const projectSchema = new mongoose.Schema({
     required: true,
     trim: true
   },
+  position : {
+    type: String,
+    required : true
+  },
+  usingCRM : {
+    type : String,
+    required: true
+  },
+  goLineTime : {
+    type : String
+  },
   offTime: {
 
   },

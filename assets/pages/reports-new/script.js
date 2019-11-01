@@ -65,7 +65,7 @@ $submitBtn.addEventListener('click', (e) => {
         <div class="form-check">
         <input class="form-check-input" name="email" type="checkbox" value="${email.email}">
         <label class="form-check-label" for="defaultCheck2">
-          ${email.email}<br> (${email.displayName})
+          ${email.email}<br> (${email.name})
        </label>
       </div>
       `)
@@ -93,6 +93,7 @@ createReport.addEventListener('click', (e) => {
   const name = $name.value
   const position = $position.value
   const CRM = $CRM.value
+  const displayName = $name.options[$name.selectedIndex].text
   const type = $type.value
   const title = $title.value
   const description = $description.value
@@ -115,7 +116,8 @@ createReport.addEventListener('click', (e) => {
     agentNumberInShift,
     agentNumberInfluence,
     percentOfInfluence,
-    emailList
+    emailList,
+    displayName
   }
 
   fetch('/reports',
@@ -158,7 +160,20 @@ $type.addEventListener('change', (e) => {
     $sla.value = convertMinutes(respond[0].processTime)
   })
 })
+$name.addEventListener('change', (e) => {
+  const id = $name.value
 
+  fetch('reports/new?id=' + id, {
+    method: "GET",
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then(res => res.json()).then(respond => {
+    const project = respond[0]
+    $position.value = project.position
+    $CRM.value = project.usingCRM
+  })
+})
 reportList.addEventListener('change', (e) => {
   $sla.value = convertMinutes(reportList.value)
 })

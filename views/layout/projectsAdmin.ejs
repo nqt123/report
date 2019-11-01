@@ -39,6 +39,15 @@
                     <th data-sort="none" sortName="name" role="button" class="bgm-orange c-white text-center sort">
                       Tên dự án
                     </th>
+                    <th data-sort="none" sortName="name" role="button" class="bgm-orange c-white text-center sort">
+                      Vị trí dự án
+                    </th>
+                    <th data-sort="none" sortName="name" role="button" class="bgm-orange c-white text-center sort">
+                      CRM Đang sử dụng
+                    </th>
+                    <th data-sort="none" sortName="name" role="button" class="bgm-orange c-white text-center sort">
+                      Thời Gian GOLINE
+                    </th>
                     <th data-sort="none" sortName="field_product_type" role="button"
                       class="bgm-orange c-white text-center sort">
                       thời gian off
@@ -94,7 +103,18 @@
                     <td id="id">
                       <%=e.name%>
                     </td>
-                    <td></td>
+                    <td id="id">
+                      <%=e.position%>
+                    </td>
+                    <td id="id">
+                      <%=e.usingCRM%>
+                    </td>
+                    <td id="id">
+                      <%=e.goLineTime%>
+                    </td>
+                    <td>
+                      <%=e.offTime%>
+                    </td>
                     <td class="text-center">
                       <%if(e.CRM){%>
                       <input type="checkbox" checked>

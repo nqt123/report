@@ -1,4 +1,4 @@
-console.log('loaded')
+
 
 document.querySelector('#back').addEventListener('click', (e) => {
   location.hash = 'sla'
