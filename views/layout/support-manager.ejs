@@ -102,7 +102,6 @@
                             status = el.status
                         }
                     %>
-
                     <tr id="item" class="stt<%=status%> <%- seen%>">
                         <td class="select-cell text-center"><%- el.uniqueId %></td>
                         <td>
@@ -159,7 +158,6 @@
                                 <a href="/#support-manager/new?_id=<%- el._id %>" data-id="<%- el._id %>"
                                     data-status="<%- el.status %>" data-name="<%- el.name %>">
                                     <i class="zmdi zmdi-comments text-success" style="font-size: 2rem;"></i>
-
                                 </a>
                             </div>
                             <%if(el.status == 0){%>
@@ -179,10 +177,8 @@
                                 data-original-title="Xoá" data-id="<%- el._id %>"><i
                                     class="zmdi zmdi-delete text-danger" style="font-size: 2rem;"></i></div>
                             <% }%>
-
                         </td>
                     </tr>
-
                     <% }); %>
 
                 </tbody>

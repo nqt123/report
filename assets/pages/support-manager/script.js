@@ -1,6 +1,3 @@
-
-
-
 var DFT = function ($) {
 
     const buttonSearch = document.querySelector("#btn-search");
@@ -153,4 +150,3 @@ var DFT = function ($) {
         }
     }
 }(jQuery);
-

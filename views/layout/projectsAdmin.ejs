@@ -29,19 +29,26 @@
       <div class="panel-body p-0">
         <div class="tab-content">
           <div role="tabpanel" style="height: 100%" class="tab-pane animated active" id="tab-not-process-ticket">
-            <form role="form" id="frm-report-inbound-ticket">
+            <form role="form" id="project">
               <table class="table table-bordered table-fix table-hover" id="tbl-ticket" style="overflow:auto">
                 <thead>
-                  <tr>
-                    <th data-sort="none" role="button" class="col-lg-3 bgm-orange c-white text-center sort"
+                  <tr class="listHead">
+                    <th data-sort="none" role="button" class="col-lg-3 bgm-orange c-white text-center"
                       style="width: 5%;">
                       TT
                     </th>
-                    <th data-sort="none" sortName="name" role="button" class="bgm-orange c-white text-center sort">
+                    <th data-sort="none" data-field="name" role="button" class="bgm-orange c-white text-center">
+                      <i data-toggle="tooltip" data-original-title="Sắp xếp theo thứ tự tăng dần"
+                        class="zmdi zmdi-sort-asc"></i>
+                      <i data-toggle="tooltip" data-original-title="Sắp xếp theo thứ tự giảm dần"
+                        class="zmdi zmdi-sort-desc"></i>
                       Tên dự án
                     </th>
-                    <th data-sort="none" sortName="field_product_type" role="button"
-                      class="bgm-orange c-white text-center sort">
+                    <th data-sort="none" data-field="offTime" role="button" class="bgm-orange c-white text-center">
+                      <i data-toggle="tooltip" data-original-title="Sắp xếp theo thứ tự tăng dần"
+                        class="zmdi zmdi-sort-asc"></i>
+                      <i data-toggle="tooltip" data-original-title="Sắp xếp theo thứ tự giảm dần"
+                        class="zmdi zmdi-sort-desc"></i>
                       thời gian off
                     </th>
                     <!-- <th class="bgm-orange c-white text-center">
@@ -74,7 +81,11 @@
                     <th class="bgm-orange c-white text-center">
                       IP
                     </th>
-                    <th class="bgm-orange c-white text-center">
+                    <th role="button" data-field="agentNumber" data-sort="none" class="bgm-orange c-white text-center">
+                      <i data-toggle="tooltip" data-original-title="Sắp xếp theo thứ tự tăng dần"
+                        class="zmdi zmdi-sort-asc"></i>
+                      <i data-toggle="tooltip" data-original-title="Sắp xếp theo thứ tự giảm dần"
+                        class="zmdi zmdi-sort-desc"></i>
                       Số lượng Agent
                     </th>
                     <th class="bgm-orange c-white text-center">
@@ -82,8 +93,24 @@
                     </th>
                   </tr>
                 </thead>
-                <tbody>
                 <tbody class="report-list_body">
+                  <tr id="searchForm" class="filter">
+                    <td class="text-center"></td>
+                    <td class="text-center"><input class="form-control search" type="text" name="filter_name"></td>
+                    <td class="text-center"><input class="form-control search" type="text" name="filter_offTime"></td>
+                    <td class="text-center"><input type="checkbox" class="search" name="filter_CRM"></td>
+                    <td class="text-center"><input type="checkbox" class="search" name="filter_Voice"></td>
+                    <td class="text-center"><input type="checkbox" class="search"  name="filter_Chat"></td>
+                    <td class="text-center"><input type="checkbox" class="search" name="filter_Email"></td>
+                    <td class="text-center"><input type="checkbox" class="search" name="filter_smartIVR"></td>
+                    <td class="text-center"><input type="checkbox" class="search" name="filter_SMS"></td>
+                    <td class="text-center"><input type="checkbox" class="search" name="filter_hardware"></td>
+                    <td class="text-center"><input type="checkbox" class="search" name="filter_connection"></td>
+                    <td class="text-center"><input class="form-control search" type="text" name="filter_IP"></td>
+                    <td class="text-center"><input class="form-control search" type="text" name="filter_agentNumber"></td>
+                    <td class="text-center"><button class="btn btn-primary btn-block waves-effect" id="btn-search"
+                        name="btn-search"><i class="zmdi zmdi-filter-list m-r-5"></i> Lọc</button></td>
+                  </tr>
                   <%result.forEach((e,i) => {%>
                   <tr id="item">
                     <td class="text-center">

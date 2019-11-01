@@ -146,7 +146,8 @@ var DFT = function ($) {
                 if (!_.isEqual($(el).val(), '')) memo[el.name] = $(el).val();
                 return memo;
             }, {}).value();
-
+            console.log(filter);
+            
         var sort = _.chain($('thead tr th').not('[data-sort="none"]'))
             .map(function (el) {
                 return $(el).attr('sortName') ? $(el).attr('sortName') + ':' + $(el).attr('data-sort') : '';
