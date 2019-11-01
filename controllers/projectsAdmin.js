@@ -58,7 +58,7 @@ exports.index = function (req, res) {
     })
 
     return _.render(req, res, 'projectsAdmin', {
-      title: 'Danh sách các Yêu cầu',
+      title: 'Dánh sách Dự Án',
       result: result,
       paging: paginator.getPaginationData(),
       plugins: ['moment', ['bootstrap-select'], ['bootstrap-datetimepicker'], ['bootstrap-daterangepicker'], ['chosen']]
@@ -95,22 +95,39 @@ exports.destroy = function (req, res) {
     res.json(project)
   })
 }
-// exports.edit = function (req, res) {
-//   SlaList.findById(req.params.sla).then(result => {
-//     _.render(req, res, 'slas-edit', {
-//       title: 'Cập nhật SLA',
-//       sla: result
-//     }, true)
-//   })
-// }
+exports.edit = function (req, res) {
+  ProjectAdmin.findById(req.params.projectsadmin).then(result => {
+    _.render(req, res, 'projectsAdmin-edit', {
+      title: 'Chỉnh sửa Dự Án',
+      project: result
+    }, true)
+  })
+}
 // //name, processTime, note
-// exports.update = function (req, res) {
-//   SlaList.findById(req.body.id).then(sla => {
-//     sla.name = req.body.name
-//     sla.processTime = req.body.processTime
-//     sla.note = req.body.note
-//     sla.save().then(result => {
-//       res.send(result)
-//     })
-//   })
-// }
+exports.update = function (req, res) {
+  ProjectAdmin.findById(req.body.id).then(project => {
+    //reset check list
+    project.connection = false
+    project.hardware = false
+    project.SMS = false
+    project.smartIVR = false
+    project.Email = false
+    project.Chat = false
+    project.Voice = false
+    project.CRM = false
+    //update property
+    console.log(req.body)
+    project.name = req.body.name
+    project.offTime = req.body.offTime
+    project.IP = req.body.IP
+    project.agentNumber = req.body.agentNumber
+    //change check list status
+    req.body.checkList.forEach(item => {
+      project[item] = true
+    })
+    console.log(project)
+    project.save().then(result => {
+      res.send(result)
+    })
+  })
+}

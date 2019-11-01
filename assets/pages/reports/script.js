@@ -4,7 +4,6 @@ const buttonSearch = document.querySelector('#btn-search')
 const liList = document.querySelectorAll('div ul.pagination li')
 //Refresh Button Event
 refreshBtn.addEventListener('click', (e) => {
-  console.log(itemList.length)
   e.preventDefault()
   _.LoadPage(window.location.hash);
 })
@@ -111,13 +110,11 @@ document.querySelector('body').addEventListener('keyup', (e) => {
     buttonSearch.click()
   }
 })
-/**
- * Created by LINHNV
- */
 
 var DFT = function ($) {
   return {
     init: function () {
+
     }
   }
 }(jQuery);

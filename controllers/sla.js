@@ -61,7 +61,7 @@ exports.index = function (req, res) {
       totalResult: count
     })
     return _.render(req, res, 'slas', {
-      title: 'Danh sách các Yêu cầu',
+      title: 'Danh sách SLA',
       result: result,
       paging: paginator.getPaginationData(),
       plugins: ['moment', ['bootstrap-select'], ['bootstrap-datetimepicker'], ['bootstrap-daterangepicker'], ['chosen']]

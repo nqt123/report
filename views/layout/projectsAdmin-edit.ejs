@@ -1,0 +1,114 @@
+<%-breadcrumb%>
+<div class="card">
+  <div class="card-header">
+    <h2 class="m-b-5"><%- title %></h2>
+    <small class="text-muted"><i>Những trường có dấu <span class="c-red">*</span> là bắt buộc nhập. </i></small>
+  </div>
+  <div class="card-body card-padding">
+    <div id="warning-message" class="text-center m-b-10 text-danger">
+
+    </div>
+    <form class="form-horizontal" action="sla" method="POST" id="create-form">
+      <input type="text" id="id" hidden value="<%=project._id%>">
+      <div class="form-group">
+        <label for="" class="col-sm-3 control-label">Tên Dự án<span class="c-red">*</span></span></label>
+        <div class="col-sm-6">
+          <div class="fg-line">
+            <input type="text" value="<%=project.name%>" class="form-control input-sm" id="name" name="name">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="" class="col-sm-3 control-label">Thời gian off</span></label>
+        <div class="col-sm-6">
+          <div class="fg-line">
+            <input type="text" value="<%=project.offTime%>" class="form-control input-sm" id="offTime" name="offTime">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="CRM" class="col-sm-3 control-label">Chức năng sử dụng cho dự án</span></label>
+        <div class="col-sm-6">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="CRM" value="" <%=project.CRM ? "checked" : null%>
+              id="defaultCheck1">
+            <label class="form-check-label" for="defaultCheck1">
+              CRM
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" <%=project.Voice ? "checked" : null%> type="checkbox" name="Voice" value=""
+              id="defaultCheck1">
+            <label class="form-check-label" for="defaultCheck1">
+              Voice
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" <%=project.Chat ? "checked" : null%> type="checkbox" name="Chat" value=""
+              id="defaultCheck1">
+            <label class="form-check-label" for="defaultCheck1">
+              Chat
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="Email" value="" <%=project.Email ? "checked" : null%>
+              id="defaultCheck1">
+            <label class="form-check-label" for="defaultCheck1">
+              Email
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" <%=project.smartIVR ? "checked" : null%> type="checkbox" name="smartIVR"
+              value="" id="defaultCheck1">
+            <label class="form-check-label" for="defaultCheck1">
+              Smart IVR
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" <%=project.SMS ? "checked" : null%> type="checkbox" name="SMS" value=""
+              id="defaultCheck1">
+            <label class="form-check-label" for="defaultCheck1">
+              SMS
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" <%=project.hardware ? "checked" : null%> type="checkbox" name="hardware"
+              value="" id="defaultCheck1">
+            <label class="form-check-label" for="defaultCheck1">
+              Phần cứng
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" <%=project.connection ? "checked" : null%> type="checkbox" name="connection"
+              value="" id="defaultCheck1">
+            <label class="form-check-label" for="defaultCheck1">
+              Đường truyền
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="type" class="col-sm-3 control-label">IP</label>
+        <div class="col-sm-6">
+          <div class="fg-line">
+            <input type="text" value="<%=project.IP%>" class="form-control input-sm" id="IP" name="IP">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="type" class="col-sm-3 control-label">Số lượng Agent</label>
+        <div class="col-sm-6">
+          <div class="fg-line">
+            <input type="text" value="<%=project.agentNumber%>" class="form-control input-sm" id="agentNumber"
+              name="agentNumber">
+          </div>
+        </div>
+      </div>
+    </form>
+    <div class="text-center">
+      <button type="submit" id="submit" class="btn btn-success">Gửi</button>
+      <button type="button" id="back" class="btn btn-danger">Đóng</button>
+    </div>
+  </div>
+</div>
