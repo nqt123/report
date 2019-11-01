@@ -38,7 +38,7 @@ exports.index = {
       }
       //sort
       if (!req.query.sort) {
-        agg._pipeline.push({ $sort: { status: 1 } });
+        agg._pipeline.push({ $sort: { updatedAt: -1 } });
       }
 
       if (!_.isEmpty(sort)) agg._pipeline.push({ $sort: sort });
