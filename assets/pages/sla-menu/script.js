@@ -14,7 +14,7 @@ $('.btn-remove').bind('click', function () {
         closeOnConfirm: false
     },
         function () {
-            _AjaxObject('/support-email/' + _id, 'DELETE', {}, function (resp) {
+            _AjaxObject('/sla-menu/' + _id, 'DELETE', {}, function (resp) {
                 if (_.isEqual(resp.code, 200)) {
                     swal({ title: 'Thành công', text: 'Yêu cầu đã được xoá', type: "success" });
                     _.LoadPage(window.location.hash);

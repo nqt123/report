@@ -5,7 +5,7 @@
     <h2 class="lvh-label hidden-xs"><%- title %></h2>
     <ul class="lv-actions actions">
       <li>
-        <a href="/#support-email/new" data-toggle="tooltip" data-placement="top" data-original-title="Thêm Yêu cầu mới">
+        <a href="/#sla-menu/new" data-toggle="tooltip" data-placement="top" data-original-title="Thêm Yêu cầu mới">
           <i class="zmdi zmdi-plus"></i>
         </a>
       </li>
@@ -40,15 +40,6 @@
                       Tên dự án
                     </th>
                     <th data-sort="none" data-field="location" role="button" class="bgm-orange c-white text-center">
-                      Vị trí
-                    </th>
-                    <!-- <th class="bgm-orange c-white text-center">
-                      Tình trạng
-                    </th> -->
-                    <th data-sort="none" data-field="email" class="bgm-orange c-white text-center">
-                      Email
-                    </th>
-                    <th role="button" data-field="displayName" data-sort="none" class="bgm-orange c-white text-center">
                       Tên hiển thị
                     </th>
                     <th class="w-120 bgm-orange c-white text-center">
@@ -60,8 +51,6 @@
                   <tr id="searchForm" class="filter">
                     <td class="text-center"></td>
                     <td class="text-center"><input class="form-control search" type="text" name="filter_name"></td>
-                    <td class="text-center"><input class="form-control search" type="text" name="filter_location"></td>
-                    <td class="text-center"><input class="form-control search" type="text" name="filter_email"></td>
                     <td class="text-center"><input class="form-control search" type="text" name="filter_displayName">
                     </td>
                     <td class="text-center"><button class="btn btn-primary btn-block waves-effect" id="btn-search"
@@ -69,18 +58,16 @@
                   </tr>
                   <%results.forEach(function(el,i){%>
                   <tr>
-                    <td class="text-center"><%- i+1%></td>
-                    <td class="text-center"><%-el.name%></td>
-                    <td class="text-center"><%-el.location%></td>
-                    <td class="text-center"><%-el.email%></td>
-                    <td class="text-center"><%-el.displayName%></td>
+                    <td class="text-center"><%-i +1%></td>
+                    <td class="text-center"><%- el.name%></td>
+                    <td class="text-center"><%- el.displayName%></td>
 
                     <td class="text-center" style="display: flex; justify-content:space-evenly;" role="button">
-                      <div class="btn-remove" data-toggle="tooltip" data-id="<%- el._id %>" data-placement="top" data-original-title="Xoá"> <i id="delete"
+                      <div class="btn-remove" data-toggle="tooltip" data-id="<%- el._id%>" data-placement="top" data-original-title="Xoá"> <i id="delete"
                           class="zmdi zmdi-delete text-danger" style="font-size: 2rem;"></i></div>
-                      <div class="btn_edit" data-id="<%- el._id %>" data-status="<%- el.status %>" data-name="<%- el.name %>"
+                      <div class="btn_edit" data-id="<%- el._id%>" 
                         data-toggle="tooltip" data-placement="top" data-original-title="Sửa">
-                        <a class="p-t-3 btn-flat-bg "  href="/#support-email/<%- el._id %>/edit"><i
+                        <a class="p-t-3 btn-flat-bg "  href="/#sla-menu/<%- el._id%>/edit"><i
                             class="zmdi zmdi-edit green f-17"></i></a>
                       </div>
                     </td>

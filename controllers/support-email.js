@@ -43,24 +43,30 @@ exports.create = function (req, res) {
   })
 }
 exports.edit = function (req, res) {
-  _SupportEmail.findById(req.params.supportemail,function(err,result){
+  _SupportEmail.findById(req.params.supportemail, function (err, result) {
     _.render(req, res, 'support-email-edit', {
       title: "Sửa đổi danh mục",
-      result:result,
+      result: result,
       plugins: [['bootstrap-select']],
     }, true)
   })
 }
-exports.update = function(req,res){
+exports.update = function (req, res) {
   console.log('hello');
-  
+
   console.log(req.body);
   console.log(req.body.tagetId);
-  
-  _SupportEmail.findByIdAndUpdate(req.body.tagetId,req.body,function(err,result){
+
+  _SupportEmail.findByIdAndUpdate(req.body.tagetId, req.body, function (err, result) {
     res.json({ code: (err ? 500 : 200), message: err ? err : "" })
   })
-  
+
+}
+exports.destroy = function (req, res) {
+  _SupportEmail.findByIdAndRemove(req.params.supportemail, function (error,result) {
+    res.json({ code: (error ? 500 : 200), message: error ? error : "" });
+  }
+  )
 }
 
 

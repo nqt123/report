@@ -6,6 +6,7 @@ const SlaMenuSchema = new mongoose.Schema({
 }, { timestamps: true })
 
 SlaMenuSchema.set('toJSON', { getters: true });
+SlaMenuSchema.plugin(require('mongoose-aggregate-paginate'))
 const SlaMenu = mongoose.model('slaMenu', SlaMenuSchema)
 
 module.exports = SlaMenu
