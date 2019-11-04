@@ -7,6 +7,9 @@ submitButton.addEventListener('click', (e) => {
   const name = document.querySelector('#name').value
   const offTime = document.querySelector('#offTime').value
   const IP = document.querySelector('#IP').value
+  const position = document.querySelector('#position').value
+  const usingCRM = document.querySelector('#usingCRM').value
+  const goLineTime = document.querySelector('#goLineTime').value
   const agentNumber = document.querySelector('#agentNumber').value
   const checkList = []
   if (!name || name == "") {
@@ -17,8 +20,9 @@ submitButton.addEventListener('click', (e) => {
   })
 
   const body = {
-    name, offTime, IP, agentNumber, checkList, id
+    name, offTime, IP, agentNumber, checkList, id, position, usingCRM, goLineTime
   }
+
   fetch('/projectsAdmin/' + id, {
     method: "PUT",
     body: JSON.stringify(body),
@@ -30,7 +34,9 @@ submitButton.addEventListener('click', (e) => {
 
 
 
-
+document.querySelector('#back').addEventListener('click', (e) => {
+  location.hash = 'projectsAdmin'
+})
 var DFT = function ($) {
   return {
     init: function () {

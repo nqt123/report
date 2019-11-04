@@ -51,7 +51,7 @@ exports.index = function (req, res) {
   ProjectAdmin.aggregatePaginate(agg, { page, limit }, function (err, result, node, count) {
 
     var paginator = new pagination.SearchPaginator({
-      prelink: '/projectAdmin',
+      prelink: '/projectsAdmin',
       current: page,
       rowsPerPage: limit,
       totalResult: count
@@ -79,6 +79,9 @@ exports.create = function (req, res) {
     name: req.body.name,
     offTime: req.body.offTime,
     IP: req.body.IP,
+    position: req.body.position,
+    usingCRM: req.body.usingCRM,
+    goLineTime : req.body.goLineTime,
     agentNumber: req.body.agentNumber,
   })
   req.body.checkList.forEach(item => {
@@ -103,6 +106,14 @@ exports.edit = function (req, res) {
     }, true)
   })
 }
+exports.show = function (req, res) {
+  ProjectAdmin.findById(req.params.projectsadmin).then(result => {
+    _.render(req, res, 'projectsAdmin-detail', {
+      title: 'Chỉnh sửa Dự Án',
+      project: result
+    }, true)
+  })
+}
 // //name, processTime, note
 exports.update = function (req, res) {
   ProjectAdmin.findById(req.body.id).then(project => {
@@ -118,6 +129,9 @@ exports.update = function (req, res) {
     //update property
     console.log(req.body)
     project.name = req.body.name
+    project.position = req.body.position
+    project.usingCRM = req.body.usingCRM
+    project.goLineTime = req.body.goLineTime
     project.offTime = req.body.offTime
     project.IP = req.body.IP
     project.agentNumber = req.body.agentNumber
@@ -125,7 +139,6 @@ exports.update = function (req, res) {
     req.body.checkList.forEach(item => {
       project[item] = true
     })
-    console.log(project)
     project.save().then(result => {
       res.send(result)
     })

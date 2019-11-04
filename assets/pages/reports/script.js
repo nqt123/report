@@ -72,27 +72,29 @@ for (let i = 0; i < $searchButtons.length; i++) {
 }
 //Binding Search Button
 buttonSearch.addEventListener('click', (e) => {
-  let searchTerm = {}
-  const page = window.location.obj['page'] || 1
-  const searchColumns = document.querySelectorAll('.searchColumn')
-  for (let i = 0; i < searchColumns.length; i++) {
-    searchTerm[searchColumns[i].attributes.name.value] = searchColumns[i].value != "" ? searchColumns[i].value : ""
-  }
-
-  var searchString = "&"
-  Object.keys(searchTerm).forEach((key, i) => {
-    if (searchTerm[key] == "") {
-      return delete searchTerm[key]
+  if (location.hash.includes('#reports')) {
+    let searchTerm = {}
+    const page = window.location.obj['page'] || 1
+    const searchColumns = document.querySelectorAll('.searchColumn')
+    for (let i = 0; i < searchColumns.length; i++) {
+      searchTerm[searchColumns[i].attributes.name.value] = searchColumns[i].value != "" ? searchColumns[i].value : ""
     }
-    searchString += key + "=" + searchTerm[key] + "&"
-  })
-  if (searchString != "&") {
-    window.searchString = searchString
-    location.hash = 'reports' + "?page=" + page + searchString
-  }
-  else {
-    window.searchString = ""
-    location.hash = 'reports'
+
+    var searchString = "&"
+    Object.keys(searchTerm).forEach((key, i) => {
+      if (searchTerm[key] == "") {
+        return delete searchTerm[key]
+      }
+      searchString += key + "=" + searchTerm[key] + "&"
+    })
+    if (searchString != "&") {
+      window.searchString = searchString
+      location.hash = 'reports' + "?page=" + page + searchString
+    }
+    else {
+      window.searchString = ""
+      location.hash = 'reports'
+    }
   }
 })
 //Bind LiList

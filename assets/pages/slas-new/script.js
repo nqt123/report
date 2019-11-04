@@ -7,7 +7,9 @@ $form.addEventListener('submit', (e) => {
   const name = document.querySelector('#name').value
   const processTime = document.querySelector('#processTime').value
   const note = document.querySelector('#note').value
-
+  if(name == ""){
+    return swal("Bạn phải nhập dạng sự cố")
+  }
   const body = {
     category,
     name,

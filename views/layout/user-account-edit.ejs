@@ -1,0 +1,77 @@
+<%-breadcrumb%>
+<div class="card">
+  <div class="card-header">
+    <h2 class="m-b-5"><%- title %></h2>
+    <small class="text-muted"><i>Những trường có dấu <span class="c-red">*</span> là bắt buộc nhập. </i></small>
+  </div>
+  <div class="card-body card-padding">
+    <div id="warning-message" class="text-center m-b-10 text-danger">
+
+    </div>
+    <input type="text" hidden value="<%=User._id%>" id="id">
+    <div class="form-horizontal" id="create-form">
+      <div class="form-group">
+        <label for="" class="col-sm-3 control-label">Vị trí</span></label>
+        <div class="col-sm-6">
+          <div class="fg-line">
+            <input type="text" value="<%=User.positionName%>" class="form-control input-sm" id="positionName"
+              name="positionName">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="" class="col-sm-3 control-label">Nhóm nhận yêu cầu<span class="required">*</span></label>
+        <div class="col-sm-6">
+          <%supportEmails.forEach((e,i) => {%>
+          <div class="form-check">
+            <input class="form-check-input" name="email" type="checkbox"
+              <%=JSON.stringify(User.groupEmail).includes(JSON.stringify(e._id)) ? "checked" : null%>
+              value="<%=e._id%>">
+            <label class="form-check-label" for="defaultCheck2">
+              <%=e.name%> (<%=e.email%>)
+            </label>
+          </div>
+          <%})%>
+        </div>
+      </div>
+      <div id="role-group">
+        <div class="form-group">
+          <label for="" class="col-sm-3 control-label">Dự Án</span></label>
+          <div class="col-sm-6">
+            <div class="fg-line">
+              <select class="form-control" id="projects">
+                <%projects.forEach(project => {%>
+                <option value="<%=project._id%>"><%=project.name%></option>
+                <%})%>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="" class="col-sm-3 control-label">Vai Trò</span></label>
+          <div class="col-sm-6">
+            <div class="fg-line">
+              <select class="form-control" id="authority">
+                <option value="REPORTER">REPORTER</option>
+                <option value="SUPPORTER">SUPPORTER</option>
+                <option value="SUPERVISOR">SUPERVISOR</option>
+                <option value="ADMINISTRATOR">ADMINISTRATOR</option>
+                <option value="DEVELOPER">DEVELOPER</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="extendArea"></div>
+      <div class="text-center" style="height : 50px; cursor: pointer;" data-toggle="tooltip" data-placement="top"
+        data-original-title="Thêm Dự Án" id="addProjects" onclick="addProject()">
+        <i class="zmdi zmdi-plus green f-17 text-success"></i>
+      </div>
+      <div class="text-center">
+        <button type="submit" id="update" class="btn btn-success">Gửi</button>
+        <button type="button" id="back" class="btn btn-danger">Đóng</button>
+      </div>
+    </div>
+  </div>
+</div>

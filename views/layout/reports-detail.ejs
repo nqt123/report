@@ -10,7 +10,7 @@
           <label for="name" class="col-sm-3 control-label">Tên Dự án </label>
           <div class="col-sm-6">
             <div class="fg-line">
-              <input type="text" value="<%=report.name%>" readonly class="form-control input-sm" id="name" name="name">
+              <input type="text" value="<%=report.displayName%>" readonly class="form-control input-sm" id="name" name="name">
               <input type="hidden" value="" id="updateId">
             </div>
           </div>
@@ -129,9 +129,9 @@
         </div>
     </div>
     <div style="text-align: center; margin-bottom: 1rem; font-weight: bold;">
-      XÁC NHẬN
+      <%=report.status == 4 ? "YÊU CẦU ĐÃ ĐƯỢC XÁC NHẬN HOÀN THÀNH" : "XÁC NHẬN" %>
     </div>
-    <div>
+    <div <%=report.status == 4 ? "hidden" : null %>>
       <div style="margin: 0 auto;" class="text-center">
         <div class="form-group m-l-10" style="margin: 0 auto;">
           <a type="button" class="btn btn-default btn-icon-text waves-effect" id="reject"

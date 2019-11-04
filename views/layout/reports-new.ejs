@@ -13,8 +13,9 @@
         <label for="name" class="col-sm-3 control-label">Tên Dự án<span class="required">*</span></label>
         <div class="col-sm-6">
           <select class="fg-line form-control" id="name">
+            <option value="-1">-- Chọn --</option>
             <%for(let i =0 ; i < result.length ; i++){%>
-            <option value="<%=result[i].name%>"><%=result[i].name%></option>
+            <option value="<%=result[i]._id%>"><%=result[i].name%></option>
             <%}%>
           </select>
         </div>
@@ -100,6 +101,7 @@
           </div>
         </div>
       </div>
+      <input type="text" hidden id="maxAgent"/>
       <div class="form-group">
         <label for="agentNumberInfluence" class="col-sm-3 control-label">Mức độ ảnh hưởng</label>
         <div class="col-sm-6">

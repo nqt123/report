@@ -31,10 +31,22 @@ var DFT = function ($) {
                 _.LoadPage(location.hash)
               })
             }
+<<<<<<< HEAD
           }
         );
       })
     }
+=======
+            // }).then(res => res.json()).then(response => _.LoadPage(window.location.hash))
+          }).then(res => res.json()).then(response => {
+            _.LoadPage(location.hash)
+          })
+        }
+      }
+    );
+  })
+}
+>>>>>>> f94c2b382229ba64a6b95ffab1b91b887e82bb61
 
     let queryFilter = function () {
       let _data = _.pick($('#project').serializeJSON(), _.identity);
@@ -78,6 +90,23 @@ var DFT = function ($) {
       queryFilter();
     });
   }
+<<<<<<< HEAD
+=======
+  $this.siblings().toggleAttr('data-sort', 'none');
+  queryFilter();
+});
+for (let i = 0; i < rows.length; i++) {
+  const updateBtn = rows[i].querySelector('#update')
+  const id = rows[i].querySelector('#id').innerHTML.trim()
+  updateBtn.addEventListener('click', function (e) {
+    location.hash = 'projectsAdmin/' + id+'/edit'
+  })
+}
+
+
+
+var DFT = function ($) {
+>>>>>>> f94c2b382229ba64a6b95ffab1b91b887e82bb61
   return {
     init: function () {
       bindClick();

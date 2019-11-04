@@ -22,6 +22,7 @@ const $SupportEmail = document.querySelector('#SupportEmail')
 const $UserEmail = document.querySelector('#UserEmail')
 const $backBtn = document.querySelector('#backBtn')
 const $emails = document.getElementsByName('email')
+const $maxAgent = document.getElementsByName('maxAgent')
 
 var userList = []
 var supportList = []
@@ -40,14 +41,18 @@ $submitBtn.addEventListener('click', (e) => {
     window.scrollTo({ top: 25, behavior: 'smooth' })
     return textMessage.textContent = "Số lượng nhân sự trong ca phải lớn hơn số lượng nhận sự ảnh hưởng"
   }
-  if (name == "" || agentNumberInShift == "" || type == -1 || agentNumberInfluence == "" || title == "" || description == "") {
+  if (name == "" || name == '-1' || agentNumberInShift == "" || type == -1 || agentNumberInfluence == "" || title == "" || description == "") {
     $selectModal.id = "None"
     window.scrollTo({ top: 25, behavior: 'smooth' })
     return textMessage.textContent = "Vui lòng nhập các trường bắt buộc"
   }
-  else {
-    $selectModal.id = "selectEmail"
+  if (agentNumberInShift > $maxAgent.value) {
+    $selectModal.id = "None"
+    window.scrollTo({ top: 25, behavior: 'smooth' })
+    return textMessage.textContent = "Số lượng nhân sự trong ca phải nhỏ hơn hoặc bằng số lượng agent của Dự án"
   }
+  $selectModal.id = "selectEmail"
+
   fetch('/reports/new?email=' + true,
     {
       method: "GET",
@@ -59,13 +64,13 @@ $submitBtn.addEventListener('click', (e) => {
     userList = respond.userEmail
     supportList = respond.supportEmail.email
 
-    respond.supportEmail.forEach(email => {
+    respond.supportEmail.forEach((email, i) => {
       $SupportEmail.insertAdjacentHTML('beforeend',
         `
         <div class="form-check">
-        <input class="form-check-input" name="email" type="checkbox" value="${email.email}">
+        <input class="form-check-input" data-id="${email._id}" name="email" type="checkbox" value="${email.email}">
         <label class="form-check-label" for="defaultCheck2">
-          ${email.email}<br> (${email.displayName})
+          ${email.email}<br> (${email.name})
        </label>
       </div>
       `)
@@ -74,7 +79,7 @@ $submitBtn.addEventListener('click', (e) => {
       $UserEmail.insertAdjacentHTML('beforeend',
         `
       <div class="form-check">
-        <input class="form-check-input" name="email" type="checkbox" value="${email.email}">
+        <input class="form-check-input" data-id="${email._id}" name="email" type="checkbox" value="${email.email}">
         <label class="form-check-label" for="defaultCheck2">
           ${email.email}<br> (${email.displayName})
        </label>
@@ -86,13 +91,21 @@ $submitBtn.addEventListener('click', (e) => {
 createReport.addEventListener('click', (e) => {
   e.preventDefault()
   const emailList = []
+  const idList = []
   const checkedValue = document.querySelectorAll('.form-check-input:checked')
   for (let i = 0; i < checkedValue.length; i++) {
     emailList.push(checkedValue[i].value)
   }
+  for (let i = 0; i < checkedValue.length; i++) {
+    idList.push(checkedValue[i].dataset.id)
+  }
+
+  console.log(idList)
+
   const name = $name.value
   const position = $position.value
   const CRM = $CRM.value
+  const displayName = $name.options[$name.selectedIndex].text
   const type = $type.value
   const title = $title.value
   const description = $description.value
@@ -115,9 +128,11 @@ createReport.addEventListener('click', (e) => {
     agentNumberInShift,
     agentNumberInfluence,
     percentOfInfluence,
-    emailList
+    emailList,
+    displayName,
+    for: idList
   }
-
+  console.log(report)
   fetch('/reports',
     {
       method: "POST",
@@ -147,18 +162,35 @@ $type.addEventListener('change', (e) => {
       }
     }
   ).then(res => res.json()).then(respond => {
-    select.disabled = false
-    select.options.length = 0
-    for (let i = 0; i < respond.length; i++) {
-      var opt = document.createElement('option')
-      opt.appendChild(document.createTextNode(respond[i].name))
-      opt.value = respond[i].processTime
-      select.appendChild(opt)
-    }
-    $sla.value = convertMinutes(respond[0].processTime)
+    setTimeout(() => {
+      select.disabled = false
+      select.options.length = 0
+      for (let i = 0; i < respond.length; i++) {
+        var opt = document.createElement('option')
+        opt.appendChild(document.createTextNode(respond[i].name))
+        opt.value = respond[i].processTime
+        select.appendChild(opt)
+      }
+      $sla.value = convertMinutes(respond[0].processTime)
+    }, 100);
   })
 })
+$name.addEventListener('change', (e) => {
+  const id = $name.value
 
+  fetch('reports/new?id=' + id, {
+    method: "GET",
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then(res => res.json()).then(respond => {
+    console.log(respond[0])
+    const project = respond[0]
+    $maxAgent.value = project.agentNumber
+    $position.value = project.position
+    $CRM.value = project.usingCRM
+  })
+})
 reportList.addEventListener('change', (e) => {
   $sla.value = convertMinutes(reportList.value)
 })
@@ -175,7 +207,7 @@ function updateResult(query) {
     query.split(" ").map(function (word) {
       if (email.toLowerCase().indexOf(word.toLowerCase()) != -1) {
         resultList.innerHTML += `      <div class="form-check">
-        <input class="form-check-input" name="email" type="checkbox" value="${email}">
+        <input class="form-check-input" data-id="${userList[index]._id}" name="email" type="checkbox" value="${email}">
         <label class="form-check-label" for="defaultCheck2">
         ${userList[index].email}<br> (${userList[index].displayName})
        </label>
@@ -210,6 +242,7 @@ const priorCalculator = () => {
   return result
 }
 const convertMinutes = (value) => {
+  value = parseInt(value)
   let slaTime = 0;
   if (!value || value == "0") {
     slaTime = "N/A"

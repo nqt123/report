@@ -155,7 +155,7 @@
                       <%=result[i]._id%>
                     </td>
                     <td class="col-lg-1">
-                      <%=result[i].name%>
+                      <%=result[i].displayName%>
                     </td>
                     <td class="text-center">
                       <%=result[i].typeDisplay%>
@@ -225,7 +225,9 @@
                       Chưa có SLA
                       <%}%>
                     </td>
-                    <td></td>
+                    <td>
+                      <%=result[i].endAt ? moment(result[i].endAt).format("HH:mm - Do MMM YYYY") : null%>
+                    </td>
                     <td class="text-center" style="display: flex; justify-content:space-evenly;" role="button">
                       <div id="detail" data-toggle="tooltip" data-placement="top" data-original-title="Chi Tiết"> <i
                           class="zmdi zmdi-eye text-success" style="font-size: 2rem;"></i></div>

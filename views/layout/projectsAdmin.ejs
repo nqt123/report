@@ -43,6 +43,15 @@
                         class="zmdi zmdi-sort-desc"></i>
                       Tên dự án
                     </th>
+                    <th data-sort="none" sortName="name" role="button" class="bgm-orange c-white text-center sort">
+                      Vị trí dự án
+                    </th>
+                    <th data-sort="none" sortName="name" role="button" class="bgm-orange c-white text-center sort">
+                      CRM Đang sử dụng
+                    </th>
+                    <th data-sort="none" sortName="name" role="button" class="bgm-orange c-white text-center sort">
+                      Thời Gian GOLINE
+                    </th>
                     <th data-sort="none" data-field="offTime" role="button" class="bgm-orange c-white text-center">
                       <i data-toggle="tooltip" data-original-title="Sắp xếp theo thứ tự tăng dần"
                         class="zmdi zmdi-sort-asc"></i>
@@ -96,17 +105,21 @@
                   <tr id="searchForm" class="filter">
                     <td class="text-center"></td>
                     <td class="text-center"><input class="form-control search" type="text" name="filter_name"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
                     <td class="text-center"><input class="form-control search" type="text" name="filter_offTime"></td>
                     <td class="text-center"><input type="checkbox" class="search" name="filter_CRM"></td>
                     <td class="text-center"><input type="checkbox" class="search" name="filter_Voice"></td>
-                    <td class="text-center"><input type="checkbox" class="search"  name="filter_Chat"></td>
+                    <td class="text-center"><input type="checkbox" class="search" name="filter_Chat"></td>
                     <td class="text-center"><input type="checkbox" class="search" name="filter_Email"></td>
                     <td class="text-center"><input type="checkbox" class="search" name="filter_smartIVR"></td>
                     <td class="text-center"><input type="checkbox" class="search" name="filter_SMS"></td>
                     <td class="text-center"><input type="checkbox" class="search" name="filter_hardware"></td>
                     <td class="text-center"><input type="checkbox" class="search" name="filter_connection"></td>
                     <td class="text-center"><input class="form-control search" type="text" name="filter_IP"></td>
-                    <td class="text-center"><input class="form-control search" type="text" name="filter_agentNumber"></td>
+                    <td class="text-center"><input class="form-control search" type="text" name="filter_agentNumber">
+                    </td>
                     <td class="text-center"><button class="btn btn-primary btn-block waves-effect" id="btn-search"
                         name="btn-search"><i class="zmdi zmdi-filter-list m-r-5"></i> Lọc</button></td>
                   </tr>
@@ -121,7 +134,18 @@
                     <td id="id">
                       <%=e.name%>
                     </td>
-                    <td></td>
+                    <td id="id">
+                      <%=e.position%>
+                    </td>
+                    <td id="id">
+                      <%=e.usingCRM%>
+                    </td>
+                    <td id="id">
+                      <%=e.goLineTime%>
+                    </td>
+                    <td>
+                      <%=e.offTime%>
+                    </td>
                     <td class="text-center">
                       <%if(e.CRM){%>
                       <input type="checkbox" checked>

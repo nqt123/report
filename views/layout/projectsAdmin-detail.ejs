@@ -2,7 +2,6 @@
 <div class="card">
   <div class="card-header">
     <h2 class="m-b-5"><%- title %></h2>
-    <small class="text-muted"><i>Những trường có dấu <span class="c-red">*</span> là bắt buộc nhập. </i></small>
   </div>
   <div class="card-body card-padding">
     <div id="warning-message" class="text-center m-b-10 text-danger">
@@ -11,7 +10,7 @@
     <form class="form-horizontal" action="sla" method="POST" id="create-form">
       <input type="text" id="id" hidden value="<%=project._id%>">
       <div class="form-group">
-        <label for="" class="col-sm-3 control-label">Tên Dự án<span class="c-red">*</span></span></label>
+        <label for="" class="col-sm-3 control-label">Tên Dự án</span></label>
         <div class="col-sm-6">
           <div class="fg-line">
             <input type="text" value="<%=project.name%>" class="form-control input-sm" id="name" name="name">
@@ -19,7 +18,7 @@
         </div>
       </div>
       <div class="form-group">
-        <label for="" class="col-sm-3 control-label">Vị Trí dự án<span class="c-red">*</span></span></label>
+        <label for="" class="col-sm-3 control-label">Vị Trí dự án</span></label>
         <div class="col-sm-6">
           <div class="fg-line">
             <input type="text" value="<%=project.position%>" class="form-control input-sm" id="position" name="position">
@@ -131,7 +130,6 @@
       </div>
     </form>
     <div class="text-center">
-      <button type="submit" id="submit" class="btn btn-success">Gửi</button>
       <button type="button" id="back" class="btn btn-danger">Đóng</button>
     </div>
   </div>
