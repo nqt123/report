@@ -22,7 +22,7 @@ submitButton.addEventListener('click', (e) => {
   const body = {
     name, offTime, IP, agentNumber, checkList, id, position, usingCRM, goLineTime
   }
-  
+
   fetch('/projectsAdmin/' + id, {
     method: "PUT",
     body: JSON.stringify(body),
@@ -34,7 +34,9 @@ submitButton.addEventListener('click', (e) => {
 
 
 
-
+document.querySelector('#back').addEventListener('click', (e) => {
+  location.hash = 'projectsAdmin'
+})
 var DFT = function ($) {
   return {
     init: function () {

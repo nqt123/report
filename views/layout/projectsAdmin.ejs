@@ -43,13 +43,6 @@
                         class="zmdi zmdi-sort-desc"></i>
                       Tên dự án
                     </th>
-                    <th data-sort="none" data-field="offTime" role="button" class="bgm-orange c-white text-center">
-                      <i data-toggle="tooltip" data-original-title="Sắp xếp theo thứ tự tăng dần"
-                        class="zmdi zmdi-sort-asc"></i>
-                      <i data-toggle="tooltip" data-original-title="Sắp xếp theo thứ tự giảm dần"
-                        class="zmdi zmdi-sort-desc"></i>
-                      thời gian off
-                    </th>
                     <th data-sort="none" sortName="name" role="button" class="bgm-orange c-white text-center sort">
                       Vị trí dự án
                     </th>
@@ -59,9 +52,14 @@
                     <th data-sort="none" sortName="name" role="button" class="bgm-orange c-white text-center sort">
                       Thời Gian GOLINE
                     </th>
-                    <th data-sort="none" sortName="field_product_type" role="button"
-                      class="bgm-orange c-white text-center sort">
-                      <!-- <th class="bgm-orange c-white text-center">
+                    <th data-sort="none" data-field="offTime" role="button" class="bgm-orange c-white text-center">
+                      <i data-toggle="tooltip" data-original-title="Sắp xếp theo thứ tự tăng dần"
+                        class="zmdi zmdi-sort-asc"></i>
+                      <i data-toggle="tooltip" data-original-title="Sắp xếp theo thứ tự giảm dần"
+                        class="zmdi zmdi-sort-desc"></i>
+                      thời gian off
+                    </th>
+                    <!-- <th class="bgm-orange c-white text-center">
                       Tình trạng
                     </th> -->
                     <th class="bgm-orange c-white text-center">
@@ -107,6 +105,9 @@
                   <tr id="searchForm" class="filter">
                     <td class="text-center"></td>
                     <td class="text-center"><input class="form-control search" type="text" name="filter_name"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
+                    <td class="text-center"></td>
                     <td class="text-center"><input class="form-control search" type="text" name="filter_offTime"></td>
                     <td class="text-center"><input type="checkbox" class="search" name="filter_CRM"></td>
                     <td class="text-center"><input type="checkbox" class="search" name="filter_Voice"></td>

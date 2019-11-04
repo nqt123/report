@@ -33,7 +33,6 @@ for (let i = 0; i < rows.length; i++) {
     );
   })
 }
-<<<<<<< HEAD
 
 let queryFilter = function () {
   let _data = _.pick($('#project').serializeJSON(), _.identity);
@@ -78,7 +77,6 @@ $(document).on('click', '.listHead th', function () {
   $this.siblings().toggleAttr('data-sort', 'none');
   queryFilter();
 });
-=======
 for (let i = 0; i < rows.length; i++) {
   const updateBtn = rows[i].querySelector('#update')
   const id = rows[i].querySelector('#id').innerHTML.trim()
@@ -86,7 +84,8 @@ for (let i = 0; i < rows.length; i++) {
     location.hash = 'projectsAdmin/' + id+'/edit'
   })
 }
->>>>>>> e8d99e7b78e5574b69fb43e6de656143c7264c63
+
+
 
 var DFT = function ($) {
   return {
