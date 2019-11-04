@@ -110,11 +110,7 @@ exports.create = function (req, res) {
         name: req.session.user.displayName,
         id: req.session.user._id
       },
-<<<<<<< HEAD
       lastRespondAt: Date.now()
-=======
-      lastRespondAt : Date.now()
->>>>>>> f94c2b382229ba64a6b95ffab1b91b887e82bb61
     }
     
     _Report.findByIdAndUpdate(req.body.reportId, stt, function (error, ca) {
