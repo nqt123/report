@@ -29,7 +29,7 @@ exports.index = {
       lists = result.lists
 
       let agg = _Report.aggregate();
-      
+
       if (_.has(req.query, 'name')) {
         query.name = { $regex: new RegExp(_.stringRegex(req.query.name), 'gi') };
       }
@@ -110,13 +110,10 @@ exports.create = function (req, res) {
         name: req.session.user.displayName,
         id: req.session.user._id
       },
-<<<<<<< HEAD
+      seen: false,
       lastRespondAt: Date.now()
-=======
-      lastRespondAt : Date.now()
->>>>>>> f94c2b382229ba64a6b95ffab1b91b887e82bb61
     }
-    
+
     _Report.findByIdAndUpdate(req.body.reportId, stt, function (error, ca) {
       let time = moment().diff(ca.updatedAt, 'minutes');
       if (time > ca.processTime && ca.processTime != 0) {
@@ -168,7 +165,6 @@ exports.update = function (req, res) {
     report.status = 1
     report.supporter.name = req.session.user['displayName']
     report.supporter.id = req.session.user['_id']
-
     report.save().then(result => {
 
       var transporter = nodeMailer.createTransport({

@@ -61,31 +61,33 @@ $submitBtn.addEventListener('click', (e) => {
       }
     }
   ).then(res => res.json()).then(respond => {
-    userList = respond.userEmail
-    supportList = respond.supportEmail.email
+    setTimeout(() => {
+      userList = respond.userEmail
+      supportList = respond.supportEmail.email
 
-    respond.supportEmail.forEach((email, i) => {
-      $SupportEmail.insertAdjacentHTML('beforeend',
-        `
+      respond.supportEmail.forEach((email, i) => {
+        $SupportEmail.insertAdjacentHTML('beforeend',
+          `
+          <div class="form-check">
+          <input class="form-check-input" data-id="${email._id}" name="email" type="checkbox" value="${email.email}">
+          <label class="form-check-label" for="defaultCheck2">
+            ${email.email}<br> (${email.name})
+         </label>
+        </div>
+        `)
+      })
+      respond.userEmail.forEach(email => {
+        $UserEmail.insertAdjacentHTML('beforeend',
+          `
         <div class="form-check">
-        <input class="form-check-input" data-id="${email._id}" name="email" type="checkbox" value="${email.email}">
-        <label class="form-check-label" for="defaultCheck2">
-          ${email.email}<br> (${email.name})
-       </label>
-      </div>
-      `)
-    })
-    respond.userEmail.forEach(email => {
-      $UserEmail.insertAdjacentHTML('beforeend',
-        `
-      <div class="form-check">
-        <input class="form-check-input" data-id="${email._id}" name="email" type="checkbox" value="${email.email}">
-        <label class="form-check-label" for="defaultCheck2">
-          ${email.email}<br> (${email.displayName})
-       </label>
-      </div>
-      `)
-    })
+          <input class="form-check-input" data-id="${email._id}" name="email" type="checkbox" value="${email.email}">
+          <label class="form-check-label" for="defaultCheck2">
+            ${email.email}<br> (${email.displayName})
+         </label>
+        </div>
+        `)
+      })
+    }, 50);
   })
 })
 createReport.addEventListener('click', (e) => {
@@ -147,7 +149,7 @@ createReport.addEventListener('click', (e) => {
     swal("Gửi yêu cầu thành công", "", "success");
     setTimeout(() => {
       $backBtn.click()
-    }, 200);
+    }, 100);
   })
 })
 

@@ -187,7 +187,6 @@ exports.new = function (req, res) {
     })
   }
   const company = ProjectAdmin.find({ $or: projectQuery }).then(result => {
-    console.log(result)
     SlaMenu.find({}).sort({ displayName: 1 }).then(list => {
       if (req.query.email) {
         let supportEmail;
