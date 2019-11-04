@@ -70,9 +70,9 @@ const reportSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId
     }
   }],
-  reason: {
-    type: String
-  },
+  reason: [
+    
+  ],
   processTime: {
     type: Number,
     default: 0

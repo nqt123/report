@@ -307,6 +307,9 @@ exports.show = function (req, res) {
     },
     {
       $match: { "report._id": mongoose.Types.ObjectId(req.params.report) }
+    },
+    {
+      $sort: { createdAt: -1 }
     }
   ], function (err, result) {
     if (!result[0]) {
@@ -318,6 +321,7 @@ exports.show = function (req, res) {
         }, true)
       })
     }
+    console.log(result)
     _.render(req, res, 'reports-detail', {
       title: "",
       report: result[0].report,
