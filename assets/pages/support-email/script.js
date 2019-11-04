@@ -1,4 +1,3 @@
-console.log('load');
 
 $('.btn-remove').bind('click', function () {
     let _id = $(this).attr('data-id');
@@ -24,8 +23,9 @@ $('.btn-remove').bind('click', function () {
             });
         });
 });
-
-
+$('#refreshBtn').bind('click',(e)=>{
+    _.LoadPage(location.hash = "support-email");
+})
 var DFT = function ($) {
 
     return {

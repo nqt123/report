@@ -39,6 +39,10 @@ btnback.addEventListener('click',(e)=>{
     e.preventDefault();
     window.location.hash="sla-menu"
 })
+btnback.addEventListener('click',(e)=>{
+    e.preventDefault();
+    window.location.hash="sla-menu"
+})
 var DFT = function ($) {
     return {
         init: function () {

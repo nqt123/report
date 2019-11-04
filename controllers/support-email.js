@@ -23,7 +23,7 @@ exports.index = {
         totalResult: count
       })
       return _.render(req, res, 'support-email', {
-        title: 'Danh sách các Yêu cầu',
+        title: 'Danh sách hỗ trợ ',
         results: results,
         paging: paginator.getPaginationData(),
         plugins: ['moment', ['bootstrap-select'], ['bootstrap-datetimepicker'], ['bootstrap-daterangepicker'], ['chosen']]
@@ -45,18 +45,13 @@ exports.create = function (req, res) {
 exports.edit = function (req, res) {
   _SupportEmail.findById(req.params.supportemail, function (err, result) {
     _.render(req, res, 'support-email-edit', {
-      title: "Sửa đổi danh mục",
+      title: "Sửa đổi ",
       result: result,
       plugins: [['bootstrap-select']],
     }, true)
   })
 }
 exports.update = function (req, res) {
-  console.log('hello');
-
-  console.log(req.body);
-  console.log(req.body.tagetId);
-
   _SupportEmail.findByIdAndUpdate(req.body.tagetId, req.body, function (err, result) {
     res.json({ code: (err ? 500 : 200), message: err ? err : "" })
   })

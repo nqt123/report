@@ -1,9 +1,6 @@
-console.log('load');
 
 $('.btn-remove').bind('click', function () {
     let _id = $(this).attr('data-id');
-    console.log(_id);
-    
     swal({
         title: "Bạn muốn xoá mục này ?",
         text: "Tất cả các bài viết có trong mục này sẽ được cập nhật",
@@ -24,7 +21,9 @@ $('.btn-remove').bind('click', function () {
             });
         });
 });
-
+$('#refreshBtn').bind('click',(e)=>{
+    _.LoadPage(location.hash = "sla-menu");
+})
 
 var DFT = function ($) {
 
