@@ -20,7 +20,7 @@ exports.index = {
       lists = result.lists
 
       let agg = _Report.aggregate();
-
+      
       if (_.has(req.query, 'name')) {
         query.name = { $regex: new RegExp(_.stringRegex(req.query.name), 'gi') };
       }
@@ -96,7 +96,8 @@ exports.create = function (req, res) {
       supporter: {
         name: req.session.user.displayName,
         id: req.session.user._id
-      }
+      },
+      lastRespondAt: Date.now()
     }
     _Report.findByIdAndUpdate(req.body.reportId, stt, function (error, ca) {
       let time = moment().diff(ca.updatedAt, 'minutes');

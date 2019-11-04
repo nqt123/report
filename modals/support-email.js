@@ -6,8 +6,6 @@ const SupportEmailSchema = new mongoose.Schema({
   email: { type: String, trim: true, required : true },
   displayName: { type: String, trim: true }
 }, { timestamps: true })
-
+SupportEmailSchema.plugin(require('mongoose-aggregate-paginate'))
 SupportEmailSchema.set('toJSON', { getters: true });
-const SupportEmail = mongoose.model('SupportEmail', SupportEmailSchema)
-
-module.exports = SupportEmail
+module.exports = mongoose.model('SupportEmail', SupportEmailSchema);

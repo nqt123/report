@@ -146,7 +146,7 @@
                                 thành</span>
                             <%}%>
                         </td>
-                        <td class="text-center"><%-el.endAt%></td>
+                        <td class="text-center"><%-moment(el.endAt).format("HH:mm - Do MMM YYYY ")%></td>
                         <td class="text-center" style="display: flex; justify-content:space-evenly;">
                             <div id="detail" data-toggle="tooltip" data-placement="top" data-original-title="Chi tiết">
                                 <a href="/#support-manager/<%- el._id %>" data-id="<%- el._id %>"

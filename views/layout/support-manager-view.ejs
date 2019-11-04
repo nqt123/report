@@ -63,7 +63,17 @@
                 <label for="name" class="col-sm-3 control-label">Mức độ ưu tiên xử lý :</label>
                 <div class="col-sm-6">
                     <div class="fg-line">
-                        <input type="text" maxlength="60" class="form-control"  value="<%- body.prior %>" readonly>
+                        <%if(body.prior ==1){%>
+                            <input type="text" maxlength="60" class="form-control"  value="Hỗ trợ" readonly>
+                        <%}else if(body.prior ==2){%>
+                            <input type="text" maxlength="60" class="form-control"  value="Trung bình" readonly>
+                        <%}else if(body.prior ==3){%>
+                            <input type="text" maxlength="60" class="form-control"  value="Cao" readonly>
+                        <%}else if(body.prior ==4){%>
+                            <input type="text" maxlength="60" class="form-control"  value="Khẩn cấp" readonly>
+                        <%}else if(body.prior ==5){%>
+                            <input type="text" maxlength="60" class="form-control"  value="Cực kì khẩn cấp" readonly>
+                        <%}%>
                     </div>
                 </div>
             </div>

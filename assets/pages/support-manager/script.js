@@ -1,16 +1,12 @@
 var DFT = function ($) {
 
-    const buttonSearch = document.querySelector("#btn-search");
-    const bt = document.querySelector("#empty-container div")
+    let bindClick = function () {
+        const buttonSearch = document.querySelector("#btn-search");
+        const bt = document.querySelector("#empty-container div")
         //nhận yêu cầu
         $(".btn-received").bind('click', function () {
             let targetIds = $(this).data("id");
-            console.log($(this));
-            
             let title = $(this).context.dataset.name;
-
-            
-            
             let support = {
                 id: targetIds
             }
@@ -24,8 +20,6 @@ var DFT = function ($) {
                     'Content-Type': 'application/json'
                 }
             }).then((res) => {
-                console.log(res);
-
                 if (_.isEqual(res.status, 200)) {
                     swal({
                         title: "Thành công",
@@ -101,21 +95,8 @@ var DFT = function ($) {
             }
 
         })
-        //processing after search
-        // if ($("#table-categorys tbody tr").length == 1) {
-        //     console.log(!!(searchString!=""));
-        //     console.log(searchString);
-            
-        //     if(searchString != "")
-        //     swal({
-        //         title: "Thông báo",
-        //         text: "Không tìm thấy bản ghi phù hợp",
-        //         type: "warning", showCancelButton: false, confirmButtonColor: "#DD6B55", confirmButtonText: "Quay lại!"
-        //     },
-        //         function () {
-        //             window.history.back();
-        //         })
-        // }
+
+
 
         //sort
         $(document).on('click', '.table-fix th', function (e) {
@@ -142,11 +123,24 @@ var DFT = function ($) {
             let name = $this.attr('data-field');
             location.hash = "support-manager" + "?sort=" + name + ":" + sort
         })
-    
+    }
+
     return {
         init: function () {
-            
-            
+            bindClick();
+           // Xử lý sau khi search
+            if ($("#table-categorys tbody tr").length == 1) {
+                if (searchString != "")
+                    swal({
+                        title: "Thông báo",
+                        text: "Không tìm thấy bản ghi phù hợp",
+                        type: "warning", showCancelButton: false, confirmButtonColor: "#DD6B55", confirmButtonText: "Quay lại!"
+                    },
+                        function () {
+                            window.history.back();
+                        })
+            }
+
         }
     }
 }(jQuery);
