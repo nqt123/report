@@ -1,4 +1,4 @@
-
+const content = document.querySelector('#role-group').innerHTML
 document.querySelector('#back').addEventListener('click', (e) => {
   location.hash = 'users'
 })
@@ -7,11 +7,18 @@ document.querySelector('#update').addEventListener('click', (e) => {
   e.preventDefault()
   const positionName = document.querySelector('#positionName').value
   const id = document.querySelector('#id').value.trim()
-  const projects = document.querySelector('#projects').value
-  const authority = document.querySelector('#authority').value
+  const projects = document.querySelectorAll('#projects')
+  const authorities = document.querySelectorAll('#authority')
   const checkList = []
+  const projectManage = []
 
-  console.log({ authority, projects })
+  projects.forEach((project, i) => {
+    projectManage.push({
+      projects: project.value,
+      authority: authorities[i].value
+    })
+  })
+
   let checkListItem = document.querySelectorAll('.form-check-input:checked')
   checkListItem.forEach(check => {
     checkList.push(check.value)
@@ -21,10 +28,7 @@ document.querySelector('#update').addEventListener('click', (e) => {
     positionName,
     checkList,
     id,
-    projectManage: {
-      projects,
-      authority
-    }
+    projectManage
   }
   fetch('/user-account/' + id, {
     method: "PUT",
@@ -34,6 +38,14 @@ document.querySelector('#update').addEventListener('click', (e) => {
     }
   }).then(res => res.json()).then(respond => location.hash = "users")
 })
+document.querySelector('#addProjects').addEventListener('click', (e) => {
+  console.log('clicked')
+})
+
+function addProject() {
+  document.querySelector('#role-group').insertAdjacentHTML('beforeend', content)
+}
+
 var DFT = function ($) {
   return {
     init: function () {

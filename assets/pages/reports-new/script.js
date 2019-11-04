@@ -22,6 +22,7 @@ const $SupportEmail = document.querySelector('#SupportEmail')
 const $UserEmail = document.querySelector('#UserEmail')
 const $backBtn = document.querySelector('#backBtn')
 const $emails = document.getElementsByName('email')
+const $maxAgent = document.getElementsByName('maxAgent')
 
 var userList = []
 var supportList = []
@@ -45,9 +46,13 @@ $submitBtn.addEventListener('click', (e) => {
     window.scrollTo({ top: 25, behavior: 'smooth' })
     return textMessage.textContent = "Vui lòng nhập các trường bắt buộc"
   }
-  else {
-    $selectModal.id = "selectEmail"
+  if (agentNumberInShift > $maxAgent.value) {
+    $selectModal.id = "None"
+    window.scrollTo({ top: 25, behavior: 'smooth' })
+    return textMessage.textContent = "Số lượng nhân sự trong ca phải nhỏ hơn hoặc bằng số lượng agent của Dự án"
   }
+  $selectModal.id = "selectEmail"
+
   fetch('/reports/new?email=' + true,
     {
       method: "GET",
@@ -179,7 +184,9 @@ $name.addEventListener('change', (e) => {
       'Content-Type': 'application/json'
     }
   }).then(res => res.json()).then(respond => {
+    console.log(respond[0])
     const project = respond[0]
+    $maxAgent.value = project.agentNumber
     $position.value = project.position
     $CRM.value = project.usingCRM
   })

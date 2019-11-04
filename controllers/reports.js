@@ -39,15 +39,14 @@ exports.index = {
       emailQuery.push({ "for": mongoose.mongo.ObjectId(userId) })
       //find for projects
       if (user.projectManage.length > 0) {
-
-        emailQuery.push({ "name": mongoose.mongo.ObjectId(user.projectManage[0].projects) })
-
-        if (user.projectManage[0].authority == "SUPERVISOR" ||
-          user.projectManage[0].authority == "ADMINISTRATOR" ||
-          user.projectManage[0].authority == "DEVELOPER"
-        ) {
-          emailQuery.push({})
-          console.log(emailQuery)
+        for (let i = 0; i < user.projectManage.length; i++) {
+          emailQuery.push({ "name": mongoose.mongo.ObjectId(user.projectManage[i].projects) })
+          if (user.projectManage[i].authority == "SUPERVISOR" ||
+            user.projectManage[i].authority == "ADMINISTRATOR" ||
+            user.projectManage[i].authority == "DEVELOPER"
+          ) {
+            emailQuery.push({})
+          }
         }
       }
       agg._pipeline.push({
@@ -175,7 +174,20 @@ exports.create = function (req, res) {
 };
 
 exports.new = function (req, res) {
-  const company = ProjectAdmin.find({}).then(result => {
+  const projectQuery = []
+  const user = req.session['user']
+  for (let i = 0; i < user.projectManage.length; i++) {
+    if (user.projectManage[i].authority == "SUPERVISOR" ||
+      user.projectManage[i].authority == "DEVELOPER" ||
+      user.projectManage[i].authority == "ADMINISTRATOR") {
+      projectQuery.push({})
+    }
+    projectQuery.push({
+      "_id": mongoose.mongo.ObjectId(user.projectManage[i].projects)
+    })
+  }
+  const company = ProjectAdmin.find({ $or: projectQuery }).then(result => {
+    console.log(result)
     SlaMenu.find({}).sort({ displayName: 1 }).then(list => {
       if (req.query.email) {
         let supportEmail;

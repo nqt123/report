@@ -22,17 +22,12 @@ exports.update = function (req, res) {
     user.positionName = req.body.positionName
     user.groupEmail = []
     user.projectManage = []
-    user.projectManage.push({
-      projects : req.body.projectManage.projects,
-      authority : req.body.projectManage.authority,
-    })
-    console.log(user.projectManage.projects)
-    console.log(user.projectManage.authority)
+    user.projectManage = req.body.projectManage
     req.body.checkList.forEach((pos, i) => {
       user.groupEmail.push(pos)
     })
-    user.save(function (err){
-      if(err)
+    user.save(function (err) {
+      if (err)
         return console.log(err)
     }).then(result => {
       res.send(result)

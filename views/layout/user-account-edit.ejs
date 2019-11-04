@@ -35,31 +35,38 @@
           <%})%>
         </div>
       </div>
-      <div class="form-group">
-        <label for="" class="col-sm-3 control-label">Dự Án</span></label>
-        <div class="col-sm-6">
-          <div class="fg-line">
-            <select class="form-control" id="projects">
-              <%projects.forEach(project => {%>
-              <option value="<%=project._id%>"><%=project.name%></option>
-              <%})%>
-            </select>
+      <div id="role-group">
+        <div class="form-group">
+          <label for="" class="col-sm-3 control-label">Dự Án</span></label>
+          <div class="col-sm-6">
+            <div class="fg-line">
+              <select class="form-control" id="projects">
+                <%projects.forEach(project => {%>
+                <option value="<%=project._id%>"><%=project.name%></option>
+                <%})%>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="" class="col-sm-3 control-label">Vai Trò</span></label>
+          <div class="col-sm-6">
+            <div class="fg-line">
+              <select class="form-control" id="authority">
+                <option value="REPORTER">REPORTER</option>
+                <option value="SUPPORTER">SUPPORTER</option>
+                <option value="SUPERVISOR">SUPERVISOR</option>
+                <option value="ADMINISTRATOR">ADMINISTRATOR</option>
+                <option value="DEVELOPER">DEVELOPER</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>
-      <div class="form-group">
-        <label for="" class="col-sm-3 control-label">Vai Trò</span></label>
-        <div class="col-sm-6">
-          <div class="fg-line">
-            <select class="form-control" id="authority">
-              <option value="REPORTER">REPORTER</option>
-              <option value="SUPPORTER">SUPPORTER</option>
-              <option value="SUPERVISOR">SUPERVISOR</option>
-              <option value="ADMINISTRATOR">ADMINISTRATOR</option>
-              <option value="DEVELOPER">DEVELOPER</option>
-            </select>
-          </div>
-        </div>
+      <div id="extendArea"></div>
+      <div class="text-center" style="height : 50px; cursor: pointer;" data-toggle="tooltip" data-placement="top"
+        data-original-title="Thêm Dự Án" id="addProjects" onclick="addProject()">
+        <i class="zmdi zmdi-plus green f-17 text-success"></i>
       </div>
       <div class="text-center">
         <button type="submit" id="update" class="btn btn-success">Gửi</button>
