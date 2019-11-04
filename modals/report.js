@@ -80,14 +80,8 @@ const reportSchema = new mongoose.Schema({
   typeDisplay: {
     type: String
   },
-<<<<<<< HEAD
-  lastRespondAt : {
-    type : Date,
-    default:''
-=======
   lastRespondAt: {
     type: Date
->>>>>>> f94c2b382229ba64a6b95ffab1b91b887e82bb61
   },
   endAt: {
     type: Date
