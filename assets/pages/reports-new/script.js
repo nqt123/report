@@ -40,7 +40,7 @@ $submitBtn.addEventListener('click', (e) => {
     window.scrollTo({ top: 25, behavior: 'smooth' })
     return textMessage.textContent = "Số lượng nhân sự trong ca phải lớn hơn số lượng nhận sự ảnh hưởng"
   }
-  if (name == "" || agentNumberInShift == "" || type == -1 || agentNumberInfluence == "" || title == "" || description == "") {
+  if (name == "" || name == '-1' || agentNumberInShift == "" || type == -1 || agentNumberInfluence == "" || title == "" || description == "") {
     $selectModal.id = "None"
     window.scrollTo({ top: 25, behavior: 'smooth' })
     return textMessage.textContent = "Vui lòng nhập các trường bắt buộc"
@@ -235,6 +235,7 @@ const priorCalculator = () => {
   return result
 }
 const convertMinutes = (value) => {
+  value = parseInt(value)
   let slaTime = 0;
   if (!value || value == "0") {
     slaTime = "N/A"
