@@ -39,8 +39,11 @@
         <label for="" class="col-sm-3 control-label">Dự Án</span></label>
         <div class="col-sm-6">
           <div class="fg-line">
-            <input type="text" value="<%=User.positionName%>" class="form-control input-sm" id="positionName"
-              name="positionName">
+            <select class="form-control" id="projects">
+              <%projects.forEach(project => {%>
+              <option value="<%=project._id%>"><%=project.name%></option>
+              <%})%>
+            </select>
           </div>
         </div>
       </div>
@@ -48,7 +51,7 @@
         <label for="" class="col-sm-3 control-label">Vai Trò</span></label>
         <div class="col-sm-6">
           <div class="fg-line">
-            <select class="form-control" id="projects">
+            <select class="form-control" id="authority">
               <option value="REPORTER">REPORTER</option>
               <option value="SUPPORTER">SUPPORTER</option>
               <option value="SUPERVISOR">SUPERVISOR</option>

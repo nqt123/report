@@ -6,18 +6,25 @@ document.querySelector('#back').addEventListener('click', (e) => {
 document.querySelector('#update').addEventListener('click', (e) => {
   e.preventDefault()
   const positionName = document.querySelector('#positionName').value
-  let checkListItem = document.querySelectorAll('.form-check-input:checked')
   const id = document.querySelector('#id').value.trim()
+  const projects = document.querySelector('#projects').value
+  const authority = document.querySelector('#authority').value
   const checkList = []
+
+  console.log({ authority, projects })
+  let checkListItem = document.querySelectorAll('.form-check-input:checked')
   checkListItem.forEach(check => {
     checkList.push(check.value)
   })
 
-
   const body = {
     positionName,
     checkList,
-    id
+    id,
+    projectManage: {
+      projects,
+      authority
+    }
   }
   fetch('/user-account/' + id, {
     method: "PUT",

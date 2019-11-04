@@ -31,10 +31,25 @@ exports.index = {
     const user = User.findById(userId).then(user => {
       const groupEmail = (user.groupEmail)
       const emailQuery = []
+      //find report for each group email
       const emailInsert = groupEmail.forEach(email => {
         emailQuery.push({ "for": mongoose.mongo.ObjectId(email) })
       });
+      //find for each user Id
       emailQuery.push({ "for": mongoose.mongo.ObjectId(userId) })
+      //find for projects
+      if (user.projectManage.length > 0) {
+
+        emailQuery.push({ "name": mongoose.mongo.ObjectId(user.projectManage[0].projects) })
+
+        if (user.projectManage[0].authority == "SUPERVISOR" ||
+          user.projectManage[0].authority == "ADMINISTRATOR" ||
+          user.projectManage[0].authority == "DEVELOPER"
+        ) {
+          emailQuery.push({})
+          console.log(emailQuery)
+        }
+      }
       agg._pipeline.push({
         $lookup: {
           from: "users",

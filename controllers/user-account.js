@@ -1,15 +1,18 @@
 const User = require('../modals/users')
 const SupportEmail = require('../modals/support-email')
-
+const ProjectAdmin = require('../modals/projectsAdmin')
+const mongoose = require('mongoose')
 exports.edit = function (req, res) {
-  User.findById(req.params["useraccount"]).then(user => {
-    console.log(req.params)
+  User.findById(req.params['useraccount']).then(user => {
     SupportEmail.find({}).then(supportEmails => {
-      _.render(req, res, 'user-account-edit', {
-        title: 'Cập nhật thông tin User',
-        User: user,
-        supportEmails
-      }, true)
+      ProjectAdmin.find({}).then(projects => {
+        _.render(req, res, 'user-account-edit', {
+          title: 'Cập nhật thông tin User',
+          User: user,
+          projects,
+          supportEmails
+        }, true)
+      })
     })
   })
 }
@@ -17,13 +20,21 @@ exports.edit = function (req, res) {
 exports.update = function (req, res) {
   User.findById(req.body.id).then(user => {
     user.positionName = req.body.positionName
-
     user.groupEmail = []
+    user.projectManage = []
+    user.projectManage.push({
+      projects : req.body.projectManage.projects,
+      authority : req.body.projectManage.authority,
+    })
+    console.log(user.projectManage.projects)
+    console.log(user.projectManage.authority)
     req.body.checkList.forEach((pos, i) => {
       user.groupEmail.push(pos)
     })
-
-    user.save().then(result => {
+    user.save(function (err){
+      if(err)
+        return console.log(err)
+    }).then(result => {
       res.send(result)
     })
   })
