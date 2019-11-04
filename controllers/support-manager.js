@@ -17,6 +17,15 @@ exports.index = {
         _SlaList.find({}, next);
       }
     }, function (error, result) {
+
+      const user = req.session['user']
+      const groupEmail = (user.groupEmail)
+      const emailQuery = []
+      const emailInsert = groupEmail.forEach(email => {
+        emailQuery.push({ "for": mongoose.mongo.ObjectId(email) })
+      });
+      emailQuery.push({ "for": mongoose.mongo.ObjectId(user._id) })
+
       lists = result.lists
 
       let agg = _Report.aggregate();
@@ -44,7 +53,11 @@ exports.index = {
       if (!_.isEmpty(sort)) agg._pipeline.push({ $sort: sort });
 
       agg._pipeline.push({ $lookup: { from: "users", localField: "createdBy", foreignField: "_id", as: "fieldName" } })
-
+      agg._pipeline.push({
+        $match: {
+          $or: emailQuery
+        }
+      })
       if (!_.isEmpty(query)) agg._pipeline.push({ $match: { $and: [query] } });
       _Report.aggregatePaginate(agg, { page, limit }, function (err, results, node, count) {
         if (err)
@@ -79,7 +92,7 @@ exports.new = function (req, res) {
 exports.destroy = function (req, res) {
   _Report.findById(req.params.supportmanager, function (err, kq) {
     if (!kq.status == 4) {
-      res.json({ code: 500, message:"Không thể xóa"  });
+      res.json({ code: 500, message: "Không thể xóa" });
     }
     else {
       _Report.findByIdAndRemove(req.params.supportmanager, function (error) {
@@ -96,8 +109,10 @@ exports.create = function (req, res) {
       supporter: {
         name: req.session.user.displayName,
         id: req.session.user._id
-      }
+      },
+      lastRespondAt : Date.now()
     }
+    
     _Report.findByIdAndUpdate(req.body.reportId, stt, function (error, ca) {
       let time = moment().diff(ca.updatedAt, 'minutes');
       if (time > ca.processTime && ca.processTime != 0) {
@@ -170,7 +185,7 @@ exports.update = function (req, res) {
                         <p>Chi tiết sự cố:<span style="font-weight: bold; color: black;">${result.description}</span ></p>`
       }
       transporter.sendMail(options, function (err, info) {
-        return res.json({code :(err ? 500 :200),message : err ? err :info})
+        return res.json({ code: (err ? 500 : 200), message: err ? err : info })
       })
     })
   })

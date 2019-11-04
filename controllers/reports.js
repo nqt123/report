@@ -50,7 +50,6 @@ exports.index = {
           $or: emailQuery
         }
       })
-      console.log("$or: ", emailQuery)
       //Sorting
       if (!req.query.sort) {
         agg._pipeline.push({ $sort: { updatedAt: -1 } })
@@ -103,6 +102,7 @@ exports.index = {
 exports.create = function (req, res) {
   const report = new Report(req.body)
   report.createdBy = req.session.user._id
+  report.for.push(req.session.user._id)
   const maxUniqueId = Report.find({}).sort({ uniqueId: -1 }).limit(1).then(maxResult => {
     if (maxResult.length != 0) {
       report.uniqueId = parseInt(maxResult[0].uniqueId) + 1

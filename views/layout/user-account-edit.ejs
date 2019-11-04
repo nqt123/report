@@ -35,6 +35,29 @@
           <%})%>
         </div>
       </div>
+      <div class="form-group">
+        <label for="" class="col-sm-3 control-label">Dự Án</span></label>
+        <div class="col-sm-6">
+          <div class="fg-line">
+            <input type="text" value="<%=User.positionName%>" class="form-control input-sm" id="positionName"
+              name="positionName">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="" class="col-sm-3 control-label">Vai Trò</span></label>
+        <div class="col-sm-6">
+          <div class="fg-line">
+            <select class="form-control" id="projects">
+              <option value="REPORTER">REPORTER</option>
+              <option value="SUPPORTER">SUPPORTER</option>
+              <option value="SUPERVISOR">SUPERVISOR</option>
+              <option value="ADMINISTRATOR">ADMINISTRATOR</option>
+              <option value="DEVELOPER">DEVELOPER</option>
+            </select>
+          </div>
+        </div>
+      </div>
       <div class="text-center">
         <button type="submit" id="update" class="btn btn-success">Gửi</button>
         <button type="button" id="back" class="btn btn-danger">Đóng</button>
