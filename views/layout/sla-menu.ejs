@@ -1,0 +1,93 @@
+<%- breadcrumb %>
+
+<div class="card">
+  <div class="lv-header-alt clearfix m-b-5">
+    <h2 class="lvh-label hidden-xs"><%- title %></h2>
+    <ul class="lv-actions actions">
+      <li>
+        <a href="/#sla-menu/new" data-toggle="tooltip" data-placement="top" data-original-title="Thêm Yêu cầu mới">
+          <i class="zmdi zmdi-plus"></i>
+        </a>
+      </li>
+
+      <li>
+        <a href="#" data-toggle="tooltip" data-placement="top" data-original-title="Làm mới danh sách" id="refreshBtn">
+          <i class="zmdi zmdi-refresh"></i>
+        </a>
+      </li>
+      <li class="hidden" id="li-hidden">
+        <a role="button" data-toggle="tooltip" data-placement="top" data-original-title="Xóa các mục đánh dấu"
+          id="btn-delSelection">
+          <i class="zmdi zmdi-delete"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="">
+    <div>
+      <div class="panel-body p-0">
+        <div class="tab-content">
+          <div role="tabpanel" style="height: 100%" class="tab-pane animated active" id="tab-not-process-ticket">
+            <form role="form" id="project">
+              <table class="table table-bordered table-fix table-hover" id="tbl-ticket" style="overflow:auto">
+                <thead>
+                  <tr class="listHead">
+                    <th data-sort="none" role="button" class="col-lg-3 bgm-orange c-white text-center"
+                      style="width: 5%;">
+                      TT
+                    </th>
+                    <th data-sort="none" data-field="name" role="button" class="bgm-orange c-white text-center">
+                      Tên dự án
+                    </th>
+                    <th data-sort="none" data-field="location" role="button" class="bgm-orange c-white text-center">
+                      Tên hiển thị
+                    </th>
+                    <th class="w-120 bgm-orange c-white text-center">
+                      Thao tác
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="report-list_body">
+                  <tr id="searchForm" class="filter">
+                    <td class="text-center"></td>
+                    <td class="text-center"><input class="form-control search" type="text" name="filter_name"></td>
+                    <td class="text-center"><input class="form-control search" type="text" name="filter_displayName">
+                    </td>
+                    <td class="text-center"><button class="btn btn-primary btn-block waves-effect" id="btn-search"
+                        name="btn-search"><i class="zmdi zmdi-filter-list m-r-5"></i> Lọc</button></td>
+                  </tr>
+                  <%results.forEach(function(el,i){%>
+                  <tr>
+                    <td class="text-center"><%-i +1%></td>
+                    <td class="text-center"><%- el.name%></td>
+                    <td class="text-center"><%- el.displayName%></td>
+
+                    <td class="text-center" style="display: flex; justify-content:space-evenly;" role="button">
+                      <div class="btn-remove" data-toggle="tooltip" data-id="<%- el._id%>" data-placement="top" data-original-title="Xoá"> <i id="delete"
+                          class="zmdi zmdi-delete text-danger" style="font-size: 2rem;"></i></div>
+                      <div class="btn_edit" data-id="<%- el._id%>" 
+                        data-toggle="tooltip" data-placement="top" data-original-title="Sửa">
+                        <a class="p-t-3 btn-flat-bg "  href="/#sla-menu/<%- el._id%>/edit"><i
+                            class="zmdi zmdi-edit green f-17"></i></a>
+                      </div>
+                    </td>
+                  </tr>
+                  <%})%>
+                </tbody>
+              </table>
+              <div class="text-center" id="ticket-total">
+              </div>
+              <div class="text-center" id="ticket-paging"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% if(paging.pageCount > 1){ %>
+    <% include ../paging.ejs %>
+    <% } %>
+  </div>
+</div>
+<script>
+
+</script>
