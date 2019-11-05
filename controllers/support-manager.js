@@ -1,4 +1,5 @@
 const nodeMailer = require("nodemailer");
+const User = require('../modals/users')
 exports.index = {
   json: function (req, res) {
     _SupportManager.find({}, function (err, support) {
@@ -18,64 +19,82 @@ exports.index = {
       }
     }, function (error, result) {
 
-      const user = req.session['user']
-      const groupEmail = (user.groupEmail)
-      const emailQuery = []
-      const emailInsert = groupEmail.forEach(email => {
-        emailQuery.push({ "for": mongoose.mongo.ObjectId(email) })
-      });
-      emailQuery.push({ "for": mongoose.mongo.ObjectId(user._id) })
+      User.findById(req.session['user']._id).then(user => {
+        const groupEmail = (user.groupEmail)
+        const emailQuery = []
+        const emailInsert = groupEmail.forEach(email => {
+          emailQuery.push({ "for": mongoose.mongo.ObjectId(email) })
+        });
 
-      lists = result.lists
 
-      let agg = _Report.aggregate();
+        emailQuery.push({ "for": mongoose.mongo.ObjectId(user._id) })
 
-      if (_.has(req.query, 'name')) {
-        query.name = { $regex: new RegExp(_.stringRegex(req.query.name), 'gi') };
-      }
-      if (_.has(req.query, 'typeDisplay')) {
-        query.typeDisplay = { $regex: new RegExp(_.stringRegex(req.query.typeDisplay), 'gi') };
-      }
-      if (_.has(req.query, 'title')) {
-        query.title = { $regex: new RegExp(_.stringRegex(req.query.title), 'gi') };
-      }
-      if (_.has(req.query, 'prior')) {
-        query.prior = +(req.query.prior);
-      }
-      if (_.has(req.query, 'status')) {
-        query.status = { $regex: new RegExp(_.stringRegex(req.query.status), 'gi') };
-      }
-      //sort
-      if (!req.query.sort) {
-        agg._pipeline.push({ $sort: { updatedAt: -1 } });
-      }
 
-      if (!_.isEmpty(sort)) agg._pipeline.push({ $sort: sort });
-
-      agg._pipeline.push({ $lookup: { from: "users", localField: "createdBy", foreignField: "_id", as: "fieldName" } })
-      agg._pipeline.push({
-        $match: {
-          $or: emailQuery
+        if (user.projectManage.length > 0) {
+          for (let i = 0; i < user.projectManage.length; i++) {
+            emailQuery.push({ "name": mongoose.mongo.ObjectId(user.projectManage[i].projects) })
+            if (user.projectManage[i].authority == "SUPERVISOR" ||
+              user.projectManage[i].authority == "ADMINISTRATOR" ||
+              user.projectManage[i].authority == "DEVELOPER"
+            ) {
+              emailQuery.push({})
+            }
+          }
         }
-      })
-      if (!_.isEmpty(query)) agg._pipeline.push({ $match: { $and: [query] } });
-      _Report.aggregatePaginate(agg, { page, limit }, function (err, results, node, count) {
-        if (err)
-          return res.send(err)
-        var paginator = new pagination.SearchPaginator({
-          prelink: '/support-manager',
-          current: page,
-          rowsPerPage: limit,
-          totalResult: count
+
+
+
+        lists = result.lists
+
+        let agg = _Report.aggregate();
+
+        if (_.has(req.query, 'name')) {
+          query.name = { $regex: new RegExp(_.stringRegex(req.query.name), 'gi') };
+        }
+        if (_.has(req.query, 'typeDisplay')) {
+          query.typeDisplay = { $regex: new RegExp(_.stringRegex(req.query.typeDisplay), 'gi') };
+        }
+        if (_.has(req.query, 'title')) {
+          query.title = { $regex: new RegExp(_.stringRegex(req.query.title), 'gi') };
+        }
+        if (_.has(req.query, 'prior')) {
+          query.prior = +(req.query.prior);
+        }
+        if (_.has(req.query, 'status')) {
+          query.status = { $regex: new RegExp(_.stringRegex(req.query.status), 'gi') };
+        }
+        //sort
+        if (!req.query.sort) {
+          agg._pipeline.push({ $sort: { updatedAt: -1 } });
+        }
+
+        if (!_.isEmpty(sort)) agg._pipeline.push({ $sort: sort });
+
+        agg._pipeline.push({ $lookup: { from: "users", localField: "createdBy", foreignField: "_id", as: "fieldName" } })
+        agg._pipeline.push({
+          $match: {
+            $or: emailQuery
+          }
         })
-        return _.render(req, res, 'support-manager', {
-          title: 'Danh sách các Yêu cầu',
-          reports: results,
-          lists: lists,
-          sortData: sort,
-          paging: paginator.getPaginationData(),
-          plugins: ['moment', ['bootstrap-select'], ['bootstrap-datetimepicker'], ['bootstrap-daterangepicker'], ['chosen']]
-        }, true, err);
+        if (!_.isEmpty(query)) agg._pipeline.push({ $match: { $and: [query] } });
+        _Report.aggregatePaginate(agg, { page, limit }, function (err, results, node, count) {
+          if (err)
+            return res.send(err)
+          var paginator = new pagination.SearchPaginator({
+            prelink: '/support-manager',
+            current: page,
+            rowsPerPage: limit,
+            totalResult: count
+          })
+          return _.render(req, res, 'support-manager', {
+            title: 'Danh sách các Yêu cầu',
+            reports: results,
+            lists: lists,
+            sortData: sort,
+            paging: paginator.getPaginationData(),
+            plugins: ['moment', ['bootstrap-select'], ['bootstrap-datetimepicker'], ['bootstrap-daterangepicker'], ['chosen']]
+          }, true, err);
+        })
       })
     }
     )
