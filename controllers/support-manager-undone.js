@@ -67,15 +67,16 @@ exports.index = {
         if (_.has(req.query, 'status')) {
           query.status = { $regex: new RegExp(_.stringRegex(req.query.status), 'gi') };
         }
+        agg._pipeline.push({
+          $match: {
+            state: { $ne: "Done" }
+          }
+        })
         //sort
         if (!req.query.sort) {
           agg._pipeline.push({ $sort: { updatedAt: -1 } });
         }
-        agg._pipeline.push({
-          $match: {
-            state: "Done"
-          }
-        })
+
         if (!_.isEmpty(sort)) agg._pipeline.push({ $sort: sort });
 
         agg._pipeline.push({ $lookup: { from: "users", localField: "createdBy", foreignField: "_id", as: "fieldName" } })

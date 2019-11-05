@@ -2,6 +2,13 @@ const User = require('../modals/users')
 const SupportEmail = require('../modals/support-email')
 const ProjectAdmin = require('../modals/projectsAdmin')
 const mongoose = require('mongoose')
+
+exports.index = function(req,res){
+  User.find({}).then(users => {
+    res.send(users)
+  })
+}
+
 exports.edit = function (req, res) {
   User.findById(req.params['useraccount']).then(user => {
     SupportEmail.find({}).then(supportEmails => {
