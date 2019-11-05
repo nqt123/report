@@ -6,7 +6,7 @@ const SlaList = require('../modals/sla-list')
 const SupportEmail = require('../modals/support-email')
 const User = require('../modals/users')
 const mongoose = require('mongoose')
-const ProjectAdmin = require('../modals/projectsAdmin')
+const ProjectAdmin = require('../modals/projects-admin')
 exports.index = {
   json: function (req, res) {
     Report.find({}, function (err, reports) {
@@ -303,7 +303,7 @@ exports.show = function (req, res) {
         from: "reports",
         localField: "name",
         foreignField: "_id",
-        as: "projectsAdmin"
+        as: "projects-admin"
       }
     },
     {

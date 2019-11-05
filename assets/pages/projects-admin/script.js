@@ -4,6 +4,13 @@ var DFT = function ($) {
     const rows = document.querySelectorAll('tr#item')
     const searchButton = document.querySelector("#btn-search")
     for (let i = 0; i < rows.length; i++) {
+      const updateBtn = rows[i].querySelector('#update')
+      const id = rows[i].querySelector('#id').innerHTML.trim()
+      updateBtn.addEventListener('click', (e) => {
+        location.hash = 'projects-admin/' + id + '/edit'
+      })
+    }
+    for (let i = 0; i < rows.length; i++) {
       const deleteIcon = rows[i].querySelector('#delete')
       deleteIcon.addEventListener('click', function (e) {
         swal({
@@ -20,7 +27,7 @@ var DFT = function ($) {
           function (isConfirm) {
             if (isConfirm) {
               const id = rows[i].querySelector('#id').innerHTML.trim()
-              fetch('/projectsAdmin/' + id, {
+              fetch('/projects-admin/' + id, {
                 method: 'DELETE',
                 body: JSON.stringify({ id }),
                 headers: {
@@ -31,22 +38,10 @@ var DFT = function ($) {
                 _.LoadPage(location.hash)
               })
             }
-<<<<<<< HEAD
           }
         );
       })
     }
-=======
-            // }).then(res => res.json()).then(response => _.LoadPage(window.location.hash))
-          }).then(res => res.json()).then(response => {
-            _.LoadPage(location.hash)
-          })
-        }
-      }
-    );
-  })
-}
->>>>>>> f94c2b382229ba64a6b95ffab1b91b887e82bb61
 
     let queryFilter = function () {
       let _data = _.pick($('#project').serializeJSON(), _.identity);
@@ -90,39 +85,22 @@ var DFT = function ($) {
       queryFilter();
     });
   }
-<<<<<<< HEAD
-=======
-  $this.siblings().toggleAttr('data-sort', 'none');
-  queryFilter();
-});
-for (let i = 0; i < rows.length; i++) {
-  const updateBtn = rows[i].querySelector('#update')
-  const id = rows[i].querySelector('#id').innerHTML.trim()
-  updateBtn.addEventListener('click', function (e) {
-    location.hash = 'projectsAdmin/' + id+'/edit'
-  })
-}
-
-
-
-var DFT = function ($) {
->>>>>>> f94c2b382229ba64a6b95ffab1b91b887e82bb61
   return {
     init: function () {
       bindClick();
-      
+
       //Xử lý sau khi search
-        if ($("#tbl-ticket tbody tr").length == 1) {
-          if (!_.isEmpty(window.location.obj)){
-            swal({
-              title: "Thông báo",
-              text: "Không tìm thấy bản ghi phù hợp",
-              type: "warning", showCancelButton: false, confirmButtonColor: "#DD6B55", confirmButtonText: "Quay lại!"
+      if ($("#tbl-ticket tbody tr").length == 1) {
+        if (!_.isEmpty(window.location.obj)) {
+          swal({
+            title: "Thông báo",
+            text: "Không tìm thấy bản ghi phù hợp",
+            type: "warning", showCancelButton: false, confirmButtonColor: "#DD6B55", confirmButtonText: "Quay lại!"
           },
-              function () {
-                  window.history.back();
-              })
-          }  
+            function () {
+              window.history.back();
+            })
+        }
       }
     }
   }
