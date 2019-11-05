@@ -19,7 +19,6 @@ exports.index = {
     const page = req.query.page ? req.query.page : 1
     const limit = req.query.row ? req.query.row : 10
     ///generate search field
-
     let matchField = {}
     let createdBy = {}
     let supporter = {}
@@ -175,67 +174,75 @@ exports.create = function (req, res) {
 
 exports.new = function (req, res) {
   const projectQuery = []
-  const user = req.session['user']
-  for (let i = 0; i < user.projectManage.length; i++) {
-    if (user.projectManage[i].authority == "SUPERVISOR" ||
-      user.projectManage[i].authority == "DEVELOPER" ||
-      user.projectManage[i].authority == "ADMINISTRATOR") {
-      projectQuery.push({})
+  console.log('123123')
+  const user = User.findById(req.session['user']._id).then(user => {
+    if (user.projectManage.length == 0) {
+      return _.render(req, res, '../500.ejs', {
+        message: "Người dùng này chưa được thêm vào dự án"
+      }, true)
     }
-    projectQuery.push({
-      "_id": mongoose.mongo.ObjectId(user.projectManage[i].projects)
-    })
-  }
-  const company = ProjectAdmin.find({ $or: projectQuery }).then(result => {
-    SlaMenu.find({}).sort({ displayName: 1 }).then(list => {
-      if (req.query.email) {
-        let supportEmail;
-        SupportEmail.find({}).then(result => {
-          supportEmail = result
-        })
-        return User.find({}).then(result => {
-          res.send({
-            supportEmail,
-            userEmail: result
+
+    for (let i = 0; i < user.projectManage.length; i++) {
+      if (user.projectManage[i].authority == "SUPERVISOR" ||
+        user.projectManage[i].authority == "DEVELOPER" ||
+        user.projectManage[i].authority == "ADMINISTRATOR") {
+        projectQuery.push({})
+      }
+      projectQuery.push({
+        "_id": mongoose.mongo.ObjectId(user.projectManage[i].projects)
+      })
+    }
+    const company = ProjectAdmin.find({ $or: projectQuery }).then(result => {
+      SlaMenu.find({}).sort({ displayName: 1 }).then(list => {
+        if (req.query.email) {
+          let supportEmail;
+          SupportEmail.find({}).then(result => {
+            supportEmail = result
           })
-        })
-      }
-      if (req.query.id) {
-        return ProjectAdmin.find({ _id: req.query.id }).then(project => {
-          return res.send(project)
-        })
-      }
-      if (req.query.type) {
-        const result = SlaList.aggregate([
-          {
-            $lookup: {
-              from: "slamenus",
-              localField: "category",
-              foreignField: "_id",
-              as: "category"
+          return User.find({}).then(result => {
+            res.send({
+              supportEmail,
+              userEmail: result
+            })
+          })
+        }
+        if (req.query.id) {
+          return ProjectAdmin.find({ _id: req.query.id }).then(project => {
+            return res.send(project)
+          })
+        }
+        if (req.query.type) {
+          const result = SlaList.aggregate([
+            {
+              $lookup: {
+                from: "slamenus",
+                localField: "category",
+                foreignField: "_id",
+                as: "category"
+              }
+            },
+            {
+              $unwind: "$category"
+            },
+            {
+              $match: {
+                "category.name": req.query.type
+              }
             }
-          },
-          {
-            $unwind: "$category"
-          },
-          {
-            $match: {
-              "category.name": req.query.type
-            }
-          }
-        ], (err, result) => {
-          if (err)
-            return console.log(err)
-          return res.json(result)
-        })
-      }
-      else {
-        _.render(req, res, 'reports-new', {
-          title: 'Thêm mới Yêu cầu',
-          result,
-          listSla: list
-        }, true)
-      }
+          ], (err, result) => {
+            if (err)
+              return console.log(err)
+            return res.json(result)
+          })
+        }
+        else {
+          _.render(req, res, 'reports-new', {
+            title: 'Thêm mới Yêu cầu',
+            result,
+            listSla: list
+          }, true)
+        }
+      })
     })
   })
 };
