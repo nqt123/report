@@ -29,7 +29,11 @@ exports.index = {
 
         emailQuery.push({ "for": mongoose.mongo.ObjectId(user._id) })
 
-
+        if (user.projectManage.length == 0) {
+          return _.render(req, res, '../500.ejs', {
+            message: "Người dùng này chưa được thêm vào dự án"
+          }, true)
+        }
         if (user.projectManage.length > 0) {
           for (let i = 0; i < user.projectManage.length; i++) {
             emailQuery.push({ "name": mongoose.mongo.ObjectId(user.projectManage[i].projects) })
