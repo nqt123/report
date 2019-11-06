@@ -77,15 +77,7 @@ exports.index = {
       if (req.query.status) {
         matchField["status"] = { $regex: new RegExp(req.query.status, 'gi') }
       }
-      
-      if (req.query.state) {
-        if (req.query.state == "Done") {
-          matchField["state"] = req.query.state
-        }
-        if (req.query.state == "Undone") {
-          matchField["state"] = { $ne: "Done" }
-        }
-      }
+      // matchField["state"] = req.query.state
       // matchField["createdBy"] = { $regex: new RegExp(req.query.createdBy, 'gi') }
       if (req.query.title) {
         matchField["title"] = { $regex: new RegExp(req.query.title, 'gi') }
@@ -261,11 +253,9 @@ exports.update = function (req, res) {
       report.endAt = report.lastRespondAt
     }
     if (req.body.reason) {
-      report.reason.push(req.body.reason)
+      report.reason = req.body.reason
       report.seen = false
     }
-    console.log(report);
-    
     report.save().then(result => {
       var transporter = nodeMailer.createTransport({
         service: 'Gmail',
@@ -336,6 +326,7 @@ exports.show = function (req, res) {
         }, true)
       })
     }
+    console.log(result)
     _.render(req, res, 'reports-detail', {
       title: "",
       report: result[0].report,

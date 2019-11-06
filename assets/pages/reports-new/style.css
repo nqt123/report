@@ -22,3 +22,7 @@ div.column header {
 .list-group-item{
   width:170px;
 }
+#selectEmail{
+  max-height: 600px;
+  overflow: scroll;
+}

@@ -1,0 +1,157 @@
+<div style="display: flex; justify-content:space-between;">
+  <div class="card" style="width: 45%;">
+    <div class="card-body card-padding">
+      <div id="warning-message" class="text-center m-b-10 text-success" style="font-size : 2rem; font-weight : bold;">
+        YÊU CẦU TỪ KHÁCH HÀNG
+      </div>
+      <form class="form-horizontal" id="form-create-report">
+        <input type="hidden" name="id" id="id" value="<%=report._id%>">
+        <div class="form-group">
+          <label for="name" class="col-sm-3 control-label">Tên Dự án </label>
+          <div class="col-sm-6">
+            <div class="fg-line">
+              <input type="text" value="<%=report.displayName%>" readonly class="form-control input-sm" id="name" name="name">
+              <input type="hidden" value="" id="updateId">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="position" class="col-sm-3 control-label">Vị trí dự án</span></label>
+          <div class="col-sm-6">
+            <div class="fg-line">
+              <input type="text" value="<%=report.position%>" readonly class="form-control input-sm" id="position"
+                name="position">
+              <input type="hidden" value="" id="updateId">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="CRM" class="col-sm-3 control-label">CRM đang sử dụng</span></label>
+          <div class="col-sm-6">
+            <div class="fg-line">
+              <input type="text" value="<%=report.CRM%>" readonly class="form-control input-sm" id="CRM" name="CRM">
+              <input type="hidden" value="" id="updateId">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="type" class="col-sm-3 control-label">Loại sự cố</span></label>
+          <div class="col-sm-6">
+            <input class="fg-line form-control" id="type" readonly value="<%=report.typeDisplay%>" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="title" class="col-sm-3 control-label">Tiêu đề sự cố </span></label>
+          <div class="col-sm-6">
+            <div class="fg-line">
+              <input type="text" value="<%=report.title%>" readonly class="form-control input-sm" id="title"
+                name="title">
+              <input type="hidden" value="" id="updateId">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="description" class="col-sm-3 control-label">Nội dung sự cố</label>
+          <div class="col-sm-6">
+            <textarea readonly type="text" rows="6" class="form-control input-sm" id="description" name="description"><%=report.description%>
+            </textarea>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="agentNumberInShift" class="col-sm-3 control-label">Số lượng nhân sự trong ca</label>
+          <div class="col-sm-6">
+            <div class="fg-line">
+              <input type="text" value="<%=report.agentNumberInShift%>" readonly class="form-control input-sm"
+                id="agentNumberInShift" name="agentNumberInShift">
+              <input type="hidden" value="" id="updateId">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="agentNumberInfluence" class="col-sm-3 control-label">Số lượng nhân sự ảnh hưởng</label>
+          <div class="col-sm-6">
+            <div class="fg-line">
+              <input type="text" value="<%=report.agentNumberInfluence%>" readonly class="form-control input-sm"
+                id="agentNumberInfluence" name="agentNumberInfluence">
+              <input type="hidden" value="" id="updateId">
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="card" style="width: 45%">
+    <div class="card-body card-padding">
+      <div id="warning-message" class="text-center m-b-10 text-success" style="font-size : 2rem; font-weight : bold;">
+        PHẢN HỒI TỪ KỸ THUẬT
+      </div>
+      <form class="form-horizontal" id="form-create-report">
+        <div class="form-group">
+          <label for="name" class="col-sm-3 control-label">Dạng sự cố</label>
+          <div class="col-sm-6">
+            <input type="text" value="<%=report.typeDisplay%>" readonly class="form-control input-sm"
+              id="agentNumberInfluence" name="agentNumberInfluence">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="name" class="col-sm-3 control-label">Chi tiết nguyên nhân<span class="required">*</span></label>
+          <div class="col-sm-6">
+            <div class="fg-line">
+              <input type="text" value="<%=result.detailCause%>" readonly class="form-control input-sm"
+                id="agentNumberInfluence" name="agentNumberInfluence">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="name" class="col-sm-3 control-label">Nội dung xử lý<span class="required">*</span></label>
+          <div class="col-sm-6">
+            <div class="fg-line">
+              <input type="text" value="<%=result.contentHandle%>" readonly class="form-control input-sm"
+                id="agentNumberInfluence" name="agentNumberInfluence">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="name" class="col-sm-3 control-label">Giải pháp đề xuất<span class="required">*</span></label>
+          <div class="col-sm-6">
+            <div class="fg-line">
+              <input type="text" value="<%=result.offerSolution%>" readonly class="form-control input-sm"
+                id="agentNumberInfluence" name="agentNumberInfluence">
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="name" class="col-sm-3 control-label">Tình trạng sau xử lý</label>
+          <div class="col-sm-6">
+            <input type="text" value="<%=result.statusAfterHandle%>" disabled class="form-control input-sm"
+              id="agentNumberInfluence" name="agentNumberInfluence">
+          </div>
+        </div>
+    </div>
+    <div style="text-align: center; margin-bottom: 1rem; font-weight: bold;">
+      <%=report.status == 4 ? "YÊU CẦU ĐÃ ĐƯỢC XÁC NHẬN HOÀN THÀNH" : "XÁC NHẬN" %>
+    </div>
+    <div <%=report.status == 4 ? "hidden" : null %>>
+      <div style="margin: 0 auto;" class="text-center">
+        <div class="form-group m-l-10" style="margin: 0 auto;">
+          <a type="button" class="btn btn-default btn-icon-text waves-effect" id="reject"
+            style="background-color: red; color: white;" href="/#reports"><i class="zmdi zmdi-thumb-down"></i> Vấn đề
+            chưa được giải quyết</a>
+          <button type="submit" id="resolve" class="btn btn-primary btn-icon-text waves-effect" id="submitBtn"><i
+              class="zmdi zmdi-thumb-up"></i> Vấn đề đã được giải quyết</button>
+        </div>
+      </div>
+    </div>
+    </form>
+  </div>
+</div>
+</div>
+</div>
+<div style="width: 100%;">
+  <div style="margin: 0 auto;" class="text-center">
+    <div class="form-group" style="margin: 0 auto;">
+      <a type="button" class="btn btn-default btn-icon-text waves-effect" href="/#reports"><i
+          class="zmdi zmdi-arrow-left"></i>Quay lại</a>
+    </div>
+  </div>
+</div>

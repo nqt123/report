@@ -4,6 +4,13 @@ var DFT = function ($) {
     const rows = document.querySelectorAll('tr#item')
     const searchButton = document.querySelector("#btn-search")
     for (let i = 0; i < rows.length; i++) {
+      const updateBtn = rows[i].querySelector('#update')
+      const id = rows[i].querySelector('#id').innerHTML.trim()
+      updateBtn.addEventListener('click', (e) => {
+        location.hash = 'projects-admin/' + id + '/edit'
+      })
+    }
+    for (let i = 0; i < rows.length; i++) {
       const deleteIcon = rows[i].querySelector('#delete')
       deleteIcon.addEventListener('click', function (e) {
         swal({
@@ -20,7 +27,7 @@ var DFT = function ($) {
           function (isConfirm) {
             if (isConfirm) {
               const id = rows[i].querySelector('#id').innerHTML.trim()
-              fetch('/projectsAdmin/' + id, {
+              fetch('/projects-admin/' + id, {
                 method: 'DELETE',
                 body: JSON.stringify({ id }),
                 headers: {
@@ -77,6 +84,7 @@ var DFT = function ($) {
       $this.siblings().toggleAttr('data-sort', 'none');
       queryFilter();
     });
+<<<<<<< HEAD:assets/pages/projectsAdmin/script.js
 
     for (let i = 0; i < rows.length; i++) {
       const updateBtn = rows[i].querySelector('#update')
@@ -87,6 +95,9 @@ var DFT = function ($) {
     }
   }
 
+=======
+  }
+>>>>>>> ebecd901d90ddae291bc4da2e6215f64ed80057d:assets/pages/projects-admin/script.js
   return {
     init: function () {
       bindClick();

@@ -1,4 +1,4 @@
-const ProjectAdmin = require('../modals/projectsAdmin')
+const ProjectAdmin = require('../modals/projects-admin')
 
 exports.index = function (req, res) {
   const page = req.query.page || 1
@@ -60,13 +60,13 @@ exports.index = function (req, res) {
   ProjectAdmin.aggregatePaginate(agg, { page, limit }, function (err, result, node, count) {
 
     var paginator = new pagination.SearchPaginator({
-      prelink: '/projectsAdmin',
+      prelink: '/projects-admin',
       current: page,
       rowsPerPage: limit,
       totalResult: count
     })
 
-    return _.render(req, res, 'projectsAdmin', {
+    return _.render(req, res, 'projects-admin', {
       title: 'Dánh sách Dự Án',
       result: result,
       paging: paginator.getPaginationData(),
@@ -78,7 +78,7 @@ exports.index = function (req, res) {
 
 exports.new = function (req, res) {
   ProjectAdmin.find({}).then(result => {
-    _.render(req, res, 'projectsAdmin-new', {
+    _.render(req, res, 'projects-admin-new', {
       title: 'Tạo mới Dự Án',
     }, true)
   })
@@ -109,15 +109,15 @@ exports.destroy = function (req, res) {
 }
 exports.edit = function (req, res) {
   ProjectAdmin.findById(req.params.projectsadmin).then(result => {
-    _.render(req, res, 'projectsAdmin-edit', {
+    _.render(req, res, 'projects-admin-edit', {
       title: 'Chỉnh sửa Dự Án',
       project: result
     }, true)
   })
 }
 exports.show = function (req, res) {
-  ProjectAdmin.findById(req.params.projectsadmin).then(result => {
-    _.render(req, res, 'projectsAdmin-detail', {
+  ProjectAdmin.findById(req.params.projects-admin).then(result => {
+    _.render(req, res, 'projects-admin-detail', {
       title: 'Chỉnh sửa Dự Án',
       project: result
     }, true)
