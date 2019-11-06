@@ -3,6 +3,7 @@ const submitButton = document.querySelector('#submit');
 const $name= document.querySelector("#name");
 const $displayName= document.querySelector("#displayName");
 const textMessage = document.querySelector("#warning-message");
+const btnback = document.querySelector("#btn-back");
 submitButton.addEventListener('click', (e) => {
   e.preventDefault();
   console.log('hello');
@@ -46,6 +47,10 @@ submitButton.addEventListener('click', (e) => {
       })
     }
   })
+})
+btnback.addEventListener('click',(e)=>{
+  e.preventDefault();
+  window.location.hash = "sla-menu"
 })
 
 var DFT = function ($) {

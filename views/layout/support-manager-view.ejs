@@ -77,15 +77,23 @@
                     </div>
                 </div>
             </div>
-
-            <%if(body.reason){%>
-             <div class="form-group ">
-                 <hr width="70%">
-                <label for="name" class="col-sm-3 control-label"> Phản hồi của Agent sau xử lý :</label>
-                <div class="col-sm-6">
-                        <textarea type="text" rows="6" class="form-control input-sm" readonly><%- body.reason %></textarea>
+            <%if(body.reason.length > 0){%>
+                <div class="form-group">
+                <div class="text-info text-center" style="font-size: 1.5em;"> Phản hồi của Agent sau xử lý</div>
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Thời gian</th>
+                            <th>Lý do</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            
+                        </tr>
+                    </tbody>
+                </table>
                 </div>
-            </div>
             <%}%>
            
             <div class="text-center">
