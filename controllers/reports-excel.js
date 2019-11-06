@@ -15,15 +15,17 @@ exports.index = {
       return res.send(reports)
     })
   },
-html: function (req, res) {
+  html: function (req, res) {
     const page = req.query.page ? req.query.page : 1
     const limit = req.query.row ? req.query.row : 10
     ///generate search field
     let matchField = {}
     let createdBy = {}
     let supporter = {}
+    let query = {};
     var agg = Report.aggregate();
     ///find CreatedBy
+    console.log(req.query);
 
     const userId = req.session['user']._id
 
@@ -68,33 +70,21 @@ html: function (req, res) {
         agg._pipeline.push({ $sort: { updatedAt: -1 } })
       }
       //Searching
-      if (req.query.supporter) {
-        matchField["supporter.name"] = req.query.supporter
+      if (_.has(req.query, 'createdAt')) {
+        query.createdAt = moment(req.query.createdAt, "DD/MM/YYYY h:mm a")._d;
       }
-      if (req.query.name) {
-        matchField["name"] = { $regex: new RegExp(req.query.name, 'gi') }
+      if (_.has(req.query, 'lastRespondAt')) {
+        query.lastRespondAt = moment(req.query.lastRespondAt, "DD/MM/YYYY h:mm a")._d;
       }
-      if (req.query.status) {
-        matchField["status"] = { $regex: new RegExp(req.query.status, 'gi') }
-      }
-      
-      if (req.query.state) {
-        if (req.query.state == "Done") {
-          matchField["state"] = req.query.state
+      console.log(query);
+      if (!_.isEmpty(query)) agg._pipeline.push({
+        $match: {
+          $or: [
+            { createdAt: { "$gt": query.createdAt } },
+            { lastRespondAt: { "$lt": query.lastRespondAt } }
+          ]
         }
-        if (req.query.state == "Undone") {
-          matchField["state"] = { $ne: "Done" }
-        }
-      }
-      // matchField["createdBy"] = { $regex: new RegExp(req.query.createdBy, 'gi') }
-      if (req.query.title) {
-        matchField["title"] = { $regex: new RegExp(req.query.title, 'gi') }
-      }
-
-      if (req.query.createdBy) {
-        agg._pipeline.push({ $match: { "creator.displayName": { $regex: new RegExp(req.query.createdBy, 'gi') } } })
-      }
-
+      });
       //Apply match with field generated
       agg._pipeline.push({ $match: matchField })
       Report.aggregatePaginate(agg, { page, limit, $unwind: "$createdBy", $match: createdBy, $match: supporter }, function (err, reports, node, count) {

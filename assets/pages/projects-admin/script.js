@@ -84,7 +84,6 @@ var DFT = function ($) {
       $this.siblings().toggleAttr('data-sort', 'none');
       queryFilter();
     });
-<<<<<<< HEAD:assets/pages/projectsAdmin/script.js
 
     for (let i = 0; i < rows.length; i++) {
       const updateBtn = rows[i].querySelector('#update')
@@ -95,9 +94,6 @@ var DFT = function ($) {
     }
   }
 
-=======
-  }
->>>>>>> ebecd901d90ddae291bc4da2e6215f64ed80057d:assets/pages/projects-admin/script.js
   return {
     init: function () {
       bindClick();
