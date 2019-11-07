@@ -10,7 +10,7 @@
             </ul>
         </div>
         <div class="clearfix"></div>
-        <form class="form-horizontal" role="form">
+        <form id="report-excel" class="form-horizontal" role="form">
             <div class="form-body">
                 <div class="row m-0 m-t-20">
                     <div class="col-md-4 m-b-20">
@@ -19,8 +19,8 @@
 
                         <div class="input-group">
                             <input type="text"
-                                   class="form-control pull-right search-field date-picker filter-campain input"
-                                   id="startDate" name="startDate"
+                                   class="form-control pull-right search-field date-picker filter-campain input searchColumn"
+                                   id="createdAt" name="filter_createdAt"
                                    placeholder="Ngày bắt đầu, VD: 01/01/2016">
                             <span class="input-group-addon p-l-10 bgm-gray c-white"><i role="button"
                                                                                        class="zmdi zmdi-calendar"></i></span>
@@ -32,8 +32,8 @@
 
                         <div class="input-group">
                             <input type="text"
-                                   class="form-control pull-right search-field date-picker filter-campain input"
-                                   id="endDate" name="endDate"
+                                   class="form-control pull-right search-field date-picker filter-campain input searchColumn"
+                                   id="lastRespondAt" name="filter_lastRespondAt"
                                    placeholder="Ngày kết thúc, VD: 31/12/2016">
                             <span class="input-group-addon p-l-10 bgm-gray c-white"><i role="button"
                                                                                        class="zmdi zmdi-calendar"></i></span>
@@ -43,32 +43,32 @@
                     <div class="col-md-4 m-b-20" style="z-index: 8">
                         <label for="companies"
                                class="control-label f-13"><span>Trường thông tin</span></label>
-                        <select name="companies" multiple class="selectpicker input" title="Chọn trường thông tin" multiple >
+                        <select id="selectInfo" name="companies" multiple class="selectpicker input" title="Chọn trường thông tin" multiple >
                           <option value="" id="all">Tất cả</option>
-                          <option value="id">ID</option>
-                          <option value="displayName">Tên Dự Án</option>
-                          <option value="usingCRM">CRM đang sử dụng</option>
-                          <option value="slamenus.displayName">Loại sự cố</option>
-                          <option value="slalists.name">Dạng sự cố</option>
-                          <option value="">SLA</option>
-                          <option value="title">Tiêu đề sự cố</option>
-                          <option value="description">Nội dung sự cố</option>
-                          <option value="agentNumberInShift">Số lượng nhân sự trong ca</option>
-                          <option value="agentNumberInfluence">Số lượng nhân sự ảnh hưởng</option>
-                          <option value="percentOfInfluence">Mức độ ảnh hương</option>
-                          <option value="prior">Mức độ ưu tiên xử lý</option>
-                          <option value="createdBy">Người gửi yêu cầu</option>
-                          <option value="createdAt">Thời gian bắt đầu</option>
-                          <option value="typeOfCause">Nguyên nhân</option>
-                          <option value="detailCause">Chi tiết nguyên nhân</option>
-                          <option value="contentHandle">Nội dung xử lý</option>
-                          <option value="statusAfterHandle">Tình trạng sau xử lý</option>
-                          <option value="offerSolution">Giải pháp</option>
-                          <option value="statusAfterHandle">Trạng thái xử lý</option>
-                          <option value="supporter">Kỹ thuật xử lý </option>
-                          <option value="lastRespondAt">Thời gian kết thúc</option>
-                          <option value="totalTime">Tổng thời gian xử lý</option>
-                          <option value="state">Trạng thái yêu cầu</option>
+                          <option name="" value="id">ID</option>
+                          <option name="" id="" value="Tên dự án"  id="displayName">Tên Dự Án</option>
+                          <option name="" id="usingCRM" value="CRM đang sử dụng">CRM đang sử dụng</option>
+                          <option name="" id="slamenus.displayName" value="Loại sự cố">Loại sự cố</option>
+                          <option name="" id="slalists.name" value="Dạng sự cố">Dạng sự cố</option>
+                          <option name="" id="" value="">SLA</option>
+                          <option name="" id="title" value="Tiêu đề sự cố">Tiêu đề sự cố</option>
+                          <option name="" id="description" value="Nội dung sự cố">Nội dung sự cố</option>
+                          <option name="" id="agentNumberInShift" value="Số lượng nhân sự trong ca">Số lượng nhân sự trong ca</option>
+                          <option name="" id="agentNumberInfluence" value="Số lượng nhân sự ảnh hưởng">Số lượng nhân sự ảnh hưởng</option>
+                          <option name="" id="percentOfInfluence" value="Mức độ ảnh hương">Mức độ ảnh hương</option>
+                          <option name="" id="prior" value="Mức độ ưu tiên xử lý">Mức độ ưu tiên xử lý</option>
+                          <option name="" id="createdBy" value="Người gửi yêu cầu">Người gửi yêu cầu</option>
+                          <option name="" id="createdAt" value="Thời gian bắt đầu">Thời gian bắt đầu</option>
+                          <option name="" id="typeOfCause" value="Nguyên nhân">Nguyên nhân</option>
+                          <option name="" id="detailCause" value="Chi tiết nguyên nhân">Chi tiết nguyên nhân</option>
+                          <option name="" id="contentHandle" value="Nội dung xử lý">Nội dung xử lý</option>
+                          <option name="" id="statusAfterHandle" value="Tình trạng sau xử lý">Tình trạng sau xử lý</option>
+                          <option name="" id="offerSolution" value="Giải pháp">Giải pháp</option>
+                          <option name="" id="statusAfterHandle" value="Trạng thái xử lý">Trạng thái xử lý</option>
+                          <option name="" id="supporter" value="Kỹ thuật xử lý">Kỹ thuật xử lý </option>
+                          <option name="" id="lastRespondAt" value="Thời gian kết thúc">Thời gian kết thúc</option>
+                          <option name="" id="totalTime" value="Tổng thời gian xử lý">Tổng thời gian xử lý</option>
+                          <option name="" id="state" value="Trạng thái yêu cầu">Trạng thái yêu cầu</option>
                         </select>
                     </div>
 
@@ -77,9 +77,9 @@
                     <div class="col-md-3"></div>
                     <div class="col-md-6 m-b-20">
                         <div class="btn-group btn-group btn-group-justified">
-                            <a type="submit" class="btn bgm-blue uppercase c-white" style="width:auto"><i
+                            <button id="btn-search" type="submit" class="btn bgm-blue uppercase c-white" style="width:auto"><i
                                         class="fa fa-search m-r-10"></i><strong>Tìm
-                                    kiếm</strong></a>
+                                    kiếm</strong></button>
 
                             <div class="col-md-2"></div>
                             <a id="exportexcel" class="btn bgm-blue default c-white" style="width:auto"><i
@@ -98,21 +98,30 @@
         <table class="table table-hover table-condensed table-bordered table-fix" style="table-layout: fixed;"
                id="exceldata">
             <thead>
-            <tr>
-                <td class="bgm-orange c-white text-center" colspan="3">Outbound</td>
-                <td class="bgm-orange c-white text-center" colspan="4">Inbound</td>
-            </tr>
-            <tr>
+            <tr id="titleExcel">
 
-                <td class="bgm-orange c-white text-center"><span>Tổng gọi ra</span></td>
-                <td class="bgm-orange c-white text-center"><span>SL cuộc gọi kết nối</span></td>
-                <td class="bgm-orange c-white text-center"><span>Tổng số phiếu</span></td>
-                <td class="bgm-orange c-white text-center"><span>Tổng gọi vào</span></td>
-                <td class="bgm-orange c-white text-center"><span>SL cuộc gọi được phục vụ</span></td>
-                <td class="bgm-orange c-white text-center"><span>SL cuộc gọi nhỡ</span></td>
-                <td class="bgm-orange c-white text-center"><span>Tổng số phiếu</span></td>
-
+                <td class="bgm-orange c-white text-center"><span>Tên dự án</span></td>
+                <td class="bgm-orange c-white text-center"><span>Dạng sự cố</span></td>
+                <td class="bgm-orange c-white text-center"><span>Tiêu đề sự cố</span></td>
+                <td class="bgm-orange c-white text-center"><span>Mức độ ảnh hưởng</span></td>
+                <td class="bgm-orange c-white text-center"><span>Người gửi yêu cầu</span></td>
+                <td class="bgm-orange c-white text-center"><span>Thời gian bắt đầu</span></td>
+                <td class="bgm-orange c-white text-center"><span>Thời gian kết thúc</span></td>
+                <td class="bgm-orange c-white text-center"><span>Trạng thái</span></td>
             </tr>
+            <%result.forEach(function(el,i){%>
+                <tr id="contentExcel">
+                    <td class="text-center"><%- el.name%></td>
+                    <td class="text-center"><%- el.displayName%></td>
+                    <td class="text-center"><%- el.title%></td>
+                    <td class="text-center"><%- el.prior%></td>
+                    <td class="text-center"><%- el.createdBy%></td>
+                    <td class="text-center"><%-moment(el.createdAt).format("HH:mm - Do MMM YYYY") %></td>
+                    <td class="text-center"><%-moment(el.lastRespondAt).format("HH:mm - Do MMM YYYY") %></td>
+                    <td class="text-center"><%- el.stauts%></td>
+                </tr>
+            <%})%>
+            
             </thead>
             <tbody id="tbBody">
 

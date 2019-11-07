@@ -14,6 +14,15 @@ exports.index = function (req, res) {
   if (_.has(req.query, 'offTime')) {
     query.offTime = { $regex: new RegExp(_.stringRegex(req.query.offTime), 'gi') };
   }
+  if (_.has(req.query, 'position')) {
+    query.position = { $regex: new RegExp(_.stringRegex(req.query.position), 'gi') };
+  }
+  if (_.has(req.query, 'usingCRM')) {
+    query.usingCRM = { $regex: new RegExp(_.stringRegex(req.query.usingCRM), 'gi') };
+  }
+  if (_.has(req.query, 'goLineTime')) {
+    query.goLineTime = { $regex: new RegExp(_.stringRegex(req.query.goLineTime), 'gi') };
+  }
   if (_.has(req.query, 'CRM')) {
     query.CRM = Boolean(req.query.CRM)
   }

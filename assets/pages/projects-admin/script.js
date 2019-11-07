@@ -84,7 +84,16 @@ var DFT = function ($) {
       $this.siblings().toggleAttr('data-sort', 'none');
       queryFilter();
     });
+
+    for (let i = 0; i < rows.length; i++) {
+      const updateBtn = rows[i].querySelector('#update')
+      const id = rows[i].querySelector('#id').innerHTML.trim()
+      updateBtn.addEventListener('click', function (e) {
+        location.hash = 'projectsAdmin/' + id + '/edit'
+      })
+    }
   }
+
   return {
     init: function () {
       bindClick();

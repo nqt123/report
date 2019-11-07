@@ -261,9 +261,11 @@ exports.update = function (req, res) {
       report.endAt = report.lastRespondAt
     }
     if (req.body.reason) {
-      report.reason = req.body.reason
+      report.reason.push(req.body.reason)
       report.seen = false
     }
+    console.log(report);
+    
     report.save().then(result => {
       var transporter = nodeMailer.createTransport({
         service: 'Gmail',
@@ -334,7 +336,6 @@ exports.show = function (req, res) {
         }, true)
       })
     }
-    console.log(result)
     _.render(req, res, 'reports-detail', {
       title: "",
       report: result[0].report,

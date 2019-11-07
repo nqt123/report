@@ -4,7 +4,9 @@ var DFT = function ($) {
         const buttonSearch = document.querySelector("#btn-search");
         const bt = document.querySelector("#empty-container div")
         //nhận yêu cầu
+        
         $(".btn-received").bind('click', function () {
+            $(".page-loader").show();
             let targetIds = $(this).data("id");
             let title = $(this).context.dataset.name;
             let support = {
@@ -20,6 +22,7 @@ var DFT = function ($) {
                     'Content-Type': 'application/json'
                 }
             }).then((res) => {
+                $(".page-loader").hide();
                 if (_.isEqual(res.status, 200)) {
                     swal({
                         title: "Thành công",
@@ -43,6 +46,8 @@ var DFT = function ($) {
         // Xóa 1 phần tử
         $('.btn-remove').bind('click', function () {
             let _id = $(this).attr('data-id');
+            let title = $(this).context.dataset.name;
+            
             swal({
                 title: "Bạn muốn xoá mục này ?",
                 text: "Tất cả các bài viết có trong mục này sẽ được cập nhật",

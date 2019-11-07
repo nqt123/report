@@ -6,7 +6,7 @@
     "name": "CRM SUPPORT"
   },
   "database": {
-    "name": "7home",
+    "name": "crmdb",
     "ip": "localhost",
     "port": 27017,
     "user": "",
