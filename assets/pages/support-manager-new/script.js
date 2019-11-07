@@ -16,7 +16,7 @@ var DFT = function ($) {
                                 type:"success"
                             },
                                 function () {
-                                    window.location.hash = 'support-manager'; 
+                                    window.location.hash = 'support-manager-undone'; 
                                 }
                             )
                         } else {

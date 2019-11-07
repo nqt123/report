@@ -77,7 +77,7 @@ exports.index = {
       if (req.query.status) {
         matchField["status"] = { $regex: new RegExp(req.query.status, 'gi') }
       }
-      
+
       if (req.query.state) {
         if (req.query.state == "Done") {
           matchField["state"] = req.query.state
@@ -265,7 +265,7 @@ exports.update = function (req, res) {
       report.seen = false
     }
     console.log(report);
-    
+
     report.save().then(result => {
       var transporter = nodeMailer.createTransport({
         service: 'Gmail',
@@ -332,6 +332,7 @@ exports.show = function (req, res) {
         _.render(req, res, 'reports-detail', {
           title: "",
           report: result,
+          responds: [],
           result: {}
         }, true)
       })
@@ -339,7 +340,8 @@ exports.show = function (req, res) {
     _.render(req, res, 'reports-detail', {
       title: "",
       report: result[0].report,
-      result: result[0]
+      result: result[0],
+      responds: result
     }, true)
   })
 }

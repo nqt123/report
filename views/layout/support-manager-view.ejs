@@ -4,12 +4,12 @@
         <h2 class="m-b-5 "><%- title %></h2>
     </div>
     <div class="card-body card-padding">
-        <form role="form" class="form-horizontal" id="frm-edit" >
+        <form role="form" class="form-horizontal" id="frm-edit">
             <div class="form-group">
                 <label for="name" class="col-sm-3 control-label">Tên dự án :</label>
                 <div class="col-sm-6">
                     <div class="fg-line">
-                        <input type="text" maxlength="60" class="form-control"  value="<%- body.displayName %>" readonly>
+                        <input type="text" maxlength="60" class="form-control" value="<%- body.displayName %>" readonly>
                     </div>
                 </div>
             </div>
@@ -17,7 +17,7 @@
                 <label for="name" class="col-sm-3 control-label">Vị trí :</label>
                 <div class="col-sm-6">
                     <div class="fg-line">
-                        <input type="text" maxlength="60" class="form-control"  value="<%- body.position %>" readonly>
+                        <input type="text" maxlength="60" class="form-control" value="<%- body.position %>" readonly>
                     </div>
                 </div>
             </div>
@@ -25,7 +25,7 @@
                 <label for="name" class="col-sm-3 control-label">CRM đang sử dụng :</label>
                 <div class="col-sm-6">
                     <div class="fg-line">
-                        <input type="text" maxlength="60" class="form-control"  value="<%- body.CRM %>" readonly>
+                        <input type="text" maxlength="60" class="form-control" value="<%- body.CRM %>" readonly>
                     </div>
                 </div>
             </div>
@@ -33,7 +33,7 @@
                 <label for="name" class="col-sm-3 control-label">Loại sự cố :</label>
                 <div class="col-sm-6">
                     <div class="fg-line">
-                        <input type="text" maxlength="60" class="form-control"  value="<%- body.type %>" readonly>
+                        <input type="text" maxlength="60" class="form-control" value="<%- body.type %>" readonly>
                     </div>
                 </div>
             </div>
@@ -41,21 +41,23 @@
                 <label for="name" class="col-sm-3 control-label">Tiêu đề sự cố :</label>
                 <div class="col-sm-6">
                     <div class="fg-line">
-                        <input type="text" maxlength="60" class="form-control"  value="<%- body.title %>" readonly>
+                        <input type="text" maxlength="60" class="form-control" value="<%- body.title %>" readonly>
                     </div>
                 </div>
             </div>
             <div class="form-group">
                 <label for="name" class="col-sm-3 control-label">Nội dung sự cố :</label>
                 <div class="col-sm-6">
-                        <textarea type="text" rows="6" class="form-control input-sm" readonly><%- body.description %></textarea>
+                    <textarea type="text" rows="6" class="form-control input-sm"
+                        readonly><%- body.description %></textarea>
                 </div>
             </div>
             <div class="form-group">
                 <label for="name" class="col-sm-3 control-label">Mức độ lỗi :</label>
                 <div class="col-sm-6">
                     <div class="fg-line">
-                        <input type="text" maxlength="60" class="form-control"  value="<%- body.percentOfInfluence * 100 %> %" readonly>
+                        <input type="text" maxlength="60" class="form-control"
+                            value="<%- body.percentOfInfluence * 100 %> %" readonly>
                     </div>
                 </div>
             </div>
@@ -64,55 +66,76 @@
                 <div class="col-sm-6">
                     <div class="fg-line">
                         <%if(body.prior ==1){%>
-                            <input type="text" maxlength="60" class="form-control"  value="Hỗ trợ" readonly>
+                        <input type="text" maxlength="60" class="form-control" value="Hỗ trợ" readonly>
                         <%}else if(body.prior ==2){%>
-                            <input type="text" maxlength="60" class="form-control"  value="Trung bình" readonly>
+                        <input type="text" maxlength="60" class="form-control" value="Trung bình" readonly>
                         <%}else if(body.prior ==3){%>
-                            <input type="text" maxlength="60" class="form-control"  value="Cao" readonly>
+                        <input type="text" maxlength="60" class="form-control" value="Cao" readonly>
                         <%}else if(body.prior ==4){%>
-                            <input type="text" maxlength="60" class="form-control"  value="Khẩn cấp" readonly>
+                        <input type="text" maxlength="60" class="form-control" value="Khẩn cấp" readonly>
                         <%}else if(body.prior ==5){%>
-                            <input type="text" maxlength="60" class="form-control"  value="Cực kì khẩn cấp" readonly>
+                        <input type="text" maxlength="60" class="form-control" value="Cực kì khẩn cấp" readonly>
                         <%}%>
                     </div>
                 </div>
             </div>
-            <%if(body.reason.length > 0){%>
-                <div class="form-group">
-                <div class="text-info text-center" style="font-size: 1.5em;"> Phản hồi của Agent sau xử lý</div>
-                <table class="table">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>Thời gian</th>
-                            <th>Lý do</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            
-                        </tr>
-                    </tbody>
-                </table>
+            <div class="form-group">
+                    <label for="" class="col-sm-3 control-label">Phản hồi cũ</label>
+                    <div class="col-sm-6">
+                      <div class="fg-line">
+                        <!-- Carousel container -->
+                        <div id="my-pics" class="carousel slide" data-ride="carousel" style="width:300px;width: 100%;">
+                          <!-- Content -->
+                          <div class="carousel-inner" role="listbox">
+                            <%body.reason.reverse().forEach((reason,i) => {%>
+                        <div class="item <%=i==0? "active" : null%>">
+                            <input type="text" value=<%=reason%> class="form-control input-sm text-center"
+                                style="height : 100px; width: 100%;">
+                        </div>
+                        <%})%>
+                        <%if(body.reason.length ==0 ){%>
+                        <div class="item active">
+                            <input readonly type="text" value="Chưa có phản hồi nào"
+                                class="form-control input-sm text-center" style="height : 100px; width: 100%;">
+                        </div>
+                        <%}%>
+                    </div>
+                    <!-- Previous/Next controls -->
+                    <a class="left carousel-control" href="#my-pics" role="button" data-slide="prev">
+                        <span class="icon-prev" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="right carousel-control" href="#my-pics" role="button" data-slide="next">
+                        <span class="icon-next" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
                 </div>
-            <%}%>
-           
-            <div class="text-center">
-                <%if(body.status==0){%>
-                    <a class="btn btn-primary waves-effect" data-id="<%- body._id %>" data-status="<%- body._id  %>" data-name="<%- body._id  %>" data-toggle="tooltip" data-placement="top" id="btn-received" name="btn-received">
-                        Nhận
-                    </a>
-                <%}else if(body.status==1){%>
-                    <a class="btn btn-primary waves-effect" >
-                        Đã nhận
-                    </a>
-                <%}else if(body.status==2){%>
-                    <a class="btn btn-primary waves-effect" >
-                            Đã xử lý
-                    </a>
-                <%}%>
-                <a class="btn btn-primary waves-effect btn-response" href="/#support-manager/new?_id=<%- body._id %>" data-id="<%- body._id %>" data-status="<%- body.status %>" data-name="<%- body.name %>" data-toggle="tooltip" data-placement="top" name="btn-response"> Phản hồi</a>
-                <a type="button" class="btn btn-default btn-icon-text waves-effect" href="/#support-manager"><i class="zmdi zmdi-arrow-left"></i>Quay lại</a>
             </div>
+    </div>
+</div>
+
+<div class="text-center">
+    <%if(body.status==0){%>
+                        <a class="btn btn-primary waves-effect" data-id="<%- body._id %>" data-status="<%- body._id  %>"
+                            data-name="<%- body._id  %>" data-toggle="tooltip" data-placement="top" id="btn-received"
+                            name="btn-received">
+                            Nhận
+                        </a>
+                        <%}else if(body.status==1){%>
+                        <a class="btn btn-primary waves-effect">
+                            Đã nhận
+                        </a>
+                        <%}else if(body.status==2){%>
+                        <a class="btn btn-primary waves-effect">
+                            Đã xử lý
+                        </a>
+                        <%}%>
+                <a class="btn btn-primary waves-effect btn-response" href="/#support-manager/new?_id=<%- body._id %>"
+                        data-id="<%- body._id %>" data-status="<%- body.status %>" data-name="<%- body.name %>"
+                        data-toggle="tooltip" data-placement="top" name="btn-response"> Phản hồi</a>
+                        <a type="button" class="btn btn-default btn-icon-text waves-effect" href="/#support-manager-undone"><i
+                                class="zmdi zmdi-arrow-left"></i>Quay lại</a>
+                    </div>
         </form>
     </div>
 </div>

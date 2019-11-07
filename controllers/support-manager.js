@@ -47,7 +47,6 @@ exports.index = {
         }
 
 
-
         lists = result.lists
 
         let agg = _Report.aggregate();
@@ -79,12 +78,12 @@ exports.index = {
         if (!_.isEmpty(sort)) agg._pipeline.push({ $sort: sort });
 
         agg._pipeline.push({ $lookup: { from: "users", localField: "createdBy", foreignField: "_id", as: "fieldName" } })
+        if (!_.isEmpty(query)) agg._pipeline.push({ $match: { $and: [query] } });
         agg._pipeline.push({
           $match: {
             $or: emailQuery
           }
         })
-        if (!_.isEmpty(query)) agg._pipeline.push({ $match: { $and: [query] } });
         _Report.aggregatePaginate(agg, { page, limit }, function (err, results, node, count) {
           if (err)
             return res.send(err)
@@ -94,6 +93,8 @@ exports.index = {
             rowsPerPage: limit,
             totalResult: count
           })
+          console.log(results);
+
           return _.render(req, res, 'support-manager', {
             title: 'Danh sách các Yêu cầu',
             reports: results,
@@ -214,6 +215,7 @@ exports.update = function (req, res) {
       transporter.sendMail(options, function (err, info) {
         return res.json({ code: (err ? 500 : 200), message: err ? err : info })
       })
+      return res.json({ code: 200 })
     })
   })
 };
