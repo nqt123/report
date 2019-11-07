@@ -213,7 +213,7 @@ exports.update = function (req, res) {
                         <p>Chi tiết sự cố:<span style="font-weight: bold; color: black;">${result.description}</span ></p>`
       }
       transporter.sendMail(options, function (err, info) {
-        return res.json({ code: (err ? 500 : 200), message: err ? err : info })
+        return console.log({ code: (err ? 500 : 200), message: err ? err : info })
       })
       return res.json({ code: 200 })
     })

@@ -72,7 +72,13 @@ exports.index = {
         matchField["supporter.name"] = req.query.supporter
       }
       if (req.query.name) {
-        matchField["name"] = { $regex: new RegExp(req.query.name, 'gi') }
+        matchField["displayName"] = { $regex: new RegExp(req.query.name, 'gi') }
+      }
+      if (req.query.typeDisplay) {
+        matchField["typeDisplay"] = { $regex: new RegExp(req.query.typeDisplay, 'gi') }
+      }
+      if (req.query.prior) {
+        matchField["prior"] = parseInt(req.query.prior)
       }
       if (req.query.status) {
         matchField["status"] = { $regex: new RegExp(req.query.status, 'gi') }

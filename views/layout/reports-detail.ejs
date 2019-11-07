@@ -173,6 +173,12 @@
                     </form>
                   </div>
                   <%})%>
+                  <%if(responds.length == 0){%>
+                  <div class="item active" style="height: 100px;">
+                    <input readonly type="text" style="height: 100px;" class="form-control text-center input-sm"
+                      value="Chưa có phản hổi từ Supporter">
+                  </div>
+                  <%}%>
                 </div>
                 <!-- Previous/Next controls -->
                 <a class="left carousel-control" href="#responds" role="button" data-slide="prev">
@@ -184,29 +190,30 @@
                   <span class="sr-only">Next</span>
                 </a>
               </div>
-              <div style="text-align: center; margin-bottom: 1rem; font-weight: bold;">
+              <div style="text-align: center; margin-bottom: 1rem;margin-top : 10px; font-weight: bold;">
                 <%=report.status == 4 ? "YÊU CẦU ĐÃ ĐƯỢC XÁC NHẬN HOÀN THÀNH" : "XÁC NHẬN" %>
-              </div>
-              <div <%=report.status == 4 ? "hidden" : null %>>
-                <div style="margin: 0 auto;" class="text-center">
-                  <div class="form-group m-l-10" style="margin: 0 auto;">
-                    <a type="button" class="btn btn-default btn-icon-text waves-effect" id="reject"
-                      style="background-color: red; color: white;" href="/#reports"><i class="zmdi zmdi-thumb-down"></i>
-                      Vấn đề
-                      chưa được giải quyết</a>
-                    <button type="submit" id="resolve" class="btn btn-primary btn-icon-text waves-effect"
-                      id="submitBtn"><i class="zmdi zmdi-thumb-up"></i> Vấn đề đã được giải quyết</button>
+                </div>
+                <div <%=report.status == 4 ? "hidden" : null %>>
+                  <div style="margin: 0 auto;" class="text-center">
+                    <div class="form-group m-l-10" style="margin: 0 auto;">
+                      <a type="button" class="btn btn-default btn-icon-text waves-effect" id="reject"
+                        style="background-color: red; color: white;" href="/#reports"><i
+                          class="zmdi zmdi-thumb-down"></i>
+                        Vấn đề
+                        chưa được giải quyết </a>
+                      <button type="submit" id="resolve" class="btn btn-primary btn-icon-text waves-effect"
+                        id="submitBtn"><i class="zmdi zmdi-thumb-up"></i> Vấn đề đã được giải quyết</button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div style="width: 100%;">
-          <div style="margin: 0 auto;" class="text-center">
-            <div class="form-group" style="margin: 0 auto;">
-              <a type="button" class="btn btn-default btn-icon-text waves-effect" href="/#reports"><i
-                  class="zmdi zmdi-arrow-left"></i>Quay lại</a>
+          <div style="width: 100%;">
+            <div style="margin: 0 auto;" class="text-center">
+              <div class="form-group" style="margin: 0 auto;">
+                <a type="button" class="btn btn-default btn-icon-text waves-effect" href="/#reports"><i
+                    class="zmdi zmdi-arrow-left"></i>Quay lại</a>
+              </div>
             </div>
           </div>
-        </div>
