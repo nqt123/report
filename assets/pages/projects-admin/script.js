@@ -89,7 +89,7 @@ var DFT = function ($) {
       const updateBtn = rows[i].querySelector('#update')
       const id = rows[i].querySelector('#id').innerHTML.trim()
       updateBtn.addEventListener('click', function (e) {
-        location.hash = 'projectsAdmin/' + id + '/edit'
+        location.hash = 'projects-admin/' + id + '/edit'
       })
     }
   }

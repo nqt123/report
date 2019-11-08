@@ -88,8 +88,10 @@
                 <div class="carousel-inner" role="listbox">
                   <%report.reason.reverse().forEach((reason,i) => {%>
                   <div class="item <%=i==0? "active" : null%>">
-                    <input readonly type="text" value=<%=reason%> class="form-control input-sm text-center"
-                      style="height : 100px; width: 100%;">
+                    <div class="text-center bg-black-trp" style="font-weight: bold; border-bottom: 1px solid gray;">Phản hồi lần
+                      <%=report.reason.length - i%></div>
+                    <div class="text-center bg-black-trp" style="height: 80px; display: flex; justify-content: center; align-items: center;"><%=reason%></div>
+
                   </div>
                   <%})%>
                   <%if(report.reason.length ==0 ){%>

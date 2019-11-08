@@ -87,8 +87,7 @@
                         placeholder=" VD: Quy Thang">
                     </td>
                     <td>
-                      <input type="text" class="form-control input-sm searchColumn" name="prior"
-                        placeholder=" 1-5">
+                      <input type="text" class="form-control input-sm searchColumn" name="prior" placeholder=" 1-5">
                     </td>
                     <td>
                       <input type="text" class="form-control input-sm searchColumn" name="createdBy"
@@ -155,7 +154,7 @@
                       <%=result[i]._id%>
                     </td>
                     <td class="col-lg-1">
-                      <%=result[i].displayName%>
+                      <a href="#projects-admin/<%=result[i].name%>"><%=result[i].displayName%></a>
                     </td>
                     <td class="text-center">
                       <%=result[i].typeDisplay%>
@@ -238,12 +237,12 @@
               </table>
               <%if(result.length == 0 ){%>
 
-              <div id="empty-container" class="border">
-                <a href="/#reports/new">
-                  <div class="text-center" id="empty-text">Nhấn để thêm yêu cầu</div>
-                </a>
-              </div>
-              <%}%>
+                  <div id="empty-container" class="border">
+                    <a href="/#reports/new">
+                      <div class="text-center" id="empty-text">Nhấn để thêm yêu cầu</div>
+                    </a>
+                  </div>
+                  <%}%>
               <div class="text-center" id="ticket-total">
                 <!--<b>-->
                 <!--<span class="TXT_TOTAL"></span>:-->
@@ -259,7 +258,7 @@
   </div>
 </div>
     <% if(paging.pageCount > 1){ %>
-              <% include ../paging.ejs %>
-              <% } %>
+                  <% include ../paging.ejs %>
+                  <% } %>
           </div>
         </div>

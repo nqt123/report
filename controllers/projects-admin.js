@@ -116,7 +116,8 @@ exports.edit = function (req, res) {
   })
 }
 exports.show = function (req, res) {
-  ProjectAdmin.findById(req.params.projects-admin).then(result => {
+  console.log(req.params)
+  ProjectAdmin.findById(req.params.projectsadmin).then(result => {
     _.render(req, res, 'projects-admin-detail', {
       title: 'Chỉnh sửa Dự Án',
       project: result
