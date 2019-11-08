@@ -1,8 +1,16 @@
-const content = document.querySelector('#role-group').innerHTML
+const content = document.querySelector('#new').innerHTML
+document.querySelector('#new').remove()
 document.querySelector('#back').addEventListener('click', (e) => {
   location.hash = 'users'
 })
 
+let items = document.querySelectorAll("#item")
+
+items.forEach((item, i) => {
+  item.querySelector('#remove').addEventListener('click', (e) => {
+    item.remove()
+  })
+})
 document.querySelector('#update').addEventListener('click', (e) => {
   e.preventDefault()
   const positionName = document.querySelector('#positionName').value
@@ -30,6 +38,7 @@ document.querySelector('#update').addEventListener('click', (e) => {
     id,
     projectManage
   }
+  console.log(body)
   fetch('/user-account/' + id, {
     method: "PUT",
     body: JSON.stringify(body),
@@ -44,6 +53,12 @@ document.querySelector('#addProjects').addEventListener('click', (e) => {
 
 function addProject() {
   document.querySelector('#role-group').insertAdjacentHTML('beforeend', content)
+  items = document.querySelectorAll("#item")
+  items.forEach((item, i) => {
+    item.querySelector('#remove').addEventListener('click', (e) => {
+      item.remove()
+    })
+  })
 }
 
 var DFT = function ($) {

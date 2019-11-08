@@ -36,29 +36,75 @@
         </div>
       </div>
       <div id="role-group">
-        <div class="form-group">
-          <label for="" class="col-sm-3 control-label">Dự Án</span></label>
-          <div class="col-sm-6">
-            <div class="fg-line">
-              <select class="form-control" id="projects">
-                <%projects.forEach(project => {%>
-                <option value="<%=project._id%>"><%=project.name%></option>
-                <%})%>
-              </select>
+        <%User.projectManage.forEach(userProject => {%>
+        <div id="item">
+          <div class="form-group">
+            <label for="" class="col-sm-3 control-label">Dự Án</span></label>
+            <div class="col-sm-5">
+              <div class="fg-line">
+                <select class="form-control" id="projects">
+                  <%projects.forEach((project,i) => {%>
+                  <option <%=JSON.stringify(project._id) == JSON.stringify(userProject.projects) ? "selected" : null %>
+                    value="<%=project._id%>">
+                    <%=project.name%></option>
+                  <%})%>
+                </select>
+              </div>
+            </div>
+            <div class="col-sm-1 control-label"><i class="zmdi zmdi-minus green f-17 text-danger" id="remove"></i></div>
+          </div>
+          <div class="form-group">
+            <label for="" class="col-sm-3 control-label">Vai Trò</span></label>
+            <div class="col-sm-5">
+              <div class="fg-line">
+                <select class="form-control" id="authority">
+                  <option <%=JSON.stringify(userProject.authority)==JSON.stringify("REPORTER") ? "selected" : null%>
+                    value="REPORTER">
+                    REPORTER</option>
+                  <option <%=JSON.stringify(userProject.authority)==JSON.stringify("SUPPORTER") ? "selected" : null%>
+                    value="SUPPORTER">SUPPORTER</option>
+                  <option <%=JSON.stringify(userProject.authority)==JSON.stringify("SUPERVISOR") ? "selected" : null%>
+                    value="SUPERVISOR">SUPERVISOR</option>
+                  <option
+                    <%=JSON.stringify(userProject.authority)==JSON.stringify("ADMINISTRATOR") ? "selected" : null%>
+                    value="ADMINISTRATOR">ADMINISTRATOR</option>
+                  <option <%=JSON.stringify(userProject.authority)==JSON.stringify("DEVELOPER") ? "selected" : null%>
+                    value="DEVELOPER">DEVELOPER</option>
+                </select>
+              </div>
             </div>
           </div>
         </div>
-        <div class="form-group">
-          <label for="" class="col-sm-3 control-label">Vai Trò</span></label>
-          <div class="col-sm-6">
-            <div class="fg-line">
-              <select class="form-control" id="authority">
-                <option value="REPORTER">REPORTER</option>
-                <option value="SUPPORTER">SUPPORTER</option>
-                <option value="SUPERVISOR">SUPERVISOR</option>
-                <option value="ADMINISTRATOR">ADMINISTRATOR</option>
-                <option value="DEVELOPER">DEVELOPER</option>
-              </select>
+        <%})%>
+        <div id="new">
+          <div id="item">
+            <div class="form-group">
+              <label for="" class="col-sm-3 control-label">Dự Án</span></label>
+              <div class="col-sm-5">
+                <div class="fg-line">
+                  <select class="form-control" id="projects">
+                    <%projects.forEach(project => {%>
+                    <option value="<%=project._id%>"><%=project.name%></option>
+                    <%})%>
+                  </select>
+                </div>
+              </div>
+              <div class="col-sm-1 control-label"><i class="zmdi zmdi-minus green f-17 text-danger" id="remove"></i>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="" class="col-sm-3 control-label">Vai Trò</span></label>
+              <div class="col-sm-5">
+                <div class="fg-line">
+                  <select class="form-control" id="authority">
+                    <option value="REPORTER">REPORTER</option>
+                    <option value="SUPPORTER">SUPPORTER</option>
+                    <option value="SUPERVISOR">SUPERVISOR</option>
+                    <option value="ADMINISTRATOR">ADMINISTRATOR</option>
+                    <option value="DEVELOPER">DEVELOPER</option>
+                  </select>
+                </div>
+              </div>
             </div>
           </div>
         </div>

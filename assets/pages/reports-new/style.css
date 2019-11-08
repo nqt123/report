@@ -24,5 +24,5 @@ div.column header {
 }
 #selectEmail{
   max-height: 600px;
-  overflow: scroll;
+  overflow: hidden;
 }

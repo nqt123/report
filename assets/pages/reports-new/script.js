@@ -51,8 +51,6 @@ $submitBtn.addEventListener('click', (e) => {
     window.scrollTo({ top: 25, behavior: 'smooth' })
     return textMessage.textContent = "Số lượng nhân sự trong ca phải nhỏ hơn hoặc bằng số lượng agent của Dự án"
   }
-  $selectModal.id = "selectEmail"
-
   fetch('/reports/new?email=' + true,
     {
       method: "GET",
@@ -61,13 +59,12 @@ $submitBtn.addEventListener('click', (e) => {
       }
     }
   ).then(res => res.json()).then(respond => {
-    setTimeout(() => {
-      userList = respond.userEmail
-      supportList = respond.supportEmail.email
-
-      respond.supportEmail.forEach((email, i) => {
-        $SupportEmail.insertAdjacentHTML('beforeend',
-          `
+    userList = respond.userEmail
+    supportList = respond.supportEmail.email
+    $selectModal.id = "selectEmail"
+    respond.supportEmail.forEach((email, i) => {
+      $SupportEmail.insertAdjacentHTML('beforeend',
+        `
           <div class="form-check">
           <input class="form-check-input" data-id="${email._id}" name="email" type="checkbox" value="${email.email}">
           <label class="form-check-label" for="defaultCheck2">
@@ -75,10 +72,10 @@ $submitBtn.addEventListener('click', (e) => {
          </label>
         </div>
         `)
-      })
-      respond.userEmail.forEach(email => {
-        $UserEmail.insertAdjacentHTML('beforeend',
-          `
+    })
+    respond.userEmail.forEach(email => {
+      $UserEmail.insertAdjacentHTML('beforeend',
+        `
         <div class="form-check">
           <input class="form-check-input" data-id="${email._id}" name="email" type="checkbox" value="${email.email}">
           <label class="form-check-label" for="defaultCheck2">
@@ -86,8 +83,7 @@ $submitBtn.addEventListener('click', (e) => {
          </label>
         </div>
         `)
-      })
-    }, 50);
+    })
   })
 })
 createReport.addEventListener('click', (e) => {
@@ -134,7 +130,10 @@ createReport.addEventListener('click', (e) => {
     displayName,
     for: idList
   }
-  console.log(report)
+  if (emailList.length == 0) {
+    button.disabled = false
+    return swal("Bạn phải chọn ít nhất một người tiếp nhận yêu cầu")
+  }
   fetch('/reports',
     {
       method: "POST",
@@ -164,17 +163,18 @@ $type.addEventListener('change', (e) => {
       }
     }
   ).then(res => res.json()).then(respond => {
-    setTimeout(() => {
-      select.disabled = false
-      select.options.length = 0
-      for (let i = 0; i < respond.length; i++) {
-        var opt = document.createElement('option')
-        opt.appendChild(document.createTextNode(respond[i].name))
-        opt.value = respond[i].processTime
-        select.appendChild(opt)
-      }
-      $sla.value = convertMinutes(respond[0].processTime)
-    }, 100);
+    select.disabled = false
+    select.options.length = 0
+    for (let i = 0; i < respond.length; i++) {
+      var opt = document.createElement('option')
+      opt.appendChild(document.createTextNode(respond[i].name))
+      opt.value = respond[i].processTime || "0"
+      select.appendChild(opt)
+    }
+    if (respond.length != 0) {
+      return $sla.value = convertMinutes(respond[0].processTime || 0)
+    }
+    $sla.value = "N/A"
   })
 })
 $name.addEventListener('change', (e) => {
