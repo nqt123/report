@@ -113,9 +113,9 @@
                       <%=e.note%>
                     </td>
                     <td class="text-center" style="display: flex; justify-content:space-evenly;" role="button">
-                      <div data-toggle="tooltip" data-placement="top" data-original-title="Xoá"> <i id="delete"
+                      <div <%=maxAuthorize == "REPORTER" ? "hidden" : null%> data-toggle="tooltip" data-placement="top" data-original-title="Xoá"> <i id="delete"
                           class="zmdi zmdi-delete text-danger" style="font-size: 2rem;"></i></div>
-                      <div data-toggle="tooltip" data-placement="top" data-original-title="Cập nhật"> <i id="update"
+                      <div <%=maxAuthorize == "REPORTER" ? "hidden" : null%> data-toggle="tooltip" data-placement="top" data-original-title="Cập nhật"> <i id="update"
                           class="zmdi zmdi-edit text-info" style="font-size: 2rem;"></i></div>
                     </td>
                   </tr>

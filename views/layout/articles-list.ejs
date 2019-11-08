@@ -79,72 +79,18 @@
                             <td></td>
                             <td></td>
                         </tr>
-                        <% agentInfoVoice.forEach(function(el1, i) { %>
-                        <tr class="text-center">
-                            <td></td>
-                            <td><%- el1._id.companyName%></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <% el1.services.forEach(function(el2, i) { %>
-                        <%if (el2.serviceName) { %>
-                        <tr class="text-center">
-                            <td></td>
-                            <td></td>
-                            <td><%- el2.serviceName%></td>
-                            <td><%- el2.skillName%></td>
-                        </tr>
-                        <% } %>
-                        <% }); %>
-                        <% }); %>
                         <tr class="text-center">
                             <td>Chat</td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <% agentInfoChat.forEach(function(el1, i) { %>
-                        <tr class="text-center">
-                            <td></td>
-                            <td><%- el1._id.companyName%></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <% el1.services.forEach(function(el2, i) { %>
-                        <%if (el2.serviceName) { %>
-                        <tr class="text-center">
-                            <td></td>
-                            <td></td>
-                            <td><%- el2.serviceName%></td>
-                            <td><%- el2.skillName%></td>
-                        </tr>
-                        <% } %>
-                        <% }); %>
-                        <% }); %>
                         <tr class="text-center">
                             <td>Mail</td>
                             <td></td>
                             <td></td>
                             <td></td>
                         </tr>
-                        <% agentInfoMail.forEach(function(el1, i) { %>
-                        <tr class="text-center">
-                            <td></td>
-                            <td><%- el1._id.companyName%></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <% el1.services.forEach(function(el2, i) { %>
-                        <%if (el2.serviceName) { %>
-                        <tr class="text-center">
-                            <td></td>
-                            <td></td>
-                            <td><%- el2.serviceName%></td>
-                            <td><%- el2.skillName%></td>
-                        </tr>
-                        <% } %>
-                        <% }); %>
-                        <% }); %>
                         </tbody>
                     </table>
                 </div>

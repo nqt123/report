@@ -7,7 +7,7 @@ $form.addEventListener('submit', (e) => {
   const name = document.querySelector('#name').value
   const processTime = document.querySelector('#processTime').value
   const note = document.querySelector('#note').value
-  if(name == ""){
+  if (name == "") {
     return swal("Bạn phải nhập dạng sự cố")
   }
   const body = {
@@ -20,15 +20,15 @@ $form.addEventListener('submit', (e) => {
   fetch('/sla',
     {
       method: "POST",
-      body : JSON.stringify(body),
+      body: JSON.stringify(body),
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
       }
     }
-  ).then(res => res.text()).then(respond => location.hash= "#sla")
+  ).then(res => res.text()).then(respond => location.hash = "#sla")
 })
-document.querySelector('#back').addEventListener('click', (e)=>{
+document.querySelector('#back').addEventListener('click', (e) => {
   location.hash = 'sla'
 })
 var DFT = function ($) {

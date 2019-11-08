@@ -11,6 +11,7 @@ exports.index = {
   html: function (req, res) {
     const page = req.query.page ? req.query.page : 1
     const limit = req.query.row ? req.query.row : 10
+    let supporter = false
     let query = {};
     let sort = _.cleanSort(req.query, '');
     _async.parallel({
@@ -36,6 +37,7 @@ exports.index = {
         }
         if (user.projectManage.length > 0) {
           for (let i = 0; i < user.projectManage.length; i++) {
+            supporter = user.projectManage[i].authority == "SUPPORTER" ? true : null
             emailQuery.push({ "name": mongoose.mongo.ObjectId(user.projectManage[i].projects) })
             if (user.projectManage[i].authority == "SUPERVISOR" ||
               user.projectManage[i].authority == "ADMINISTRATOR" ||
@@ -45,7 +47,6 @@ exports.index = {
             }
           }
         }
-
 
 
         lists = result.lists
@@ -79,12 +80,12 @@ exports.index = {
         if (!_.isEmpty(sort)) agg._pipeline.push({ $sort: sort });
 
         agg._pipeline.push({ $lookup: { from: "users", localField: "createdBy", foreignField: "_id", as: "fieldName" } })
+        if (!_.isEmpty(query)) agg._pipeline.push({ $match: { $and: [query] } });
         agg._pipeline.push({
           $match: {
             $or: emailQuery
           }
         })
-        if (!_.isEmpty(query)) agg._pipeline.push({ $match: { $and: [query] } });
         _Report.aggregatePaginate(agg, { page, limit }, function (err, results, node, count) {
           if (err)
             return res.send(err)
@@ -94,6 +95,8 @@ exports.index = {
             rowsPerPage: limit,
             totalResult: count
           })
+          console.log(results);
+
           return _.render(req, res, 'support-manager', {
             title: 'Danh sách các Yêu cầu',
             reports: results,
@@ -150,13 +153,13 @@ exports.create = function (req, res) {
           }
         })
       }
-      else {
-        _Report.findByIdAndUpdate(req.body.reportId, { late: false }, function (err, ca) {
-          if (err) {
-            res.send(err);
-          }
-        })
-      }
+      // else {
+      //   _Report.findByIdAndUpdate(req.body.reportId, { late: false }, function (err, ca) {
+      //     if (err) {
+      //       res.send(err);
+      //     }
+      //   })
+      // }
       var transporter = nodeMailer.createTransport({
         service: " Gmail",
         auth: {
@@ -212,8 +215,9 @@ exports.update = function (req, res) {
                         <p>Chi tiết sự cố:<span style="font-weight: bold; color: black;">${result.description}</span ></p>`
       }
       transporter.sendMail(options, function (err, info) {
-        return res.json({ code: (err ? 500 : 200), message: err ? err : info })
+        return console.log({ code: (err ? 500 : 200), message: err ? err : info })
       })
+      return res.json({ code: 200 })
     })
   })
 };

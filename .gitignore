@@ -10,7 +10,7 @@ projects/*
 *.log
 .idea/
 temp/
-config/
+config/*
 
 # exception to the rule
 !node_modules/.keepme

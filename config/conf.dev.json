@@ -3,11 +3,16 @@
     "_id": "57ec72813531cffe519aee33",
     "ip": "localhost",
     "port": 2020,
-    "name": "7home"
+    "name": "CRM SUPPORT"
   },
   "database": {
+<<<<<<< HEAD
     "name": "crmsupport",
     "ip": "172.16.2.172",
+=======
+    "name": "7home",
+    "ip": "localhost",
+>>>>>>> 7972cc3b02a9bebcd5e102226a725c76e6625b35
     "port": 27017,
     "user": "",
     "pwd": ""

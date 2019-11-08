@@ -15,7 +15,6 @@ const projectSchema = new mongoose.Schema({
     required: true
   },
   goLineTime : {
-    type : String
   },
   offTime: {
 

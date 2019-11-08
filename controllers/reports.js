@@ -72,12 +72,18 @@ exports.index = {
         matchField["supporter.name"] = req.query.supporter
       }
       if (req.query.name) {
-        matchField["name"] = { $regex: new RegExp(req.query.name, 'gi') }
+        matchField["displayName"] = { $regex: new RegExp(req.query.name, 'gi') }
+      }
+      if (req.query.typeDisplay) {
+        matchField["typeDisplay"] = { $regex: new RegExp(req.query.typeDisplay, 'gi') }
+      }
+      if (req.query.prior) {
+        matchField["prior"] = parseInt(req.query.prior)
       }
       if (req.query.status) {
         matchField["status"] = { $regex: new RegExp(req.query.status, 'gi') }
       }
-      
+
       if (req.query.state) {
         if (req.query.state == "Done") {
           matchField["state"] = req.query.state
@@ -158,7 +164,7 @@ exports.create = function (req, res) {
         to: req.body.emailList,
         subject: 'New Support Request From Agent',
         html: `<div style="display: inline-block;background-color: #fefefe; height: 50px;line-height: 50px;"><span style="color:#ff375f;">Y</span><span style="color:#ff4b4c;">ê</span><span style="color:#ff6039;">u</span><span style="color:#ff7426;"> </span><span style="color:#ff8913;">C</span><span style="color:#ff9d00;">ầ</span><span style="color:#ffa802;">u</span><span style="color:#ffb404;"> </span><span style="color:#ffbf06;">M</span><span style="color:#ffcb08;">ớ</span><span style="color:#ffd60a;">i</span><span style="color:#cbd51e;"> </span><span style="color:#98d431;">T</span><span style="color:#64d245;">ừ</span><span style="color:#30d158;"> </span><span style="color:#26da79;">K</span><span style="color:#1de39b;">h</span><span style="color:#13edbc;">ố</span><span style="color:#0af6de;">i</span><span style="color:#00ffff;"> </span><span style="color:#02e6ff;">D</span><span style="color:#04ceff;">ự</span><span style="color:#06b5ff;"> </span><span style="color:#089dff;">Á</span><span style="color:#0a84ff;">n</span></div>
-               <div><span style="font-weight: bold; color: black;">Dự án:</span> ${result.name}</div>
+               <div><span style="font-weight: bold; color: black;">Dự án:</span> ${result.displayName}</div>
                <div><span style="font-weight: bold; color: black;">Vị trí:</span> ${result.position}</div>
                <div><span style="font-weight: bold; color: black;">Số lượng nhận sự trong ca:</span> ${result.agentNumberInShift}</div>
                <div><span style="font-weight: bold; color: black;">Số lượng nhận sự ảnh hưởng:</span> ${result.agentNumberInfluence}</div>
@@ -267,7 +273,7 @@ exports.update = function (req, res) {
       report.seen = false
     }
     console.log(report);
-    
+
     report.save().then(result => {
       var transporter = nodeMailer.createTransport({
         service: 'Gmail',
@@ -334,6 +340,7 @@ exports.show = function (req, res) {
         _.render(req, res, 'reports-detail', {
           title: "",
           report: result,
+          responds: [],
           result: {}
         }, true)
       })
@@ -341,7 +348,8 @@ exports.show = function (req, res) {
     _.render(req, res, 'reports-detail', {
       title: "",
       report: result[0].report,
-      result: result[0]
+      result: result[0],
+      responds: result
     }, true)
   })
 }

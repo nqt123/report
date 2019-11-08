@@ -105,7 +105,7 @@
                     <tr id="item" class="stt<%=status%> <%- seen%>">
                         <td class="select-cell text-center"><%- el.uniqueId %></td>
                         <td>
-                            <%- el.displayName %>
+                            <a href="#projects-admin/<%=el.name%>"><%- el.displayName %></a>
                         </td>
                         <input type="hidden" value="<%- el._id %>" name="id">
                         <td class="text-center text-capitalize"><%- el.typeDisplay %></td>
