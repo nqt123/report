@@ -1,12 +1,4 @@
 const Report = require('../modals/report')
-const nodeMailer = require('nodemailer')
-const SupportManager = require('../modals/support-manager')
-const SlaMenu = require('../modals/sla-menu')
-const SlaList = require('../modals/sla-list')
-const SupportEmail = require('../modals/support-email')
-const User = require('../modals/users')
-const mongoose = require('mongoose')
-const ProjectAdmin = require('../modals/projects-admin')
 exports.index = {
   json: function (req, res) {
     Report.find({}, function (err, reports) {
@@ -25,69 +17,35 @@ exports.index = {
     let query = {};
     var agg = Report.aggregate();
     ///find CreatedBy
-    console.log(req.query);
-
-    const userId = req.session['user']._id
-
-    const user = User.findById(userId).then(user => {
-      const groupEmail = (user.groupEmail)
-      const emailQuery = []
-      //find report for each group email
-      const emailInsert = groupEmail.forEach(email => {
-        emailQuery.push({ "for": mongoose.mongo.ObjectId(email) })
-      });
-      //find for each user Id
-      emailQuery.push({ "for": mongoose.mongo.ObjectId(userId) })
-      //find for projects
-      if (user.projectManage.length > 0) {
-        for (let i = 0; i < user.projectManage.length; i++) {
-          emailQuery.push({ "name": mongoose.mongo.ObjectId(user.projectManage[i].projects) })
-          if (user.projectManage[i].authority == "SUPERVISOR" ||
-            user.projectManage[i].authority == "ADMINISTRATOR" ||
-            user.projectManage[i].authority == "DEVELOPER"
-          ) {
-            emailQuery.push({})
-          }
-        }
-      }
-      agg._pipeline.push({
-        $lookup: {
-          from: "users",
-          localField: "createdBy",
-          foreignField: "_id",
-          as: "creator"
-        }
-      }, {
-        $unwind: "$creator"
-      })
-      agg._pipeline.push({
-        $match: {
-          $or: emailQuery
-        }
-      })
+    
       //Sorting
-      if (!req.query.sort) {
-        agg._pipeline.push({ $sort: { updatedAt: -1 } })
-      }
+    //   if (!req.query.sort) {
+    //     agg._pipeline.push({ $sort: { updatedAt: -1 } })
+    //   }
       //Searching
-      if (_.has(req.query, 'createdAt')) {
-        query.createdAt = moment(req.query.createdAt, "DD/MM/YYYY h:mm a")._d;
-      }
-      if (_.has(req.query, 'lastRespondAt')) {
-        query.lastRespondAt = moment(req.query.lastRespondAt, "DD/MM/YYYY h:mm a")._d;
-      }
-      console.log(query);
-      if (!_.isEmpty(query)) agg._pipeline.push({
-        $match: {
-          $or: [
-            { createdAt: { "$gt": query.createdAt } },
-            { lastRespondAt: { "$lt": query.lastRespondAt } }
-          ]
-        }
-      });
+    //   if (_.has(req.query, 'createdAt')) {
+    //     query.createdAt = moment(req.query.createdAt, "DD/MM/YYYY h:mm a")._d;
+    //   }
+    //   if (_.has(req.query, 'lastRespondAt')) {
+    //     query.lastRespondAt = moment(req.query.lastRespondAt, "DD/MM/YYYY h:mm a")._d;
+    //   }
+    //   if (!_.isEmpty(query)) agg._pipeline.push({
+    //     $match: {
+    //       $or: [
+    //         { createdAt: { "$gt": query.createdAt } },
+    //         { lastRespondAt: { "$lt": query.lastRespondAt } },
+    //         {
+    //           $and: [
+    //             { createdAt: { "$gt": query.createdAt } },
+    //             { lastRespondAt: { "$lt": query.lastRespondAt } }
+    //           ]
+    //         }
+    //       ]
+    //     }
+    //   });
       //Apply match with field generated
       agg._pipeline.push({ $match: matchField })
-      Report.aggregatePaginate(agg, { page, limit, $unwind: "$createdBy", $match: createdBy, $match: supporter }, function (err, reports, node, count) {
+      Report.aggregatePaginate(agg, { page, limit}, function (err, reports, node, count) {
         if (err)
           return res.send(err)
         var paginator = new pagination.SearchPaginator({
@@ -100,40 +58,69 @@ exports.index = {
           title: 'Danh sách các Yêu cầu',
           result: reports,
           paging: paginator.getPaginationData(),
-          plugins: ['moment', ['bootstrap-select'], ['bootstrap-datetimepicker'], ['bootstrap-daterangepicker'], ['chosen']]
+          plugins: ['moment', ['bootstrap-select'], ['bootstrap-datetimepicker'], ['bootstrap-daterangepicker'],'export-excel', ['chosen']]
         }, true, err);
       })
-    })
   }
 };
 
-// POST
-exports.create = function (req, res) {
-
-};
 
 exports.new = function (req, res) {
-  _.render(req, res, 'reports-new', {
-    title: 'Thêm mới Yêu cầu',
-    result,
-    listSla: list
-  }, true)
-}
+  console.log('helo');
+  if (req.query.type) {
+    const agg = Report.aggregate([
+      {
+        $lookup:
+        {
+          from: "projectadmins",
+          localField: "displayName",
+          foreignField: "name",
+          as: "fieldProjectReport"
+        }
+      },
+      { $unwind: "$fieldProjectReport" },
+      {
+        $lookup:
+        {
+          from: "slamenus",
+          localField: "type",
+          foreignField: "name",
+          as: "fieldMenuReport"
+        }
+      },
+      { $unwind: "$fieldMenuReport" },
+      {
+        $lookup:
+        {
+          from: "slalists",
+          localField: "typeDisplay",
+          foreignField: "name",
+          as: "fieldListReport"
+        }
+      },
+      { $unwind: "$fieldListReport" },
+      // {
+      //   $lookup:
+      //   {
+      //     from: "supportmanagers",
+      //     localField: "_id",
+      //     foreignField: "reportId",
+      //     as: "fieldSupportReport"
+      //   }
+      // },
+      // { $unwind: "$fieldSupportReport" }
+    ], (err, result) => {
+      if (err) {
+        return console.log(err)
+      }
+      console.log(result);
+      return res.json(result)
+    });
+  }
+  else {
+    _.render(req, res, 'reports-excel', {
+      title: 'Thêm mới Yêu cầu',
+    }, true)
+  }
 
-exports.update = function (req, res) {
-}
-exports.show = function (req, res) {
-  _.render(req, res, 'reports-detail', {
-    title: "",
-    report: result[0].report,
-    result: result[0]
-  }, true)
-}
-
-exports.destroy = function (req, res) {
-  Report.findByIdAndRemove(req.body.id, function (error, Report) {
-    if (error)
-      return res.json(error)
-    res.json(Report)
-  })
 }

@@ -8,6 +8,8 @@ var DFT = function ($) {
                 if (!_.isEqual($(el).val(), '')&&!_.isEqual($(el).val(), null)) memo[el.name] = $(el).val();
                 return memo;
             }, {}).value();
+            console.log(filter);
+            
         _Ajax("/report-inbound-agent?"+ $.param(filter),'GET', {}, function(resp){
             if(resp.code==200){
                 if(resp.data.length){
@@ -141,8 +143,12 @@ var DFT = function ($) {
 
     // Hiển thị dữ liệu báo cáo
     var initTable= function(datas){
+        console.log('hello');
+        
         $("#tbBody").empty();
         _.each(datas, function(data, i){
+            console.log(data);
+            
             var tags= _.Tags([
                 {tag:'tr', attr: {id: data._id}, childs: [
                     {tag:'td', attr:{class: 'text-left'}, content: data.name},

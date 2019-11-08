@@ -155,6 +155,8 @@ createReport.addEventListener('click', (e) => {
 
 $type.addEventListener('change', (e) => {
   const select = document.querySelector('#report-description')
+  console.log($type.value);
+  
   select.disabled = true
   fetch('/reports/new?type=' + $type.value,
     {
@@ -164,6 +166,8 @@ $type.addEventListener('change', (e) => {
       }
     }
   ).then(res => res.json()).then(respond => {
+    console.log(respond);
+    
     setTimeout(() => {
       select.disabled = false
       select.options.length = 0

@@ -6,8 +6,8 @@
     "name": "akira"
   },
   "database": {
-    "name": "akira",
-    "ip": "localhost",
+    "name": "crmsupport",
+    "ip": "172.16.2.172",
     "port": 27017,
     "user": "",
     "pwd": ""

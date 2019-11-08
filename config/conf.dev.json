@@ -6,8 +6,8 @@
     "name": "7home"
   },
   "database": {
-    "name": "crmdb",
-    "ip": "localhost",
+    "name": "crmsupport",
+    "ip": "172.16.2.172",
     "port": 27017,
     "user": "",
     "pwd": ""

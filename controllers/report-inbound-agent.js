@@ -12,6 +12,8 @@ exports.index = {
                 })
             })
         } else {
+            console.log(req.query);
+            
             var startDate = 0;
             var endDate = 0;
             var listMonth = [];

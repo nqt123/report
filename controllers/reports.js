@@ -180,7 +180,7 @@ exports.create = function (req, res) {
 
 exports.new = function (req, res) {
   const projectQuery = []
-  console.log('123123')
+  console.log('123123');
   const user = User.findById(req.session['user']._id).then(user => {
     if (user.projectManage.length == 0) {
       return _.render(req, res, '../500.ejs', {
@@ -238,6 +238,8 @@ exports.new = function (req, res) {
           ], (err, result) => {
             if (err)
               return console.log(err)
+            console.log(123456);
+            
             return res.json(result)
           })
         }

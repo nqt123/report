@@ -2,7 +2,6 @@ var DFT = function ($) {
 
     let bindClick = function () {
         const buttonSearch = document.querySelector("#btn-search");
-        const bt = document.querySelector("#empty-container div")
         //nhận yêu cầu
         
         $(".btn-received").bind('click', function () {
